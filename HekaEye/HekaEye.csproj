@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{72E54798-64B5-4EAC-9E3A-66AD41F2FC9F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>HekaEye</RootNamespace>
+    <AssemblyName>HekaEye</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Downloads\DirectShowLibV2-1\lib\DirectShowLib-2005.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\EyeContext.cs" />
+    <Compile Include="Data\Inspection.cs" />
+    <Compile Include="Data\MatchHistory.cs" />
+    <Compile Include="Data\Product.cs" />
+    <Compile Include="Data\Recipe.cs" />
+    <Compile Include="Data\Region.cs" />
+    <Compile Include="Data\RegionPath.cs" />
+    <Compile Include="Data\RegionProperties.cs" />
+    <Compile Include="frmClasses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmClasses.Designer.cs">
+      <DependentUpon>frmClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEyeStudio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEyeStudio.Designer.cs">
+      <DependentUpon>frmEyeStudio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmHekaTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHekaTest.Designer.cs">
+      <DependentUpon>frmHekaTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmHekaStudio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHekaStudio.Designer.cs">
+      <DependentUpon>frmHekaStudio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLiveTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLiveTest.Designer.cs">
+      <DependentUpon>frmLiveTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSamples.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSamples.Designer.cs">
+      <DependentUpon>frmSamples.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmStudioHome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStudioHome.Designer.cs">
+      <DependentUpon>frmStudioHome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmStudioLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStudioLogin.Designer.cs">
+      <DependentUpon>frmStudioLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTakeSamples.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTakeSamples.Designer.cs">
+      <DependentUpon>frmTakeSamples.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\DbHelper.cs" />
+    <Compile Include="Helpers\DeviceHelper.cs" />
+    <Compile Include="Helpers\MatExtension.cs" />
+    <Compile Include="Helpers\Prompt.cs" />
+    <Compile Include="Migrations\202112121458038_Initial.cs" />
+    <Compile Include="Migrations\202112121458038_Initial.designer.cs">
+      <DependentUpon>202112121458038_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112121512153_Exposure.cs" />
+    <Compile Include="Migrations\202112121512153_Exposure.designer.cs">
+      <DependentUpon>202112121512153_Exposure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112131905577_CameraName.cs" />
+    <Compile Include="Migrations\202112131905577_CameraName.designer.cs">
+      <DependentUpon>202112131905577_CameraName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112132019427_RegionPath.cs" />
+    <Compile Include="Migrations\202112132019427_RegionPath.designer.cs">
+      <DependentUpon>202112132019427_RegionPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112150718166_GaussianBlur.cs" />
+    <Compile Include="Migrations\202112150718166_GaussianBlur.designer.cs">
+      <DependentUpon>202112150718166_GaussianBlur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112151214346_AdaptiveBorder.cs" />
+    <Compile Include="Migrations\202112151214346_AdaptiveBorder.designer.cs">
+      <DependentUpon>202112151214346_AdaptiveBorder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112151344329_StartTemplate.cs" />
+    <Compile Include="Migrations\202112151344329_StartTemplate.designer.cs">
+      <DependentUpon>202112151344329_StartTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\BusinessResult.cs" />
+    <Compile Include="Models\CameraModel.cs" />
+    <Compile Include="Models\CaptureClassModel.cs" />
+    <Compile Include="Models\ClassSampleModel.cs" />
+    <Compile Include="Models\RoiModel.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudioModels\HekaRegion.cs" />
+    <Compile Include="StudioModels\ProductLabel.cs" />
+    <Compile Include="UseCase\EyeBO.cs" />
+    <Compile Include="UseCase\PrinterBO.cs" />
+    <EmbeddedResource Include="frmClasses.resx">
+      <DependentUpon>frmClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEyeStudio.resx">
+      <DependentUpon>frmEyeStudio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHekaTest.resx">
+      <DependentUpon>frmHekaTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHekaStudio.resx">
+      <DependentUpon>frmHekaStudio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLiveTest.resx">
+      <DependentUpon>frmLiveTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSamples.resx">
+      <DependentUpon>frmSamples.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStudioHome.resx">
+      <DependentUpon>frmStudioHome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmStudioLogin.resx">
+      <DependentUpon>frmStudioLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTakeSamples.resx">
+      <DependentUpon>frmTakeSamples.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112121458038_Initial.resx">
+      <DependentUpon>202112121458038_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112121512153_Exposure.resx">
+      <DependentUpon>202112121512153_Exposure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112131905577_CameraName.resx">
+      <DependentUpon>202112131905577_CameraName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112132019427_RegionPath.resx">
+      <DependentUpon>202112132019427_RegionPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112150718166_GaussianBlur.resx">
+      <DependentUpon>202112150718166_GaussianBlur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112151214346_AdaptiveBorder.resx">
+      <DependentUpon>202112151214346_AdaptiveBorder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112151344329_StartTemplate.resx">
+      <DependentUpon>202112151344329_StartTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Content Include="ReportDesign\ProductLabel.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Emgu.CV">
+      <Version>4.5.4.4788</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.Bitmap">
+      <Version>4.5.4.4788</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.runtime.windows">
+      <Version>4.5.4.4788</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.CV.UI">
+      <Version>4.5.4.4788</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.TF.Lite.runtime.windows">
+      <Version>2.6.0.1295</Version>
+    </PackageReference>
+    <PackageReference Include="Emgu.TF.runtime.windows">
+      <Version>2.6.0.1294</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="EntityFramework.SqlServerCompact">
+      <Version>6.4.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core">
+      <Version>6.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ReportViewer.Common">
+      <Version>10.0.40219.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.ReportViewer.WinForms">
+      <Version>10.0.40219.1</Version>
+    </PackageReference>
+    <PackageReference Include="QRCoder">
+      <Version>1.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite">
+      <Version>1.0.115.5</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Captures\info.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="Samples\info.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StartTemplates\info.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Vendor\DirectShowLib-2005.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Db\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
