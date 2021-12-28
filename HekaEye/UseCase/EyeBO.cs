@@ -35,6 +35,8 @@ namespace HekaEye.UseCase
                     dbRecipe.RecipeName = recipe.RecipeName;
                     dbRecipe.CameraName = recipe.CameraName;
                     dbRecipe.Exposure = recipe.Exposure;
+                    dbRecipe.RW = recipe.RW;
+                    dbRecipe.RH = recipe.RH;
                     db.SaveChanges();
 
                     result.RecordId = dbRecipe.Id;
@@ -203,6 +205,9 @@ namespace HekaEye.UseCase
                         dbInspec.RegionProperties.GaussianSize = regionProps.GaussianSize;
                         dbInspec.RegionProperties.GaussianSigma = regionProps.GaussianSigma;
                         dbInspec.RegionProperties.AdaptiveBorder = regionProps.AdaptiveBorder;
+                        dbInspec.RegionProperties.ApplyCanny = regionProps.ApplyCanny;
+                        dbInspec.RegionProperties.CannyEpsilon = regionProps.CannyEpsilon;
+                        dbInspec.RegionProperties.MinShapeArea = regionProps.MinShapeArea;
                     }
 
                     db.SaveChanges();
@@ -245,13 +250,13 @@ namespace HekaEye.UseCase
             return data;
         }
 
-        public Region[] GetRegionList(int recipeId)
+        public Region[] GetRegionList(int recipeId, int cameraId)
         {
             Region[] data = new Region[0];
 
             using (EyeContext db = new EyeContext())
             {
-                data = db.Region.Where(d => d.RecipeId == recipeId).ToArray();
+                data = db.Region.Where(d => d.RecipeId == recipeId && d.CameraId == cameraId).ToArray();
             }
 
             return data;
@@ -267,6 +272,8 @@ namespace HekaEye.UseCase
                 if (dbRegion != null)
                 {
                     model.Id = dbRegion.Id;
+                    model.CameraId = dbRegion.CameraId ?? 0;
+                    
                     var dbInspec = db.Inspection.FirstOrDefault(d => d.RegionId == regionId);
                     if (dbInspec != null && dbInspec.RegionProperties != null)
                     {
@@ -291,6 +298,9 @@ namespace HekaEye.UseCase
                         model.GaussianSigma = dbInspec.RegionProperties.GaussianSigma ?? 0;
                         model.GaussianSize = dbInspec.RegionProperties.GaussianSize ?? 3;
                         model.AdaptiveBorder = dbInspec.RegionProperties.AdaptiveBorder ?? 1;
+                        model.ApplyCanny = dbInspec.RegionProperties.ApplyCanny ?? false;
+                        model.CannyEpsilon = dbInspec.RegionProperties.CannyEpsilon ?? 0.01;
+                        model.MinShapeArea = dbInspec.RegionProperties.MinShapeArea ?? 0.6;
 
                         var pathList = db.RegionPath.Where(d => d.RegionId == regionId)
                             .OrderBy(d => d.PointOrder).ToList();
@@ -421,6 +431,86 @@ namespace HekaEye.UseCase
             }
 
             return result;
+        }
+
+        public BusinessResult SaveCamera(RecipeCamera model)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbModel = db.RecipeCamera.FirstOrDefault(d => d.Id == model.Id);
+                    if (dbModel == null)
+                    {
+                        dbModel = new RecipeCamera
+                        {
+                            CameraName = model.CameraName,
+                            IsActive = model.IsActive,
+                            RecipeId = model.RecipeId,
+                        };
+                        db.RecipeCamera.Add(dbModel);
+                    }
+
+                    dbModel.Exposure = model.Exposure;
+                    dbModel.CameraName = model.CameraName;
+                    dbModel.IsActive = model.IsActive;
+                    dbModel.RecipeId = model.RecipeId;
+
+                    db.SaveChanges();
+
+                    result.RecordId = dbModel.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public RecipeCamera[] GetCameraList(int recipeId)
+        {
+            RecipeCamera[] data = new RecipeCamera[0];
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    data = db.RecipeCamera.Where(d => d.RecipeId == recipeId)
+                        .ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return data;
+        }
+
+        public RecipeCamera GetCamera(int cameraId)
+        {
+            RecipeCamera cam = new RecipeCamera();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    cam = db.RecipeCamera.FirstOrDefault(d => d.Id == cameraId);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return cam;
         }
 
         public void Dispose()

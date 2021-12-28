@@ -31,14 +31,14 @@ namespace HekaEye
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHekaStudio));
-            this.label1 = new System.Windows.Forms.Label();
             this.cmbCamera = new System.Windows.Forms.ComboBox();
-            this.imgBox = new Emgu.CV.UI.ImageBox();
             this.prpGrid = new System.Windows.Forms.PropertyGrid();
             this.tabTools = new System.Windows.Forms.TabControl();
             this.tabPageProperties = new System.Windows.Forms.TabPage();
             this.tabPageRecipes = new System.Windows.Forms.TabPage();
             this.flPanelRecipes = new System.Windows.Forms.FlowLayoutPanel();
+            this.tabPageCamera = new System.Windows.Forms.TabPage();
+            this.flPanelCameras = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageRegions = new System.Windows.Forms.TabPage();
             this.flPanelRegions = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPageModels = new System.Windows.Forms.TabPage();
@@ -58,25 +58,17 @@ namespace HekaEye
             this.lblSaveResult = new System.Windows.Forms.Label();
             this.imgMask = new Emgu.CV.UI.ImageBox();
             this.btnStartTemplate = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.imgBox)).BeginInit();
+            this.flPanelCams = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnCamera = new System.Windows.Forms.Button();
             this.tabTools.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageRecipes.SuspendLayout();
+            this.tabPageCamera.SuspendLayout();
             this.tabPageRegions.SuspendLayout();
             this.tabPageModels.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarExposure)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgMask)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(13, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 23);
-            this.label1.TabIndex = 17;
-            this.label1.Text = "KAMERA";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cmbCamera
             // 
@@ -91,43 +83,28 @@ namespace HekaEye
             this.cmbCamera.ValueMember = "DeviceIndex";
             this.cmbCamera.SelectedIndexChanged += new System.EventHandler(this.cmbCamera_SelectedIndexChanged);
             // 
-            // imgBox
-            // 
-            this.imgBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imgBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
-            this.imgBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.imgBox.Location = new System.Drawing.Point(137, 51);
-            this.imgBox.Name = "imgBox";
-            this.imgBox.Size = new System.Drawing.Size(770, 466);
-            this.imgBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.imgBox.TabIndex = 2;
-            this.imgBox.TabStop = false;
-            this.imgBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.imgBox_MouseDown);
-            this.imgBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imgBox_MouseMove);
-            this.imgBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.imgBox_MouseUp);
-            // 
             // prpGrid
             // 
             this.prpGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.prpGrid.Location = new System.Drawing.Point(3, 3);
             this.prpGrid.Name = "prpGrid";
-            this.prpGrid.Size = new System.Drawing.Size(316, 272);
+            this.prpGrid.Size = new System.Drawing.Size(316, 418);
             this.prpGrid.TabIndex = 19;
             // 
             // tabTools
             // 
             this.tabTools.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabTools.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabTools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabTools.Controls.Add(this.tabPageProperties);
             this.tabTools.Controls.Add(this.tabPageRecipes);
+            this.tabTools.Controls.Add(this.tabPageCamera);
             this.tabTools.Controls.Add(this.tabPageRegions);
             this.tabTools.Controls.Add(this.tabPageModels);
-            this.tabTools.Location = new System.Drawing.Point(913, 51);
+            this.tabTools.Location = new System.Drawing.Point(999, 51);
             this.tabTools.Name = "tabTools";
             this.tabTools.SelectedIndex = 0;
-            this.tabTools.Size = new System.Drawing.Size(330, 307);
+            this.tabTools.Size = new System.Drawing.Size(330, 453);
             this.tabTools.TabIndex = 20;
             // 
             // tabPageProperties
@@ -136,7 +113,7 @@ namespace HekaEye
             this.tabPageProperties.Location = new System.Drawing.Point(4, 4);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(322, 278);
+            this.tabPageProperties.Size = new System.Drawing.Size(322, 424);
             this.tabPageProperties.TabIndex = 0;
             this.tabPageProperties.Text = "Özellikler";
             this.tabPageProperties.UseVisualStyleBackColor = true;
@@ -147,7 +124,7 @@ namespace HekaEye
             this.tabPageRecipes.Location = new System.Drawing.Point(4, 4);
             this.tabPageRecipes.Name = "tabPageRecipes";
             this.tabPageRecipes.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRecipes.Size = new System.Drawing.Size(267, 437);
+            this.tabPageRecipes.Size = new System.Drawing.Size(322, 424);
             this.tabPageRecipes.TabIndex = 2;
             this.tabPageRecipes.Text = "Reçete";
             this.tabPageRecipes.UseVisualStyleBackColor = true;
@@ -158,8 +135,27 @@ namespace HekaEye
             this.flPanelRecipes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flPanelRecipes.Location = new System.Drawing.Point(3, 3);
             this.flPanelRecipes.Name = "flPanelRecipes";
-            this.flPanelRecipes.Size = new System.Drawing.Size(261, 431);
+            this.flPanelRecipes.Size = new System.Drawing.Size(316, 418);
             this.flPanelRecipes.TabIndex = 1;
+            // 
+            // tabPageCamera
+            // 
+            this.tabPageCamera.Controls.Add(this.flPanelCameras);
+            this.tabPageCamera.Location = new System.Drawing.Point(4, 4);
+            this.tabPageCamera.Name = "tabPageCamera";
+            this.tabPageCamera.Size = new System.Drawing.Size(322, 424);
+            this.tabPageCamera.TabIndex = 4;
+            this.tabPageCamera.Text = "Kamera";
+            this.tabPageCamera.UseVisualStyleBackColor = true;
+            // 
+            // flPanelCameras
+            // 
+            this.flPanelCameras.AutoScroll = true;
+            this.flPanelCameras.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flPanelCameras.Location = new System.Drawing.Point(0, 0);
+            this.flPanelCameras.Name = "flPanelCameras";
+            this.flPanelCameras.Size = new System.Drawing.Size(322, 424);
+            this.flPanelCameras.TabIndex = 2;
             // 
             // tabPageRegions
             // 
@@ -167,7 +163,7 @@ namespace HekaEye
             this.tabPageRegions.Location = new System.Drawing.Point(4, 4);
             this.tabPageRegions.Name = "tabPageRegions";
             this.tabPageRegions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageRegions.Size = new System.Drawing.Size(267, 437);
+            this.tabPageRegions.Size = new System.Drawing.Size(322, 424);
             this.tabPageRegions.TabIndex = 1;
             this.tabPageRegions.Text = "Bölge";
             this.tabPageRegions.UseVisualStyleBackColor = true;
@@ -178,7 +174,7 @@ namespace HekaEye
             this.flPanelRegions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flPanelRegions.Location = new System.Drawing.Point(3, 3);
             this.flPanelRegions.Name = "flPanelRegions";
-            this.flPanelRegions.Size = new System.Drawing.Size(261, 431);
+            this.flPanelRegions.Size = new System.Drawing.Size(316, 418);
             this.flPanelRegions.TabIndex = 0;
             // 
             // tabPageModels
@@ -187,7 +183,7 @@ namespace HekaEye
             this.tabPageModels.Location = new System.Drawing.Point(4, 4);
             this.tabPageModels.Name = "tabPageModels";
             this.tabPageModels.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageModels.Size = new System.Drawing.Size(267, 437);
+            this.tabPageModels.Size = new System.Drawing.Size(322, 424);
             this.tabPageModels.TabIndex = 3;
             this.tabPageModels.Text = "Model";
             this.tabPageModels.UseVisualStyleBackColor = true;
@@ -198,7 +194,7 @@ namespace HekaEye
             this.flPanelModels.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flPanelModels.Location = new System.Drawing.Point(3, 3);
             this.flPanelModels.Name = "flPanelModels";
-            this.flPanelModels.Size = new System.Drawing.Size(261, 431);
+            this.flPanelModels.Size = new System.Drawing.Size(316, 418);
             this.flPanelModels.TabIndex = 1;
             // 
             // btnShape
@@ -210,7 +206,7 @@ namespace HekaEye
             this.btnShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShape.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnShape.ForeColor = System.Drawing.Color.White;
-            this.btnShape.Location = new System.Drawing.Point(12, 187);
+            this.btnShape.Location = new System.Drawing.Point(12, 287);
             this.btnShape.Name = "btnShape";
             this.btnShape.Size = new System.Drawing.Size(119, 44);
             this.btnShape.TabIndex = 21;
@@ -222,7 +218,7 @@ namespace HekaEye
             // 
             this.tBarExposure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tBarExposure.AutoSize = false;
-            this.tBarExposure.Location = new System.Drawing.Point(968, 6);
+            this.tBarExposure.Location = new System.Drawing.Point(1054, 6);
             this.tBarExposure.Maximum = 0;
             this.tBarExposure.Minimum = -13;
             this.tBarExposure.Name = "tBarExposure";
@@ -250,7 +246,7 @@ namespace HekaEye
             this.btnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnLine.ForeColor = System.Drawing.Color.White;
-            this.btnLine.Location = new System.Drawing.Point(12, 237);
+            this.btnLine.Location = new System.Drawing.Point(12, 337);
             this.btnLine.Name = "btnLine";
             this.btnLine.Size = new System.Drawing.Size(119, 44);
             this.btnLine.TabIndex = 24;
@@ -262,7 +258,7 @@ namespace HekaEye
             // 
             this.lblExposure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblExposure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblExposure.Location = new System.Drawing.Point(844, 15);
+            this.lblExposure.Location = new System.Drawing.Point(930, 15);
             this.lblExposure.Name = "lblExposure";
             this.lblExposure.Size = new System.Drawing.Size(118, 23);
             this.lblExposure.TabIndex = 25;
@@ -279,14 +275,13 @@ namespace HekaEye
             this.btnUndo.Size = new System.Drawing.Size(37, 33);
             this.btnUndo.TabIndex = 26;
             this.btnUndo.UseVisualStyleBackColor = false;
-            this.btnUndo.Visible = false;
             this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
             // 
             // lblResult
             // 
             this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblResult.Location = new System.Drawing.Point(800, 16);
+            this.lblResult.Location = new System.Drawing.Point(886, 16);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(38, 23);
             this.lblResult.TabIndex = 28;
@@ -296,7 +291,7 @@ namespace HekaEye
             // 
             this.lblRecipe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecipe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblRecipe.Location = new System.Drawing.Point(639, 16);
+            this.lblRecipe.Location = new System.Drawing.Point(725, 16);
             this.lblRecipe.Name = "lblRecipe";
             this.lblRecipe.Size = new System.Drawing.Size(155, 23);
             this.lblRecipe.TabIndex = 29;
@@ -341,7 +336,7 @@ namespace HekaEye
             this.btnModel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnModel.ForeColor = System.Drawing.Color.White;
-            this.btnModel.Location = new System.Drawing.Point(12, 101);
+            this.btnModel.Location = new System.Drawing.Point(12, 151);
             this.btnModel.Name = "btnModel";
             this.btnModel.Size = new System.Drawing.Size(119, 44);
             this.btnModel.TabIndex = 32;
@@ -366,7 +361,7 @@ namespace HekaEye
             this.lblSaveResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSaveResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblSaveResult.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lblSaveResult.Location = new System.Drawing.Point(7, 494);
+            this.lblSaveResult.Location = new System.Drawing.Point(7, 703);
             this.lblSaveResult.Name = "lblSaveResult";
             this.lblSaveResult.Size = new System.Drawing.Size(118, 23);
             this.lblSaveResult.TabIndex = 34;
@@ -374,12 +369,11 @@ namespace HekaEye
             // 
             // imgMask
             // 
-            this.imgMask.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imgMask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgMask.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.imgMask.Location = new System.Drawing.Point(913, 364);
+            this.imgMask.Location = new System.Drawing.Point(999, 510);
             this.imgMask.Name = "imgMask";
-            this.imgMask.Size = new System.Drawing.Size(330, 153);
+            this.imgMask.Size = new System.Drawing.Size(330, 216);
             this.imgMask.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgMask.TabIndex = 35;
             this.imgMask.TabStop = false;
@@ -393,19 +387,47 @@ namespace HekaEye
             this.btnStartTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartTemplate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnStartTemplate.ForeColor = System.Drawing.Color.White;
-            this.btnStartTemplate.Location = new System.Drawing.Point(12, 286);
+            this.btnStartTemplate.Location = new System.Drawing.Point(12, 386);
             this.btnStartTemplate.Name = "btnStartTemplate";
             this.btnStartTemplate.Size = new System.Drawing.Size(119, 54);
             this.btnStartTemplate.TabIndex = 36;
-            this.btnStartTemplate.Text = "Start Template";
+            this.btnStartTemplate.Text = "Başlama Deseni";
             this.btnStartTemplate.UseVisualStyleBackColor = false;
             this.btnStartTemplate.Click += new System.EventHandler(this.btnStartTemplate_Click);
+            // 
+            // flPanelCams
+            // 
+            this.flPanelCams.Location = new System.Drawing.Point(137, 51);
+            this.flPanelCams.Name = "flPanelCams";
+            this.flPanelCams.Size = new System.Drawing.Size(856, 675);
+            this.flPanelCams.TabIndex = 37;
+            this.flPanelCams.SizeChanged += new System.EventHandler(this.flPanelCams_SizeChanged);
+            // 
+            // btnCamera
+            // 
+            this.btnCamera.BackColor = System.Drawing.Color.Transparent;
+            this.btnCamera.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCamera.BackgroundImage")));
+            this.btnCamera.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCamera.FlatAppearance.BorderSize = 0;
+            this.btnCamera.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnCamera.ForeColor = System.Drawing.Color.White;
+            this.btnCamera.Location = new System.Drawing.Point(12, 101);
+            this.btnCamera.Name = "btnCamera";
+            this.btnCamera.Size = new System.Drawing.Size(119, 44);
+            this.btnCamera.TabIndex = 38;
+            this.btnCamera.Text = "Kamera";
+            this.btnCamera.UseVisualStyleBackColor = false;
+            this.btnCamera.Click += new System.EventHandler(this.btnCamera_Click);
             // 
             // frmHekaStudio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1255, 529);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(1341, 738);
+            this.Controls.Add(this.btnCamera);
+            this.Controls.Add(this.flPanelCams);
             this.Controls.Add(this.btnStartTemplate);
             this.Controls.Add(this.imgMask);
             this.Controls.Add(this.lblSaveResult);
@@ -422,8 +444,6 @@ namespace HekaEye
             this.Controls.Add(this.tBarExposure);
             this.Controls.Add(this.btnShape);
             this.Controls.Add(this.tabTools);
-            this.Controls.Add(this.imgBox);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbCamera);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -433,10 +453,10 @@ namespace HekaEye
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHekaStudio_FormClosing);
             this.Load += new System.EventHandler(this.frmHekaStudio_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.imgBox)).EndInit();
             this.tabTools.ResumeLayout(false);
             this.tabPageProperties.ResumeLayout(false);
             this.tabPageRecipes.ResumeLayout(false);
+            this.tabPageCamera.ResumeLayout(false);
             this.tabPageRegions.ResumeLayout(false);
             this.tabPageModels.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tBarExposure)).EndInit();
@@ -446,9 +466,7 @@ namespace HekaEye
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbCamera;
-        private Emgu.CV.UI.ImageBox imgBox;
         private System.Windows.Forms.PropertyGrid prpGrid;
         private System.Windows.Forms.TabControl tabTools;
         private System.Windows.Forms.TabPage tabPageProperties;
@@ -473,5 +491,9 @@ namespace HekaEye
         private System.Windows.Forms.Label lblSaveResult;
         private Emgu.CV.UI.ImageBox imgMask;
         private System.Windows.Forms.Button btnStartTemplate;
+        private System.Windows.Forms.FlowLayoutPanel flPanelCams;
+        private System.Windows.Forms.Button btnCamera;
+        private System.Windows.Forms.TabPage tabPageCamera;
+        private System.Windows.Forms.FlowLayoutPanel flPanelCameras;
     }
 }

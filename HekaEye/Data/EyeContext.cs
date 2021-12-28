@@ -28,5 +28,6 @@ namespace HekaEye.Data
         public virtual DbSet<Region> Region { get; set; }
         public virtual DbSet<RegionProperties> RegionProperties { get; set; }
         public virtual DbSet<RegionPath> RegionPath { get; set; }
+        public virtual DbSet<RecipeCamera> RecipeCamera { get; set; }
     }
 }

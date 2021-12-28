@@ -117,27 +117,27 @@ namespace HekaEye
         {
             if (SelectedRecipe != null)
             {
-                using (EyeBO bObj = new EyeBO())
-                {
-                    var allRegions = bObj.GetRegionList(SelectedRecipe.Id)
-                        .Select(d => new HekaRegion { 
-                            Id = d.Id,
-                            Title = d.Title,
-                        }).ToList();
+                //using (EyeBO bObj = new EyeBO())
+                //{
+                //    var allRegions = bObj.GetRegionList(SelectedRecipe.Id)
+                //        .Select(d => new HekaRegion { 
+                //            Id = d.Id,
+                //            Title = d.Title,
+                //        }).ToList();
 
-                    List<HekaRegion> hekaRegions = new List<HekaRegion>();
+                //    List<HekaRegion> hekaRegions = new List<HekaRegion>();
 
-                    foreach (var item in allRegions)
-                    {
-                        var dbRegion = bObj.GetRegion(item.Id);
-                        if (dbRegion != null)
-                        {
-                            hekaRegions.Add(dbRegion);
-                        }
-                    }
+                //    foreach (var item in allRegions)
+                //    {
+                //        var dbRegion = bObj.GetRegion(item.Id);
+                //        if (dbRegion != null)
+                //        {
+                //            hekaRegions.Add(dbRegion);
+                //        }
+                //    }
 
-                    _regionList = hekaRegions.ToList();
-                }
+                //    _regionList = hekaRegions.ToList();
+                //}
             }
         }
 

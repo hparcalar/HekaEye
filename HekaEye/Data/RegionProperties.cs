@@ -26,9 +26,12 @@ namespace HekaEye.Data
         public Nullable<bool> ManualThr { get; set; }
         public Nullable<int> ManualStart { get; set; }
         public Nullable<int> ManualEnd { get; set; }
-        public Nullable<int> NokThreshold { get; set; }
+        public Nullable<double> NokThreshold { get; set; }
         public Nullable<bool> GaussianBlur { get; set; }
         public Nullable<int> GaussianSize { get; set; }
         public Nullable<double> GaussianSigma { get; set; }
+        public Nullable<bool> ApplyCanny { get; set; }
+        public Nullable<double> CannyEpsilon { get; set; }
+        public Nullable<double> MinShapeArea { get; set; }
     }
 }

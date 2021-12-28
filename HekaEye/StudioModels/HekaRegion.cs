@@ -13,6 +13,9 @@ namespace HekaEye.StudioModels
         [Browsable(false)]
         public int Id { get; set; }
 
+        [Browsable(false)]
+        public int CameraId { get; set; }
+
         [Category("Bölge Bilgisi")]
         public string Title { get; set; }
         [Category("Bölge Bilgisi")]
@@ -33,6 +36,13 @@ namespace HekaEye.StudioModels
         [Category("Renk Çevrimi")]
         public bool ConvertToHsv { get; set; } = false;
 
+        [Category("Filtre")]
+        public bool ApplyCanny { get; set; } = false;
+        [Category("Filtre")]
+        public double CannyEpsilon { get; set; } = 0.01;
+
+        [Category("Filtre")]
+        public double MinShapeArea { get; set; } = 0.6;
 
         [Category("Filtre")]
         public bool Laplacian { get; set; } = false;
@@ -80,7 +90,7 @@ namespace HekaEye.StudioModels
         public int VEnd { get; set; } = 0;
 
         [Category("Karar")]
-        public int NokThreshold { get; set; } = -1;
+        public double NokThreshold { get; set; } = -1;
 
         [Browsable(false)]
         public int ErrorFrameCount { get; set; }

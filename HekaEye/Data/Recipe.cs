@@ -18,6 +18,12 @@ namespace HekaEye.Data
         [Category("Reçete Bilgileri")]
         public string RecipeName { get; set; }
 
+        [Category("Reçete Bilgileri")]
+        public Nullable<int> RW { get; set; }
+
+        [Category("Reçete Bilgileri")]
+        public Nullable<int> RH { get; set; }
+
         [Browsable(false)]
         public Nullable<int> Exposure { get; set; }
 
