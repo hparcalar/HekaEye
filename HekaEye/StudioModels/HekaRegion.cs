@@ -57,6 +57,15 @@ namespace HekaEye.StudioModels
         [Category("Filtre")]
         public Nullable<double> GaussianSigma { get; set; }
 
+        [Category("Filtre")]
+        public Nullable<bool> ApplySobel { get; set; }
+        [Category("Filtre")]
+        public Nullable<int> SobelDx { get; set; }
+        [Category("Filtre")]
+        public Nullable<int> SobelDy { get; set; }
+        [Category("Filtre")]
+        public Nullable<int> SobelKernel { get; set; }
+
 
         [Category("Eşik")]
         public bool AdaptiveThr { get; set; } = false;

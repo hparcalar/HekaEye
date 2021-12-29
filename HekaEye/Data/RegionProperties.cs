@@ -33,5 +33,10 @@ namespace HekaEye.Data
         public Nullable<bool> ApplyCanny { get; set; }
         public Nullable<double> CannyEpsilon { get; set; }
         public Nullable<double> MinShapeArea { get; set; }
+        public Nullable<bool> ApplySobel { get; set; }
+        public Nullable<int> SobelDx { get; set; }
+        public Nullable<int> SobelDy { get; set; }
+        public Nullable<int> SobelKernel { get; set; }
+
     }
 }

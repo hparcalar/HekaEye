@@ -153,6 +153,7 @@ namespace HekaEye.UseCase
 
                     dbModel.Title = model.Title;
                     dbModel.RecipeId = model.RecipeId;
+                    dbModel.CameraId = model.CameraId;
                     dbModel.Enabled = model.Enabled;
 
                     // SAVE PATH
@@ -208,11 +209,207 @@ namespace HekaEye.UseCase
                         dbInspec.RegionProperties.ApplyCanny = regionProps.ApplyCanny;
                         dbInspec.RegionProperties.CannyEpsilon = regionProps.CannyEpsilon;
                         dbInspec.RegionProperties.MinShapeArea = regionProps.MinShapeArea;
+                        dbInspec.RegionProperties.SobelDx = regionProps.SobelDx;
+                        dbInspec.RegionProperties.SobelDy = regionProps.SobelDy;
+                        dbInspec.RegionProperties.SobelKernel = regionProps.SobelKernel;
+                        dbInspec.RegionProperties.ApplySobel = regionProps.ApplySobel;
                     }
 
                     db.SaveChanges();
 
                     result.RecordId = dbModel.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public ExternalTest[] GetExternalTests()
+        {
+            ExternalTest[] data = new ExternalTest[0];
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    data = db.ExternalTest.ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return data;
+        }
+
+        public ExternalTest GetExternalTest(int id)
+        {
+            ExternalTest data = null;
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.ExternalTest.FirstOrDefault(d => d.Id == id);
+            }
+
+            return data;
+        }
+
+        public BusinessResult SaveExternalTest(ExternalTest model)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbRecord = db.ExternalTest.FirstOrDefault(d => d.Id == model.Id);
+                    if (dbRecord == null)
+                    {
+                        dbRecord = new ExternalTest
+                        {
+                            IsActive=true,
+                        };
+                        db.ExternalTest.Add(dbRecord);
+                    }
+
+                    dbRecord.IsActive = model.IsActive;
+                    dbRecord.TestCode = model.TestCode;
+                    dbRecord.TestName = model.TestName;
+
+                    db.SaveChanges();
+                    result.RecordId = dbRecord.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public BusinessResult DeleteExternalTest(int id)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbRecord = db.ExternalTest.FirstOrDefault(d => d.Id == id);
+                    if (dbRecord == null)
+                        throw new Exception("Silinecek test tanımı bulunamadı.");
+
+                    db.ExternalTest.Remove(dbRecord);
+                    db.SaveChanges();
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public WorkingShift[] GetWorkingShifts()
+        {
+            WorkingShift[] data = new WorkingShift[0];
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    data = db.WorkingShift.ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return data;
+        }
+
+        public WorkingShift GetWorkingShift(int id)
+        {
+            WorkingShift data = null;
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.WorkingShift.FirstOrDefault(d => d.Id == id);
+            }
+
+            return data;
+        }
+
+        public BusinessResult SaveWorkingShift(WorkingShift model)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbRecord = db.WorkingShift.FirstOrDefault(d => d.Id == model.Id);
+                    if (dbRecord == null)
+                    {
+                        dbRecord = new WorkingShift
+                        {
+                            
+                        };
+                        db.WorkingShift.Add(dbRecord);
+                    }
+
+                    dbRecord.IsActive = model.IsActive;
+                    dbRecord.ShiftCode = model.ShiftCode;
+                    dbRecord.ShiftName = model.ShiftName;
+                    dbRecord.StartTime = model.StartTime;
+                    dbRecord.EndTime = model.EndTime;
+
+                    db.SaveChanges();
+                    result.RecordId = dbRecord.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public BusinessResult DeleteWorkingShift(int id)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbRecord = db.WorkingShift.FirstOrDefault(d => d.Id == id);
+                    if (dbRecord == null)
+                        throw new Exception("Silinecek vardiya tanımı bulunamadı.");
+
+                    db.WorkingShift.Remove(dbRecord);
+                    db.SaveChanges();
                 }
 
                 result.Result = true;
@@ -301,6 +498,10 @@ namespace HekaEye.UseCase
                         model.ApplyCanny = dbInspec.RegionProperties.ApplyCanny ?? false;
                         model.CannyEpsilon = dbInspec.RegionProperties.CannyEpsilon ?? 0.01;
                         model.MinShapeArea = dbInspec.RegionProperties.MinShapeArea ?? 0.6;
+                        model.SobelDx = dbInspec.RegionProperties.SobelDx;
+                        model.SobelDy = dbInspec.RegionProperties.SobelDy;
+                        model.SobelKernel = dbInspec.RegionProperties.SobelKernel;
+                        model.ApplySobel = dbInspec.RegionProperties.ApplySobel ?? false;
 
                         var pathList = db.RegionPath.Where(d => d.RegionId == regionId)
                             .OrderBy(d => d.PointOrder).ToList();

@@ -56,6 +56,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\CamResult.cs" />
+    <Compile Include="Data\ExternalTest.cs" />
     <Compile Include="Data\EyeContext.cs" />
     <Compile Include="Data\Inspection.cs" />
     <Compile Include="Data\MatchHistory.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Data\Region.cs" />
     <Compile Include="Data\RegionPath.cs" />
     <Compile Include="Data\RegionProperties.cs" />
+    <Compile Include="Data\WorkingShift.cs" />
     <Compile Include="frmClasses.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +79,12 @@
     </Compile>
     <Compile Include="frmEyeStudio.Designer.cs">
       <DependentUpon>frmEyeStudio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDefinitions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefinitions.Designer.cs">
+      <DependentUpon>frmDefinitions.cs</DependentUpon>
     </Compile>
     <Compile Include="frmHekaTest.cs">
       <SubType>Form</SubType>
@@ -181,6 +190,18 @@
     <Compile Include="Migrations\202112281943395_CameraExposure.designer.cs">
       <DependentUpon>202112281943395_CameraExposure.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202112291055324_SobelFilter.cs" />
+    <Compile Include="Migrations\202112291055324_SobelFilter.designer.cs">
+      <DependentUpon>202112291055324_SobelFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112291328235_CamResultAndShifts.cs" />
+    <Compile Include="Migrations\202112291328235_CamResultAndShifts.designer.cs">
+      <DependentUpon>202112291328235_CamResultAndShifts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202112291334410_ExternalTests.cs" />
+    <Compile Include="Migrations\202112291334410_ExternalTests.designer.cs">
+      <DependentUpon>202112291334410_ExternalTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BusinessResult.cs" />
     <Compile Include="Models\CameraModel.cs" />
@@ -199,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmEyeStudio.resx">
       <DependentUpon>frmEyeStudio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefinitions.resx">
+      <DependentUpon>frmDefinitions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmHekaTest.resx">
       <DependentUpon>frmHekaTest.cs</DependentUpon>
@@ -262,6 +286,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202112281943395_CameraExposure.resx">
       <DependentUpon>202112281943395_CameraExposure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112291055324_SobelFilter.resx">
+      <DependentUpon>202112291055324_SobelFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112291328235_CamResultAndShifts.resx">
+      <DependentUpon>202112291328235_CamResultAndShifts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202112291334410_ExternalTests.resx">
+      <DependentUpon>202112291334410_ExternalTests.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

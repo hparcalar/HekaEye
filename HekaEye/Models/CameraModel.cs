@@ -10,5 +10,6 @@ namespace HekaEye.Models
     {
         public string Name { get; set; }
         public int DeviceIndex { get; set; }
+        public string DevicePath { get; set; }
     }
 }

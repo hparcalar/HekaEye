@@ -105,8 +105,8 @@ namespace HekaEye
                 {
                     lblRecipe.Text = _selectedRecipe.RecipeCode;
 
-                    if (!string.IsNullOrEmpty(_selectedRecipe.CameraName))
-                        cmbCamera.Text = _selectedRecipe.CameraName;
+                    //if (!string.IsNullOrEmpty(_selectedRecipe.CameraName))
+                    //    cmbCamera.Text = _selectedRecipe.CameraName;
                 }
                 else
                     lblRecipe.Text = "-";
@@ -115,6 +115,7 @@ namespace HekaEye
                     prpGrid.SelectedObject = new Recipe();
                 else
                     prpGrid.SelectedObject = _selectedRecipe;
+
                 prpGrid.Refresh();
             }
         }
@@ -155,7 +156,8 @@ namespace HekaEye
                     prpGrid.SelectedObject = _selectedCamera;
 
                     tBarExposure.Value = _selectedCamera.Exposure ?? -7;
-                    cmbCamera.Text = _selectedCamera.CameraName;
+                    var actCam = _cameraList.FirstOrDefault(d => d.DevicePath == _selectedCamera.CameraName);
+                    cmbCamera.SelectedIndex = _cameraList.ToList().IndexOf(actCam);
 
                     if (_selectedCamera.Exposure != null)
                     {
@@ -169,6 +171,8 @@ namespace HekaEye
                             }
                         }
                     }
+
+                    UpdateRegionList();
 
                     prpGrid.Refresh();
                 }
@@ -286,8 +290,14 @@ namespace HekaEye
             }
         }
 
+        bool _updatingCameras = false;
         private void UpdateCameraList()
         {
+            if (_updatingCameras)
+                return;
+
+            _updatingCameras = true;
+
             flPanelCameras.Controls.Clear();
             flPanelCams.Controls.Clear();
             _captureList.Clear();
@@ -297,6 +307,9 @@ namespace HekaEye
                 using (EyeBO bObj = new EyeBO())
                 {
                     var modelList = bObj.GetCameraList(SelectedRecipe.Id);
+
+                    if (modelList.Length == 0)
+                        _updatingCameras = false;
 
                     foreach (var item in modelList)
                     {
@@ -312,7 +325,9 @@ namespace HekaEye
                         Emgu.CV.UI.ImageBox cvBox = new Emgu.CV.UI.ImageBox();
                         cvBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
                         cvBox.SizeMode = PictureBoxSizeMode.Zoom;
-                        cvBox.Size = new Size(flPanelCams.Width / 2 - 5, flPanelCams.Height / 2 - 5);
+                        cvBox.Size = new Size(flPanelCams.Width / 2 - 50, flPanelCams.Height - 5);
+                        //cvBox.Width = flPanelCams.Width;
+                        //cvBox.Height = flPanelCams.Height / 2;
                         cvBox.BorderStyle = BorderStyle.FixedSingle;
                         cvBox.MouseDown += imgBox_MouseDown;
                         cvBox.MouseMove += imgBox_MouseMove;
@@ -339,7 +354,7 @@ namespace HekaEye
                         List<HekaRegion> detailedRegions = new List<HekaRegion>();
                         foreach (var region in captureModel.RegionList)
                         {
-                            var dbRegion = bObj.GetRegion(item.Id);
+                            var dbRegion = bObj.GetRegion(region.Id);
                             if (dbRegion != null)
                             {
                                 detailedRegions.Add(dbRegion);
@@ -355,6 +370,8 @@ namespace HekaEye
                     SelectedCamera = null;
                 }
             }
+            else
+                _updatingCameras = false;
         }
 
         private void BtnListCamera_Click(object sender, EventArgs e)
@@ -418,15 +435,23 @@ namespace HekaEye
             {
                 using (EyeBO bObj = new EyeBO())
                 {
-                    SelectedRegion = tagItem;
-                    foreach (Control item in flPanelRegions.Controls)
+                    var activeCapture = _captureList.FirstOrDefault(d => d.RegionList.Any(m => m.Id == tagItem.Id));
+                    if (activeCapture != null)
                     {
-                        if ((item.Tag as HekaRegion).Id != SelectedRegion.Id)
-                            item.BackColor = Color.Gray;
-                        else
-                            item.BackColor = Color.Lime;
+                        var activeRegion = activeCapture.RegionList.FirstOrDefault(d => d.Id == tagItem.Id);
+                        if (activeRegion != null)
+                        {
+                            SelectedRegion = tagItem;
+                            foreach (Control item in flPanelRegions.Controls)
+                            {
+                                if ((item.Tag as HekaRegion).Id != SelectedRegion.Id)
+                                    item.BackColor = Color.Gray;
+                                else
+                                    item.BackColor = Color.Lime;
+                            }
+                            tabTools.SelectedIndex = 0;
+                        }
                     }
-                    tabTools.SelectedIndex = 0;
                 }
             }
         }
@@ -459,7 +484,7 @@ namespace HekaEye
             {
                 try
                 {
-                    CameraModel capCam = _cameraList.FirstOrDefault(m => m.Name == capture.CameraName);
+                    CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath,capture.CameraName));
                     if (capCam != null)
                     {
                         capture.Capture = new VideoCapture(capCam.DeviceIndex);
@@ -473,6 +498,8 @@ namespace HekaEye
 
                 }
             }
+
+            _updatingCameras = false;
 
             //try
             //{
@@ -568,7 +595,7 @@ namespace HekaEye
                         foreach (var region in data.RegionList)
                         {
                             Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
+                                hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
 
                             var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
                             var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
@@ -601,7 +628,7 @@ namespace HekaEye
                             else if (region.RegionType == 2)
                             {
                                 Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
+                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
 
                                 List<Point> translatedPointsI = new List<Point>();
 
@@ -669,8 +696,28 @@ namespace HekaEye
                             }
                             if (region.Laplacian)
                             {
-                                CvInvoke.Laplacian(maskedRegion, maskedRegion, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.LaplaceSize);
+                                CvInvoke.Laplacian(maskedRegion, maskedRegion, region.ConvertToHsv ? 
+                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
+                            }
+                            if (region.ConvertToGray && region.ApplySobel == true)
+                            {
+                                Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
+                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+
+                                CvInvoke.Sobel(maskedRegion, sobelRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.SobelDx ?? 0, region.SobelDy ?? 0,
+                                    region.SobelKernel ?? 3);
+                                CvInvoke.ConvertScaleAbs(sobelRegion, maskedRegion, 1, 0);
+
+                                //var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                //CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                //    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                //    new MCvScalar(255));
+                                //dilElm.Dispose();
+
+                                this.BeginInvoke((Action)delegate
+                                {
+                                    imgMask.Image = maskedRegion;
+                                });
                             }
                             if (region.ConvertToGray &&
                                     region.ManualThr)
@@ -687,6 +734,7 @@ namespace HekaEye
 
                                 maskedRegion = tmpMaskForHsv;
                             }
+                            
                             if (region.AdaptiveThr && region.ConvertToGray)
                             {
                                 CvInvoke.AdaptiveThreshold(maskedRegion, maskedRegion, 255, Emgu.CV.CvEnum.AdaptiveThresholdType.MeanC,
@@ -813,6 +861,12 @@ namespace HekaEye
                                     var regionArea = CvInvoke.ContourArea(contour[0]);
                                     var faultArea = CvInvoke.CountNonZero(maskedRegion);
                                     contour.Dispose();
+
+                                    var nokRate = faultArea / regionArea * 100;
+                                    this.BeginInvoke((Action)delegate
+                                    {
+                                        lblNokRate.Text = string.Format("{0:N2}", nokRate);
+                                    });
 
                                     if (faultArea / regionArea * 100 > region.NokThreshold)
                                     {
@@ -1078,6 +1132,8 @@ namespace HekaEye
                     if (relatedCapture.SelectionRunning && relatedCapture.SelectionStepRunning)
                     {
                         _hoverPoint = new Point(e.X, e.Y);
+                        lblX.Text = e.X.ToString();
+                        lblY.Text = e.Y.ToString();
                     }
                 }
             }
@@ -1123,7 +1179,7 @@ namespace HekaEye
                 {
                     var nRecipe = new Recipe
                     {
-                        CameraName = cmbCamera.Text,
+                        CameraName = "",
                         Exposure = tBarExposure.Value,
                         RecipeCode = recipeName,
                         RecipeName = recipeName,
@@ -1185,7 +1241,7 @@ namespace HekaEye
                         if (!bResult.Result)
                             MessageBox.Show(bResult.ErrorMessage, "Hata");
                         else
-                            UpdateRegionList();
+                            UpdateCameraList();
                     }
                 }
                 else if (prpGrid.SelectedObject.GetType() == typeof(Recipe))
@@ -1228,13 +1284,14 @@ namespace HekaEye
                             Id = tagData.Id,
                             Title = tagData.Title,
                             RecipeId = SelectedRecipe.Id,
+                            CameraId = SelectedCamera.Id,
                             Enabled = tagData.Enabled,
                         }, tagData);
                         if (!bResult.Result)
                             MessageBox.Show(bResult.ErrorMessage, "Hata");
                         else
                         {
-                            UpdateRegionList();
+                            UpdateCameraList();
                             SelectedRegion = tagData;
                             lblSaveResult.Text = "Kayıt Başarılı";
                         }
@@ -1246,7 +1303,7 @@ namespace HekaEye
                     {
                         var tagData = (prpGrid.SelectedObject as Recipe);
                         tagData.Exposure = tBarExposure.Value;
-                        tagData.CameraName = cmbCamera.Text;
+                        //tagData.CameraName = cmbCamera.Text;
 
                         var bResult = bObj.SaveRecipe(tagData);
                         if (!bResult.Result)
@@ -1265,7 +1322,8 @@ namespace HekaEye
                     {
                         var tagData = (prpGrid.SelectedObject as RecipeCamera);
                         tagData.Exposure = tBarExposure.Value;
-                        tagData.CameraName = cmbCamera.Text;
+                        var actCam = _cameraList[cmbCamera.SelectedIndex];
+                        tagData.CameraName = actCam.DevicePath;
 
                         var bResult = bObj.SaveCamera(tagData);
                         if (!bResult.Result)
@@ -1343,7 +1401,7 @@ namespace HekaEye
                 {
                     Id = 0,
                     RecipeId = SelectedRecipe.Id,
-                    CameraName = camModel.Name,
+                    CameraName = camModel.DevicePath,
                     Exposure = tBarExposure.Value,
                     IsActive = true,
                 });

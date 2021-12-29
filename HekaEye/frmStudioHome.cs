@@ -33,5 +33,11 @@ namespace HekaEye
             frmHekaTest frm = new frmHekaTest();
             frm.ShowDialog(this);
         }
+
+        private void btnDefinitions_Click(object sender, EventArgs e)
+        {
+            frmDefinitions frm = new frmDefinitions();
+            frm.ShowDialog(this);
+        }
     }
 }

@@ -60,6 +60,9 @@ namespace HekaEye
             this.btnStartTemplate = new System.Windows.Forms.Button();
             this.flPanelCams = new System.Windows.Forms.FlowLayoutPanel();
             this.btnCamera = new System.Windows.Forms.Button();
+            this.lblX = new System.Windows.Forms.Label();
+            this.lblY = new System.Windows.Forms.Label();
+            this.lblNokRate = new System.Windows.Forms.Label();
             this.tabTools.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageRecipes.SuspendLayout();
@@ -397,6 +400,10 @@ namespace HekaEye
             // 
             // flPanelCams
             // 
+            this.flPanelCams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flPanelCams.AutoScroll = true;
             this.flPanelCams.Location = new System.Drawing.Point(137, 51);
             this.flPanelCams.Name = "flPanelCams";
             this.flPanelCams.Size = new System.Drawing.Size(856, 675);
@@ -420,12 +427,42 @@ namespace HekaEye
             this.btnCamera.UseVisualStyleBackColor = false;
             this.btnCamera.Click += new System.EventHandler(this.btnCamera_Click);
             // 
+            // lblX
+            // 
+            this.lblX.AutoSize = true;
+            this.lblX.Location = new System.Drawing.Point(56, 510);
+            this.lblX.Name = "lblX";
+            this.lblX.Size = new System.Drawing.Size(18, 17);
+            this.lblX.TabIndex = 39;
+            this.lblX.Text = "--";
+            // 
+            // lblY
+            // 
+            this.lblY.AutoSize = true;
+            this.lblY.Location = new System.Drawing.Point(56, 556);
+            this.lblY.Name = "lblY";
+            this.lblY.Size = new System.Drawing.Size(18, 17);
+            this.lblY.TabIndex = 40;
+            this.lblY.Text = "--";
+            // 
+            // lblNokRate
+            // 
+            this.lblNokRate.AutoSize = true;
+            this.lblNokRate.Location = new System.Drawing.Point(56, 598);
+            this.lblNokRate.Name = "lblNokRate";
+            this.lblNokRate.Size = new System.Drawing.Size(18, 17);
+            this.lblNokRate.TabIndex = 41;
+            this.lblNokRate.Text = "--";
+            // 
             // frmHekaStudio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1341, 738);
+            this.Controls.Add(this.lblNokRate);
+            this.Controls.Add(this.lblY);
+            this.Controls.Add(this.lblX);
             this.Controls.Add(this.btnCamera);
             this.Controls.Add(this.flPanelCams);
             this.Controls.Add(this.btnStartTemplate);
@@ -462,6 +499,7 @@ namespace HekaEye
             ((System.ComponentModel.ISupportInitialize)(this.tBarExposure)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgMask)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -495,5 +533,8 @@ namespace HekaEye
         private System.Windows.Forms.Button btnCamera;
         private System.Windows.Forms.TabPage tabPageCamera;
         private System.Windows.Forms.FlowLayoutPanel flPanelCameras;
+        private System.Windows.Forms.Label lblX;
+        private System.Windows.Forms.Label lblY;
+        private System.Windows.Forms.Label lblNokRate;
     }
 }

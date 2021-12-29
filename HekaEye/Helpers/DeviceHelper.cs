@@ -28,6 +28,7 @@ namespace HekaEye.Helpers
                     {
                         DeviceIndex = idx,
                         Name = captureDevices[idx].Name,
+                        DevicePath = captureDevices[idx].DevicePath,
                     });
                 }
 
