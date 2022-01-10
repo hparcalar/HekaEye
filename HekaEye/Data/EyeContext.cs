@@ -32,5 +32,6 @@ namespace HekaEye.Data
         public virtual DbSet<WorkingShift> WorkingShift { get; set; }
         public virtual DbSet<CamResult> CamResult { get; set; }
         public virtual DbSet<ExternalTest> ExternalTest { get; set; }
+        public virtual DbSet<ProcessStep> ProcessStep { get; set; }
     }
 }

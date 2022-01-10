@@ -153,8 +153,6 @@ namespace HekaEye
                     prpGrid.SelectedObject = new RecipeCamera();
                 else
                 {
-                    prpGrid.SelectedObject = _selectedCamera;
-
                     tBarExposure.Value = _selectedCamera.Exposure ?? -7;
                     var actCam = _cameraList.FirstOrDefault(d => d.DevicePath == _selectedCamera.CameraName);
                     cmbCamera.SelectedIndex = _cameraList.ToList().IndexOf(actCam);
@@ -174,6 +172,7 @@ namespace HekaEye
 
                     UpdateRegionList();
 
+                    prpGrid.SelectedObject = _selectedCamera;
                     prpGrid.Refresh();
                 }
             }

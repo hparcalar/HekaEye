@@ -32,29 +32,31 @@ namespace HekaEye
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDefinitions));
             this.tabDef = new System.Windows.Forms.TabControl();
             this.tpShift = new System.Windows.Forms.TabPage();
-            this.tpTest = new System.Windows.Forms.TabPage();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.tPageFaultProducts = new System.Windows.Forms.TabPage();
-            this.tPageReport = new System.Windows.Forms.TabPage();
-            this.lstShifts = new System.Windows.Forms.ListBox();
-            this.txtShiftCode = new System.Windows.Forms.TextBox();
-            this.txtShiftName = new System.Windows.Forms.TextBox();
-            this.chkShiftActive = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.txtShiftEnd = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtShiftStart = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnShiftDelete = new System.Windows.Forms.Button();
             this.btnShiftSave = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkShiftActive = new System.Windows.Forms.CheckBox();
+            this.txtShiftName = new System.Windows.Forms.TextBox();
+            this.txtShiftCode = new System.Windows.Forms.TextBox();
+            this.lstShifts = new System.Windows.Forms.ListBox();
+            this.tpTest = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnTestDelete = new System.Windows.Forms.Button();
             this.btnTestSave = new System.Windows.Forms.Button();
             this.chkTestActive = new System.Windows.Forms.CheckBox();
             this.txtTestName = new System.Windows.Forms.TextBox();
             this.txtTestCode = new System.Windows.Forms.TextBox();
             this.lstTests = new System.Windows.Forms.ListBox();
-            this.btnShiftDelete = new System.Windows.Forms.Button();
-            this.btnTestDelete = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtShiftStart = new System.Windows.Forms.TextBox();
-            this.txtShiftEnd = new System.Windows.Forms.TextBox();
+            this.tPageFaultProducts = new System.Windows.Forms.TabPage();
+            this.tPageReport = new System.Windows.Forms.TabPage();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnNewShift = new System.Windows.Forms.Button();
+            this.btnNewExternalTest = new System.Windows.Forms.Button();
             this.tabDef.SuspendLayout();
             this.tpShift.SuspendLayout();
             this.tpTest.SuspendLayout();
@@ -79,6 +81,7 @@ namespace HekaEye
             // 
             // tpShift
             // 
+            this.tpShift.Controls.Add(this.btnNewShift);
             this.tpShift.Controls.Add(this.txtShiftEnd);
             this.tpShift.Controls.Add(this.label5);
             this.tpShift.Controls.Add(this.txtShiftStart);
@@ -98,8 +101,127 @@ namespace HekaEye
             this.tpShift.Text = "VARDİYA";
             this.tpShift.UseVisualStyleBackColor = true;
             // 
+            // txtShiftEnd
+            // 
+            this.txtShiftEnd.Location = new System.Drawing.Point(554, 95);
+            this.txtShiftEnd.Name = "txtShiftEnd";
+            this.txtShiftEnd.Size = new System.Drawing.Size(110, 34);
+            this.txtShiftEnd.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label5.Location = new System.Drawing.Point(264, 97);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(168, 31);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Saat";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtShiftStart
+            // 
+            this.txtShiftStart.Location = new System.Drawing.Point(438, 95);
+            this.txtShiftStart.Name = "txtShiftStart";
+            this.txtShiftStart.Size = new System.Drawing.Size(110, 34);
+            this.txtShiftStart.TabIndex = 9;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label2.Location = new System.Drawing.Point(264, 57);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(168, 31);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Vardiya Adı";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnShiftDelete
+            // 
+            this.btnShiftDelete.BackColor = System.Drawing.Color.Transparent;
+            this.btnShiftDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftDelete.BackgroundImage")));
+            this.btnShiftDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnShiftDelete.FlatAppearance.BorderSize = 0;
+            this.btnShiftDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnShiftDelete.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftDelete.Location = new System.Drawing.Point(584, 227);
+            this.btnShiftDelete.Name = "btnShiftDelete";
+            this.btnShiftDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnShiftDelete.Size = new System.Drawing.Size(139, 65);
+            this.btnShiftDelete.TabIndex = 7;
+            this.btnShiftDelete.Text = "SİL";
+            this.btnShiftDelete.UseVisualStyleBackColor = false;
+            this.btnShiftDelete.Click += new System.EventHandler(this.btnShiftDelete_Click);
+            // 
+            // btnShiftSave
+            // 
+            this.btnShiftSave.BackColor = System.Drawing.Color.Transparent;
+            this.btnShiftSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftSave.BackgroundImage")));
+            this.btnShiftSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnShiftSave.FlatAppearance.BorderSize = 0;
+            this.btnShiftSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnShiftSave.ForeColor = System.Drawing.Color.Black;
+            this.btnShiftSave.Location = new System.Drawing.Point(438, 227);
+            this.btnShiftSave.Name = "btnShiftSave";
+            this.btnShiftSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnShiftSave.Size = new System.Drawing.Size(140, 65);
+            this.btnShiftSave.TabIndex = 6;
+            this.btnShiftSave.Text = "KAYDET";
+            this.btnShiftSave.UseVisualStyleBackColor = false;
+            this.btnShiftSave.Click += new System.EventHandler(this.btnShiftSave_Click);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.Location = new System.Drawing.Point(264, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(168, 31);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Vardiya Kodu";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // chkShiftActive
+            // 
+            this.chkShiftActive.AutoSize = true;
+            this.chkShiftActive.Location = new System.Drawing.Point(438, 167);
+            this.chkShiftActive.Name = "chkShiftActive";
+            this.chkShiftActive.Size = new System.Drawing.Size(85, 33);
+            this.chkShiftActive.TabIndex = 3;
+            this.chkShiftActive.Text = "Aktif";
+            this.chkShiftActive.UseVisualStyleBackColor = true;
+            // 
+            // txtShiftName
+            // 
+            this.txtShiftName.Location = new System.Drawing.Point(438, 55);
+            this.txtShiftName.Name = "txtShiftName";
+            this.txtShiftName.Size = new System.Drawing.Size(226, 34);
+            this.txtShiftName.TabIndex = 2;
+            // 
+            // txtShiftCode
+            // 
+            this.txtShiftCode.Location = new System.Drawing.Point(438, 15);
+            this.txtShiftCode.Name = "txtShiftCode";
+            this.txtShiftCode.Size = new System.Drawing.Size(226, 34);
+            this.txtShiftCode.TabIndex = 1;
+            // 
+            // lstShifts
+            // 
+            this.lstShifts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lstShifts.DisplayMember = "ShiftCode";
+            this.lstShifts.FormattingEnabled = true;
+            this.lstShifts.ItemHeight = 29;
+            this.lstShifts.Location = new System.Drawing.Point(6, 15);
+            this.lstShifts.Name = "lstShifts";
+            this.lstShifts.Size = new System.Drawing.Size(200, 352);
+            this.lstShifts.TabIndex = 0;
+            this.lstShifts.ValueMember = "Id";
+            this.lstShifts.SelectedIndexChanged += new System.EventHandler(this.lstShifts_SelectedIndexChanged);
+            // 
             // tpTest
             // 
+            this.tpTest.Controls.Add(this.btnNewExternalTest);
             this.tpTest.Controls.Add(this.label4);
             this.tpTest.Controls.Add(this.label3);
             this.tpTest.Controls.Add(this.btnTestDelete);
@@ -116,105 +238,43 @@ namespace HekaEye
             this.tpTest.Text = "HARİCİ TESTLER";
             this.tpTest.UseVisualStyleBackColor = true;
             // 
-            // btnClose
+            // label4
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
-            this.btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnClose.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnClose.Location = new System.Drawing.Point(1074, 481);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(165, 92);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "KAPAT";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label4.Location = new System.Drawing.Point(264, 57);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(168, 31);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "Test Adı";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tPageFaultProducts
+            // label3
             // 
-            this.tPageFaultProducts.Location = new System.Drawing.Point(4, 72);
-            this.tPageFaultProducts.Name = "tPageFaultProducts";
-            this.tPageFaultProducts.Size = new System.Drawing.Size(1223, 382);
-            this.tPageFaultProducts.TabIndex = 2;
-            this.tPageFaultProducts.Text = "HATALI ÜRÜNLER";
-            this.tPageFaultProducts.UseVisualStyleBackColor = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label3.Location = new System.Drawing.Point(264, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(168, 31);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Test Kodu";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tPageReport
+            // btnTestDelete
             // 
-            this.tPageReport.Location = new System.Drawing.Point(4, 72);
-            this.tPageReport.Name = "tPageReport";
-            this.tPageReport.Size = new System.Drawing.Size(1223, 382);
-            this.tPageReport.TabIndex = 3;
-            this.tPageReport.Text = "RAPOR";
-            this.tPageReport.UseVisualStyleBackColor = true;
-            // 
-            // lstShifts
-            // 
-            this.lstShifts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lstShifts.FormattingEnabled = true;
-            this.lstShifts.ItemHeight = 29;
-            this.lstShifts.Location = new System.Drawing.Point(6, 15);
-            this.lstShifts.Name = "lstShifts";
-            this.lstShifts.Size = new System.Drawing.Size(200, 352);
-            this.lstShifts.TabIndex = 0;
-            this.lstShifts.SelectedIndexChanged += new System.EventHandler(this.lstShifts_SelectedIndexChanged);
-            // 
-            // txtShiftCode
-            // 
-            this.txtShiftCode.Location = new System.Drawing.Point(438, 15);
-            this.txtShiftCode.Name = "txtShiftCode";
-            this.txtShiftCode.Size = new System.Drawing.Size(226, 34);
-            this.txtShiftCode.TabIndex = 1;
-            // 
-            // txtShiftName
-            // 
-            this.txtShiftName.Location = new System.Drawing.Point(438, 55);
-            this.txtShiftName.Name = "txtShiftName";
-            this.txtShiftName.Size = new System.Drawing.Size(226, 34);
-            this.txtShiftName.TabIndex = 2;
-            // 
-            // chkShiftActive
-            // 
-            this.chkShiftActive.AutoSize = true;
-            this.chkShiftActive.Location = new System.Drawing.Point(438, 167);
-            this.chkShiftActive.Name = "chkShiftActive";
-            this.chkShiftActive.Size = new System.Drawing.Size(85, 33);
-            this.chkShiftActive.TabIndex = 3;
-            this.chkShiftActive.Text = "Aktif";
-            this.chkShiftActive.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(264, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 31);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Vardiya Kodu";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnShiftSave
-            // 
-            this.btnShiftSave.BackColor = System.Drawing.Color.Transparent;
-            this.btnShiftSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftSave.BackgroundImage")));
-            this.btnShiftSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnShiftSave.FlatAppearance.BorderSize = 0;
-            this.btnShiftSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnShiftSave.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftSave.Location = new System.Drawing.Point(438, 227);
-            this.btnShiftSave.Name = "btnShiftSave";
-            this.btnShiftSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnShiftSave.Size = new System.Drawing.Size(123, 65);
-            this.btnShiftSave.TabIndex = 6;
-            this.btnShiftSave.Text = "KAYDET";
-            this.btnShiftSave.UseVisualStyleBackColor = false;
-            this.btnShiftSave.Click += new System.EventHandler(this.btnShiftSave_Click);
+            this.btnTestDelete.BackColor = System.Drawing.Color.Transparent;
+            this.btnTestDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTestDelete.BackgroundImage")));
+            this.btnTestDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTestDelete.FlatAppearance.BorderSize = 0;
+            this.btnTestDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTestDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnTestDelete.ForeColor = System.Drawing.Color.Black;
+            this.btnTestDelete.Location = new System.Drawing.Point(584, 155);
+            this.btnTestDelete.Name = "btnTestDelete";
+            this.btnTestDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnTestDelete.Size = new System.Drawing.Size(136, 65);
+            this.btnTestDelete.TabIndex = 14;
+            this.btnTestDelete.Text = "SİL";
+            this.btnTestDelete.UseVisualStyleBackColor = false;
+            this.btnTestDelete.Click += new System.EventHandler(this.btnTestDelete_Click);
             // 
             // btnTestSave
             // 
@@ -228,10 +288,11 @@ namespace HekaEye
             this.btnTestSave.Location = new System.Drawing.Point(438, 155);
             this.btnTestSave.Name = "btnTestSave";
             this.btnTestSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnTestSave.Size = new System.Drawing.Size(123, 65);
+            this.btnTestSave.Size = new System.Drawing.Size(140, 65);
             this.btnTestSave.TabIndex = 13;
             this.btnTestSave.Text = "KAYDET";
             this.btnTestSave.UseVisualStyleBackColor = false;
+            this.btnTestSave.Click += new System.EventHandler(this.btnTestSave_Click);
             // 
             // chkTestActive
             // 
@@ -261,101 +322,85 @@ namespace HekaEye
             // 
             this.lstTests.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.lstTests.DisplayMember = "TestCode";
             this.lstTests.FormattingEnabled = true;
             this.lstTests.ItemHeight = 29;
             this.lstTests.Location = new System.Drawing.Point(6, 15);
             this.lstTests.Name = "lstTests";
             this.lstTests.Size = new System.Drawing.Size(200, 352);
             this.lstTests.TabIndex = 7;
+            this.lstTests.ValueMember = "Id";
+            this.lstTests.SelectedIndexChanged += new System.EventHandler(this.lstTests_SelectedIndexChanged);
             // 
-            // btnShiftDelete
+            // tPageFaultProducts
             // 
-            this.btnShiftDelete.BackColor = System.Drawing.Color.Transparent;
-            this.btnShiftDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftDelete.BackgroundImage")));
-            this.btnShiftDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnShiftDelete.FlatAppearance.BorderSize = 0;
-            this.btnShiftDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnShiftDelete.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftDelete.Location = new System.Drawing.Point(567, 227);
-            this.btnShiftDelete.Name = "btnShiftDelete";
-            this.btnShiftDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnShiftDelete.Size = new System.Drawing.Size(123, 65);
-            this.btnShiftDelete.TabIndex = 7;
-            this.btnShiftDelete.Text = "SİL";
-            this.btnShiftDelete.UseVisualStyleBackColor = false;
-            this.btnShiftDelete.Click += new System.EventHandler(this.btnShiftDelete_Click);
+            this.tPageFaultProducts.Location = new System.Drawing.Point(4, 72);
+            this.tPageFaultProducts.Name = "tPageFaultProducts";
+            this.tPageFaultProducts.Size = new System.Drawing.Size(1223, 382);
+            this.tPageFaultProducts.TabIndex = 2;
+            this.tPageFaultProducts.Text = "HATALI ÜRÜNLER";
+            this.tPageFaultProducts.UseVisualStyleBackColor = true;
             // 
-            // btnTestDelete
+            // tPageReport
             // 
-            this.btnTestDelete.BackColor = System.Drawing.Color.Transparent;
-            this.btnTestDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTestDelete.BackgroundImage")));
-            this.btnTestDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTestDelete.FlatAppearance.BorderSize = 0;
-            this.btnTestDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTestDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnTestDelete.ForeColor = System.Drawing.Color.Black;
-            this.btnTestDelete.Location = new System.Drawing.Point(567, 155);
-            this.btnTestDelete.Name = "btnTestDelete";
-            this.btnTestDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnTestDelete.Size = new System.Drawing.Size(123, 65);
-            this.btnTestDelete.TabIndex = 14;
-            this.btnTestDelete.Text = "SİL";
-            this.btnTestDelete.UseVisualStyleBackColor = false;
+            this.tPageReport.Location = new System.Drawing.Point(4, 72);
+            this.tPageReport.Name = "tPageReport";
+            this.tPageReport.Size = new System.Drawing.Size(1223, 382);
+            this.tPageReport.TabIndex = 3;
+            this.tPageReport.Text = "RAPOR";
+            this.tPageReport.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // btnClose
             // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(264, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(168, 31);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Vardiya Adı";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
+            this.btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnClose.FlatAppearance.BorderSize = 0;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnClose.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.btnClose.Location = new System.Drawing.Point(1074, 481);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(165, 92);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "KAPAT";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // label3
+            // btnNewShift
             // 
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(264, 17);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(168, 31);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Test Kodu";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnNewShift.BackColor = System.Drawing.Color.Transparent;
+            this.btnNewShift.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNewShift.BackgroundImage")));
+            this.btnNewShift.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNewShift.FlatAppearance.BorderSize = 0;
+            this.btnNewShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewShift.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnNewShift.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.btnNewShift.Location = new System.Drawing.Point(302, 227);
+            this.btnNewShift.Name = "btnNewShift";
+            this.btnNewShift.Size = new System.Drawing.Size(130, 65);
+            this.btnNewShift.TabIndex = 12;
+            this.btnNewShift.Text = "YENİ";
+            this.btnNewShift.UseVisualStyleBackColor = false;
+            this.btnNewShift.Click += new System.EventHandler(this.btnNewShift_Click);
             // 
-            // label4
+            // btnNewExternalTest
             // 
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label4.Location = new System.Drawing.Point(264, 57);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(168, 31);
-            this.label4.TabIndex = 16;
-            this.label4.Text = "Test Adı";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label5
-            // 
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label5.Location = new System.Drawing.Point(264, 97);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(168, 31);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Saat";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtShiftStart
-            // 
-            this.txtShiftStart.Location = new System.Drawing.Point(438, 95);
-            this.txtShiftStart.Name = "txtShiftStart";
-            this.txtShiftStart.Size = new System.Drawing.Size(110, 34);
-            this.txtShiftStart.TabIndex = 9;
-            // 
-            // txtShiftEnd
-            // 
-            this.txtShiftEnd.Location = new System.Drawing.Point(554, 95);
-            this.txtShiftEnd.Name = "txtShiftEnd";
-            this.txtShiftEnd.Size = new System.Drawing.Size(110, 34);
-            this.txtShiftEnd.TabIndex = 11;
+            this.btnNewExternalTest.BackColor = System.Drawing.Color.Transparent;
+            this.btnNewExternalTest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNewExternalTest.BackgroundImage")));
+            this.btnNewExternalTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNewExternalTest.FlatAppearance.BorderSize = 0;
+            this.btnNewExternalTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewExternalTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnNewExternalTest.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.btnNewExternalTest.Location = new System.Drawing.Point(302, 155);
+            this.btnNewExternalTest.Name = "btnNewExternalTest";
+            this.btnNewExternalTest.Size = new System.Drawing.Size(130, 65);
+            this.btnNewExternalTest.TabIndex = 17;
+            this.btnNewExternalTest.Text = "YENİ";
+            this.btnNewExternalTest.UseVisualStyleBackColor = false;
+            this.btnNewExternalTest.Click += new System.EventHandler(this.btnNewExternalTest_Click);
             // 
             // frmDefinitions
             // 
@@ -409,5 +454,7 @@ namespace HekaEye
         private System.Windows.Forms.TextBox txtShiftEnd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtShiftStart;
+        private System.Windows.Forms.Button btnNewShift;
+        private System.Windows.Forms.Button btnNewExternalTest;
     }
 }
