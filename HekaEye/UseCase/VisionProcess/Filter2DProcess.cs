@@ -14,6 +14,7 @@ namespace HekaEye.UseCase.VisionProcess
     {
         public object InputData { get; set; }
         public string ProcParams { get; set; }
+        public int ProcessId { get; set; }
         public ProcessTypeList ProcessType { get; set; }
 
         public object Make()

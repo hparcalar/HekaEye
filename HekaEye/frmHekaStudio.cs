@@ -536,10 +536,10 @@ namespace HekaEye
                             lblStatus.Visible = false;
                         });
 
-                        var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                        var hsv = new Mat(frame.Rows, frame.Cols, frame.Depth, 1);
+                        var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, 1);
+                        //var hsv = new Mat(frame.Rows, frame.Cols, frame.Depth, 1);
                         CvInvoke.CvtColor(cloneFrame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
-                        CvInvoke.CvtColor(cloneFrame, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
+                        //CvInvoke.CvtColor(cloneFrame, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
 
                         #region DRAW ACTIVE SELECTION
                         if (data.SelectionRunning && data.SelectionPath.Count() > 0)
@@ -593,8 +593,7 @@ namespace HekaEye
 
                         foreach (var region in data.RegionList)
                         {
-                            Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+                            Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
                             var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
                             var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
@@ -602,8 +601,7 @@ namespace HekaEye
                             // CROP SELECTED ROI
                             if (region.RegionType == 1)
                             {
-                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
+                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
                                 List<Point> translatedPointsI = new List<Point>();
                                 for (int i = 0; i < region.Path.Length; i++)
@@ -620,14 +618,16 @@ namespace HekaEye
                                 VectorOfVectorOfPoint contour
                                                    = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPointsI.ToArray()));
                                 CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
-                                CvInvoke.BitwiseAnd(region.ConvertToHsv ? hsv : gray, maskZeros, maskedRegion);
+                                CvInvoke.BitwiseAnd(gray, maskZeros, maskedRegion);
 
                                 CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
+
+                                maskZeros.Dispose();
+                                translatedPointsI.Clear();
                             }
                             else if (region.RegionType == 2)
                             {
-                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols,Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
                                 List<Point> translatedPointsI = new List<Point>();
 
@@ -652,7 +652,7 @@ namespace HekaEye
                                 VectorOfVectorOfPoint contour
                                                    = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPointsI.ToArray()));
                                 CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
-                                CvInvoke.BitwiseAnd(region.ConvertToHsv ? hsv : gray, maskZeros, maskedRegion);
+                                CvInvoke.BitwiseAnd(gray, maskZeros, maskedRegion);
 
                                 CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
 
@@ -660,6 +660,10 @@ namespace HekaEye
                                 //{
                                 //    imgRegion.Image = maskedRegion;
                                 //});
+
+                                maskZeros.Dispose();
+                                contour.Dispose();
+                                translatedPointsI.Clear();
                             }
 
                             List<Point> translatedPoints = new List<Point>();
@@ -689,23 +693,43 @@ namespace HekaEye
                                 CvInvoke.GaussianBlur(maskedRegion, maskedRegion, new Size(region.GaussianSize ?? 3, region.GaussianSize ?? 3),
                                     region.GaussianSigma ?? 0, region.GaussianSigma ?? 0, Emgu.CV.CvEnum.BorderType.Default);
                             }
+                            if (region.BilateralFilter == true)
+                            {
+                                try
+                                {
+                                    var targetBilateral = maskedRegion.Clone();
+                                    CvInvoke.BilateralFilter(maskedRegion, targetBilateral, region.BilateralD ?? 0,
+                                        region.BilateralSigmaColor ?? 0, region.BilateralSigmaSpace ?? 0);
+
+                                    maskedRegion = targetBilateral;
+
+                                    this.BeginInvoke((Action)delegate
+                                    {
+                                        imgMask.Image = targetBilateral;
+                                    });
+                                }
+                                catch (Exception ex)
+                                {
+
+                                }
+                            }
                             if (region.EqualizeHist)
                             {
                                 CvInvoke.EqualizeHist(maskedRegion, maskedRegion);
                             }
                             if (region.Laplacian)
                             {
-                                CvInvoke.Laplacian(maskedRegion, maskedRegion, region.ConvertToHsv ? 
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
+                                CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
                             }
                             if (region.ConvertToGray && region.ApplySobel == true)
                             {
-                                Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+                                Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
 
                                 CvInvoke.Sobel(maskedRegion, sobelRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.SobelDx ?? 0, region.SobelDy ?? 0,
                                     region.SobelKernel ?? 3);
                                 CvInvoke.ConvertScaleAbs(sobelRegion, maskedRegion, 1, 0);
+
+                                sobelRegion.Dispose();
 
                                 //var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
                                 //CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
@@ -713,10 +737,10 @@ namespace HekaEye
                                 //    new MCvScalar(255));
                                 //dilElm.Dispose();
 
-                                this.BeginInvoke((Action)delegate
-                                {
-                                    imgMask.Image = maskedRegion;
-                                });
+                                //this.BeginInvoke((Action)delegate
+                                //{
+                                //    imgMask.Image = maskedRegion;
+                                //});
                             }
                             if (region.ConvertToGray &&
                                     region.ManualThr)
@@ -746,6 +770,8 @@ namespace HekaEye
                                                    = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
 
                                     CvInvoke.DrawContours(maskedRegion, contour, -1, new MCvScalar(0), region.AdaptiveBorder);
+
+                                    contour.Dispose();
                                 }
                                 catch (Exception)
                                 {
@@ -810,6 +836,10 @@ namespace HekaEye
 
                                     CvInvoke.DrawContours(frame, contourBiggest, -1, new MCvScalar(0, 255, 0), 1);
                                 }
+
+                                cannyRegion.Dispose();
+                                vectorOfSelection.Dispose();
+                                selectedContours.Dispose();
                             }
 
                             //if (SelectedRegion != null && SelectedRegion.Id == region.Id)
@@ -888,17 +918,25 @@ namespace HekaEye
                                             CvInvoke.BitwiseOr(redChannel, maskedRegion, redChannel);
                                             CvInvoke.BitwiseXor(channelsOfFrame[0], maskedRegion, channelsOfFrame[0]);
                                             CvInvoke.BitwiseXor(channelsOfFrame[1], maskedRegion, channelsOfFrame[1]);
-                                            CvInvoke.Merge(new VectorOfMat(channelsOfFrame[0], channelsOfFrame[1], redChannel), frame);
 
+                                            var mergeData = new VectorOfMat(channelsOfFrame[0], channelsOfFrame[1], redChannel);
+                                            CvInvoke.Merge(mergeData, frame);
+
+                                            mergeData.Dispose();
                                             //VectorOfVectorOfPoint faultContour
                                             //        = new VectorOfVectorOfPoint(faultPixels);
                                             //CvInvoke.DrawContours(frame, faultContour, -1, new MCvScalar(0, 0, 255), 1);
                                             //faultContour.Dispose();
                                         }
+
+                                        faultPixels.Dispose();
                                     }
 
+                                    contour.Dispose();
                                 }
                             }
+
+                            translatedPoints.Clear();
                         }
 
                         // SHOW RESULT COLOR
@@ -917,7 +955,6 @@ namespace HekaEye
                             frame.Dispose();
                             cloneFrame.Dispose();
                             gray.Dispose();
-                            hsv.Dispose();
                         });
                     }
                     catch (Exception ex)

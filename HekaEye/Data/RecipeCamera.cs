@@ -17,6 +17,7 @@ namespace HekaEye.Data
         [ForeignKey("Recipe")]
         public int RecipeId { get; set; }
         public string CameraName { get; set; }
+        public string CameraAlias { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> Exposure { get; set; }
         public virtual Recipe Recipe { get; set; }

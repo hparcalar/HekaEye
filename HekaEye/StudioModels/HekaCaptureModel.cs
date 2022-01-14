@@ -11,6 +11,8 @@ namespace HekaEye.StudioModels
 {
     public class HekaCaptureModel
     {
+        public int RecipeId { get; set; }
+        public int CameraId { get; set; }
         public VideoCapture Capture { get; set; }
         public string CameraName { get; set; }
         public Task CaptureTask { get; set; }

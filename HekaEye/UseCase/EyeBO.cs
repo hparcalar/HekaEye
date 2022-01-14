@@ -213,11 +213,60 @@ namespace HekaEye.UseCase
                         dbInspec.RegionProperties.SobelDy = regionProps.SobelDy;
                         dbInspec.RegionProperties.SobelKernel = regionProps.SobelKernel;
                         dbInspec.RegionProperties.ApplySobel = regionProps.ApplySobel;
+                        dbInspec.RegionProperties.BilateralD = regionProps.BilateralD;
+                        dbInspec.RegionProperties.BilateralFilter = regionProps.BilateralFilter;
+                        dbInspec.RegionProperties.BilateralSigmaColor = regionProps.BilateralSigmaColor;
+                        dbInspec.RegionProperties.BilateralSigmaSpace = regionProps.BilateralSigmaSpace;
                     }
 
                     db.SaveChanges();
 
                     result.RecordId = dbModel.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public BusinessResult SaveRegionPath(int regionId, System.Drawing.Point[] path)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbModel = db.Region.FirstOrDefault(d => d.Id == regionId);
+
+                    // SAVE PATH
+                    var exPath = db.RegionPath.Where(d => d.RegionId == dbModel.Id).ToArray();
+                    foreach (var item in exPath)
+                    {
+                        db.RegionPath.Remove(item);
+                    }
+
+                    int pathIndex = 0;
+                    foreach (var item in path)
+                    {
+                        db.RegionPath.Add(new RegionPath
+                        {
+                            Region = dbModel,
+                            X = item.X,
+                            Y = item.Y,
+                            PointOrder = pathIndex,
+                        });
+
+                        pathIndex++;
+                    }
+
+                    db.SaveChanges();
                 }
 
                 result.Result = true;
@@ -435,6 +484,18 @@ namespace HekaEye.UseCase
             return data;
         }
 
+        public Recipe GetRecipe(int id)
+        {
+            Recipe data = null;
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.Recipe.FirstOrDefault(d => d.Id == id);
+            }
+
+            return data;
+        }
+
         public Product[] GetProductList()
         {
             Product[] data = new Product[0];
@@ -442,6 +503,18 @@ namespace HekaEye.UseCase
             using (EyeContext db = new EyeContext())
             {
                 data = db.Product.ToArray();
+            }
+
+            return data;
+        }
+
+        public Product GetProduct(int id)
+        {
+            Product data = new Product();
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.Product.FirstOrDefault(d => d.Id == id);
             }
 
             return data;
@@ -502,6 +575,10 @@ namespace HekaEye.UseCase
                         model.SobelDy = dbInspec.RegionProperties.SobelDy;
                         model.SobelKernel = dbInspec.RegionProperties.SobelKernel;
                         model.ApplySobel = dbInspec.RegionProperties.ApplySobel ?? false;
+                        model.BilateralD = dbInspec.RegionProperties.BilateralD;
+                        model.BilateralFilter = dbInspec.RegionProperties.BilateralFilter;
+                        model.BilateralSigmaColor = dbInspec.RegionProperties.BilateralSigmaColor;
+                        model.BilateralSigmaSpace = dbInspec.RegionProperties.BilateralSigmaSpace;
 
                         var pathList = db.RegionPath.Where(d => d.RegionId == regionId)
                             .OrderBy(d => d.PointOrder).ToList();
@@ -648,6 +725,7 @@ namespace HekaEye.UseCase
                         dbModel = new RecipeCamera
                         {
                             CameraName = model.CameraName,
+                            CameraAlias = model.CameraAlias,
                             IsActive = model.IsActive,
                             RecipeId = model.RecipeId,
                         };
@@ -657,6 +735,7 @@ namespace HekaEye.UseCase
                     dbModel.Exposure = model.Exposure;
                     dbModel.CameraName = model.CameraName;
                     dbModel.IsActive = model.IsActive;
+                    dbModel.CameraAlias = model.CameraAlias;
                     dbModel.RecipeId = model.RecipeId;
 
                     db.SaveChanges();
@@ -713,6 +792,116 @@ namespace HekaEye.UseCase
 
             return cam;
         }
+
+        #region PROCESS STEPS MANAGEMENT
+        public BusinessResult SaveStep(ProcessStep model)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbModel = db.ProcessStep.FirstOrDefault(d => d.Id == model.Id);
+                    if (dbModel == null)
+                    {
+                        dbModel = new ProcessStep
+                        {
+                            OrderNo = model.OrderNo,
+                            ProcessParams = model.ProcessParams,
+                            ProcessType = model.ProcessType,
+                            RegionId = model.RegionId,
+                        };
+                        db.ProcessStep.Add(dbModel);
+                    }
+
+                    dbModel.OrderNo = model.OrderNo;
+                    dbModel.ProcessParams = model.ProcessParams;
+                    dbModel.ProcessType = model.ProcessType;
+                    dbModel.RegionId = model.RegionId;
+
+                    db.SaveChanges();
+
+                    result.RecordId = dbModel.Id;
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public BusinessResult DeleteStep(int id)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbRecord = db.ProcessStep.FirstOrDefault(d => d.Id == id);
+                    if (dbRecord == null)
+                        throw new Exception("Silinecek iş adımı bulunamadı.");
+
+                    db.ProcessStep.Remove(dbRecord);
+                    db.SaveChanges();
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public ProcessStep GetStep(int id)
+        {
+            ProcessStep cam = new ProcessStep();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    cam = db.ProcessStep.FirstOrDefault(d => d.Id == id);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return cam;
+        }
+        public ProcessStep[] GetStepList(int regionId)
+        {
+            ProcessStep[] cam = new ProcessStep[0];
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    cam = db.ProcessStep.Where(d => d.RegionId == regionId)
+                        .OrderBy(d => d.OrderNo)
+                        .ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return cam;
+        }
+        #endregion
 
         public void Dispose()
         {

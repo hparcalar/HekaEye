@@ -29,13 +29,12 @@ namespace HekaEye
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmStudioLogin));
             this.txtLogin = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.lblLogin = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnLogin = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnLogin = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnCancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.SuspendLayout();
             // 
             // txtLogin
@@ -75,36 +74,21 @@ namespace HekaEye
             // 
             // btnLogin
             // 
-            this.btnLogin.BackColor = System.Drawing.Color.Transparent;
-            this.btnLogin.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLogin.BackgroundImage")));
-            this.btnLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLogin.FlatAppearance.BorderSize = 0;
-            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(12, 139);
+            this.btnLogin.Location = new System.Drawing.Point(12, 137);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(172, 41);
+            this.btnLogin.Size = new System.Drawing.Size(172, 39);
             this.btnLogin.TabIndex = 4;
-            this.btnLogin.Text = "GİRİŞ";
-            this.btnLogin.UseVisualStyleBackColor = false;
+            this.btnLogin.Values.Text = "GİRİŞ";
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
-            this.btnCancel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCancel.BackgroundImage")));
-            this.btnCancel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnCancel.ForeColor = System.Drawing.Color.Black;
-            this.btnCancel.Location = new System.Drawing.Point(12, 186);
+            this.btnCancel.Location = new System.Drawing.Point(12, 182);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(172, 41);
+            this.btnCancel.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
+            this.btnCancel.Size = new System.Drawing.Size(172, 39);
             this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "VAZGEÇ";
-            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Values.Text = "VAZGEÇ";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmStudioLogin
@@ -138,7 +122,7 @@ namespace HekaEye
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label lblLogin;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.Button btnCancel;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnLogin;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnCancel;
     }
 }

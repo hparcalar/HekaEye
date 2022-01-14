@@ -19,5 +19,7 @@ namespace HekaEye.StudioModels.ProcessTypes
         Canny=9,
         FindBiggestShape=10,
         MatchShapes=11,
+        ApproxShapes=12,
+        Validation=13,
     }
 }

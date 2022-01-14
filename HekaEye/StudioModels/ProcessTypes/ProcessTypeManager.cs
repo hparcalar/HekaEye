@@ -52,6 +52,10 @@ namespace HekaEye.StudioModels.ProcessTypes
                         return JsonConvert.DeserializeObject<ProcPrmFindBiggestShape>(prm);
                     case ProcessTypeList.MatchShapes:
                         return JsonConvert.DeserializeObject<ProcPrmFindBiggestShape>(prm);
+                    case ProcessTypeList.ApproxShapes:
+                        return JsonConvert.DeserializeObject<ProcPrmApproxShape>(prm);
+                    case ProcessTypeList.Validation:
+                        return JsonConvert.DeserializeObject<ProcPrmValidation>(prm);
                     default:
                         break;
                 }

@@ -66,6 +66,15 @@ namespace HekaEye.StudioModels
         [Category("Filtre")]
         public Nullable<int> SobelKernel { get; set; }
 
+        [Category("Filtre")]
+        public Nullable<bool> BilateralFilter { get; set; }
+        [Category("Filtre")]
+        public Nullable<int> BilateralD { get; set; }
+        [Category("Filtre")]
+        public Nullable<double> BilateralSigmaColor { get; set; }
+        [Category("Filtre")]
+        public Nullable<double> BilateralSigmaSpace { get; set; }
+
 
         [Category("Eşik")]
         public bool AdaptiveThr { get; set; } = false;

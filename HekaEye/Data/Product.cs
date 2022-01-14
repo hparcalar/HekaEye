@@ -17,7 +17,7 @@ namespace HekaEye.Data
         public int RecipeId { get; set; }
 
         [ForeignKey("CombinedProduct")]
-        public int CombinedProductId { get; set; }
+        public int? CombinedProductId { get; set; }
         public virtual Product CombinedProduct { get; set; }
         public Nullable<bool> IsActive { get; set; }
 

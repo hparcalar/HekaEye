@@ -37,6 +37,10 @@ namespace HekaEye.Data
         public Nullable<int> SobelDx { get; set; }
         public Nullable<int> SobelDy { get; set; }
         public Nullable<int> SobelKernel { get; set; }
+        public Nullable<bool> BilateralFilter { get; set; }
+        public Nullable<int> BilateralD { get; set; }
+        public Nullable<double> BilateralSigmaColor { get; set; }
+        public Nullable<double> BilateralSigmaSpace { get; set; }
 
     }
 }

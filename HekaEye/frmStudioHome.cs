@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HekaEye.SkyStudio;
 
 namespace HekaEye
 {
@@ -23,8 +24,10 @@ namespace HekaEye
             frm.ShowDialog(this);
             if (frm.LoggedIn)
             {
-                frmHekaStudio frmStd = new frmHekaStudio();
+                frmSkyEditor frmStd = new frmSkyEditor();
                 frmStd.ShowDialog(this);
+                //frmHekaStudio frmStd = new frmHekaStudio();
+                //frmStd.ShowDialog(this);
             }
         }
 

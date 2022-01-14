@@ -8,5 +8,6 @@ namespace HekaEye.StudioModels.ProcessTypes.Params
 {
     public class ProcPrmFindBiggestShape
     {
+        public int BiggestIndex { get; set; }
     }
 }
