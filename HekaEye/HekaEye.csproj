@@ -223,6 +223,14 @@
     <Compile Include="Migrations\202201132342545_CameraAlias.designer.cs">
       <DependentUpon>202201132342545_CameraAlias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201141056174_RegionSharpenProp.cs" />
+    <Compile Include="Migrations\202201141056174_RegionSharpenProp.designer.cs">
+      <DependentUpon>202201141056174_RegionSharpenProp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201161750552_CannyThresholds.cs" />
+    <Compile Include="Migrations\202201161750552_CannyThresholds.designer.cs">
+      <DependentUpon>202201161750552_CannyThresholds.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BusinessResult.cs" />
     <Compile Include="Models\CameraModel.cs" />
@@ -395,6 +403,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201132342545_CameraAlias.resx">
       <DependentUpon>202201132342545_CameraAlias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201141056174_RegionSharpenProp.resx">
+      <DependentUpon>202201141056174_RegionSharpenProp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201161750552_CannyThresholds.resx">
+      <DependentUpon>202201161750552_CannyThresholds.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

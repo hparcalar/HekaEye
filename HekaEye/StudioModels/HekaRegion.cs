@@ -40,6 +40,10 @@ namespace HekaEye.StudioModels
         public bool ApplyCanny { get; set; } = false;
         [Category("Filtre")]
         public double CannyEpsilon { get; set; } = 0.01;
+        [Category("Filtre")]
+        public double CannyThreshold1 { get; set; } = 100;
+        [Category("Filtre")]
+        public double CannyThreshold2 { get; set; } = 255;
 
         [Category("Filtre")]
         public double MinShapeArea { get; set; } = 0.6;
@@ -74,6 +78,9 @@ namespace HekaEye.StudioModels
         public Nullable<double> BilateralSigmaColor { get; set; }
         [Category("Filtre")]
         public Nullable<double> BilateralSigmaSpace { get; set; }
+
+        [Category("Filtre")]
+        public Nullable<bool> Sharpen { get; set; }
 
 
         [Category("Eşik")]

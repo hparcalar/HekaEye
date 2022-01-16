@@ -36,8 +36,6 @@ namespace HekaEye
             this.label5 = new System.Windows.Forms.Label();
             this.txtShiftStart = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnShiftDelete = new System.Windows.Forms.Button();
-            this.btnShiftSave = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.chkShiftActive = new System.Windows.Forms.CheckBox();
             this.txtShiftName = new System.Windows.Forms.TextBox();
@@ -46,17 +44,19 @@ namespace HekaEye
             this.tpTest = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnTestDelete = new System.Windows.Forms.Button();
-            this.btnTestSave = new System.Windows.Forms.Button();
             this.chkTestActive = new System.Windows.Forms.CheckBox();
             this.txtTestName = new System.Windows.Forms.TextBox();
             this.txtTestCode = new System.Windows.Forms.TextBox();
             this.lstTests = new System.Windows.Forms.ListBox();
             this.tPageFaultProducts = new System.Windows.Forms.TabPage();
             this.tPageReport = new System.Windows.Forms.TabPage();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.btnNewShift = new System.Windows.Forms.Button();
-            this.btnNewExternalTest = new System.Windows.Forms.Button();
+            this.btnClose = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnNewShift = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnShiftSave = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnShiftDelete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnTestDelete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnTestSave = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnNewExternalTest = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.tabDef.SuspendLayout();
             this.tpShift.SuspendLayout();
             this.tpTest.SuspendLayout();
@@ -81,13 +81,13 @@ namespace HekaEye
             // 
             // tpShift
             // 
+            this.tpShift.Controls.Add(this.btnShiftDelete);
+            this.tpShift.Controls.Add(this.btnShiftSave);
             this.tpShift.Controls.Add(this.btnNewShift);
             this.tpShift.Controls.Add(this.txtShiftEnd);
             this.tpShift.Controls.Add(this.label5);
             this.tpShift.Controls.Add(this.txtShiftStart);
             this.tpShift.Controls.Add(this.label2);
-            this.tpShift.Controls.Add(this.btnShiftDelete);
-            this.tpShift.Controls.Add(this.btnShiftSave);
             this.tpShift.Controls.Add(this.label1);
             this.tpShift.Controls.Add(this.chkShiftActive);
             this.tpShift.Controls.Add(this.txtShiftName);
@@ -134,42 +134,6 @@ namespace HekaEye
             this.label2.TabIndex = 8;
             this.label2.Text = "Vardiya Adı";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnShiftDelete
-            // 
-            this.btnShiftDelete.BackColor = System.Drawing.Color.Transparent;
-            this.btnShiftDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftDelete.BackgroundImage")));
-            this.btnShiftDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnShiftDelete.FlatAppearance.BorderSize = 0;
-            this.btnShiftDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnShiftDelete.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftDelete.Location = new System.Drawing.Point(584, 227);
-            this.btnShiftDelete.Name = "btnShiftDelete";
-            this.btnShiftDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnShiftDelete.Size = new System.Drawing.Size(139, 65);
-            this.btnShiftDelete.TabIndex = 7;
-            this.btnShiftDelete.Text = "SİL";
-            this.btnShiftDelete.UseVisualStyleBackColor = false;
-            this.btnShiftDelete.Click += new System.EventHandler(this.btnShiftDelete_Click);
-            // 
-            // btnShiftSave
-            // 
-            this.btnShiftSave.BackColor = System.Drawing.Color.Transparent;
-            this.btnShiftSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnShiftSave.BackgroundImage")));
-            this.btnShiftSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnShiftSave.FlatAppearance.BorderSize = 0;
-            this.btnShiftSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShiftSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnShiftSave.ForeColor = System.Drawing.Color.Black;
-            this.btnShiftSave.Location = new System.Drawing.Point(438, 227);
-            this.btnShiftSave.Name = "btnShiftSave";
-            this.btnShiftSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnShiftSave.Size = new System.Drawing.Size(140, 65);
-            this.btnShiftSave.TabIndex = 6;
-            this.btnShiftSave.Text = "KAYDET";
-            this.btnShiftSave.UseVisualStyleBackColor = false;
-            this.btnShiftSave.Click += new System.EventHandler(this.btnShiftSave_Click);
             // 
             // label1
             // 
@@ -221,11 +185,11 @@ namespace HekaEye
             // 
             // tpTest
             // 
+            this.tpTest.Controls.Add(this.btnTestDelete);
+            this.tpTest.Controls.Add(this.btnTestSave);
             this.tpTest.Controls.Add(this.btnNewExternalTest);
             this.tpTest.Controls.Add(this.label4);
             this.tpTest.Controls.Add(this.label3);
-            this.tpTest.Controls.Add(this.btnTestDelete);
-            this.tpTest.Controls.Add(this.btnTestSave);
             this.tpTest.Controls.Add(this.chkTestActive);
             this.tpTest.Controls.Add(this.txtTestName);
             this.tpTest.Controls.Add(this.txtTestCode);
@@ -257,42 +221,6 @@ namespace HekaEye
             this.label3.TabIndex = 15;
             this.label3.Text = "Test Kodu";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // btnTestDelete
-            // 
-            this.btnTestDelete.BackColor = System.Drawing.Color.Transparent;
-            this.btnTestDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTestDelete.BackgroundImage")));
-            this.btnTestDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTestDelete.FlatAppearance.BorderSize = 0;
-            this.btnTestDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTestDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnTestDelete.ForeColor = System.Drawing.Color.Black;
-            this.btnTestDelete.Location = new System.Drawing.Point(584, 155);
-            this.btnTestDelete.Name = "btnTestDelete";
-            this.btnTestDelete.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnTestDelete.Size = new System.Drawing.Size(136, 65);
-            this.btnTestDelete.TabIndex = 14;
-            this.btnTestDelete.Text = "SİL";
-            this.btnTestDelete.UseVisualStyleBackColor = false;
-            this.btnTestDelete.Click += new System.EventHandler(this.btnTestDelete_Click);
-            // 
-            // btnTestSave
-            // 
-            this.btnTestSave.BackColor = System.Drawing.Color.Transparent;
-            this.btnTestSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTestSave.BackgroundImage")));
-            this.btnTestSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTestSave.FlatAppearance.BorderSize = 0;
-            this.btnTestSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTestSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnTestSave.ForeColor = System.Drawing.Color.Black;
-            this.btnTestSave.Location = new System.Drawing.Point(438, 155);
-            this.btnTestSave.Name = "btnTestSave";
-            this.btnTestSave.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnTestSave.Size = new System.Drawing.Size(140, 65);
-            this.btnTestSave.TabIndex = 13;
-            this.btnTestSave.Text = "KAYDET";
-            this.btnTestSave.UseVisualStyleBackColor = false;
-            this.btnTestSave.Click += new System.EventHandler(this.btnTestSave_Click);
             // 
             // chkTestActive
             // 
@@ -353,53 +281,124 @@ namespace HekaEye
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
-            this.btnClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnClose.FlatAppearance.BorderSize = 0;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnClose.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnClose.Location = new System.Drawing.Point(1074, 481);
+            this.btnClose.Location = new System.Drawing.Point(1068, 481);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(165, 92);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "KAPAT";
-            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnClose.Size = new System.Drawing.Size(171, 92);
+            this.btnClose.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnClose.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnClose.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnClose.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnClose.TabIndex = 5;
+            this.btnClose.Values.Text = "KAPAT";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnNewShift
             // 
-            this.btnNewShift.BackColor = System.Drawing.Color.Transparent;
-            this.btnNewShift.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNewShift.BackgroundImage")));
-            this.btnNewShift.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnNewShift.FlatAppearance.BorderSize = 0;
-            this.btnNewShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNewShift.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnNewShift.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnNewShift.Location = new System.Drawing.Point(302, 227);
+            this.btnNewShift.Location = new System.Drawing.Point(299, 227);
             this.btnNewShift.Name = "btnNewShift";
-            this.btnNewShift.Size = new System.Drawing.Size(130, 65);
-            this.btnNewShift.TabIndex = 12;
-            this.btnNewShift.Text = "YENİ";
-            this.btnNewShift.UseVisualStyleBackColor = false;
+            this.btnNewShift.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnNewShift.Size = new System.Drawing.Size(133, 65);
+            this.btnNewShift.StateCommon.Back.Color1 = System.Drawing.Color.Lime;
+            this.btnNewShift.StateCommon.Back.Color2 = System.Drawing.Color.DarkGreen;
+            this.btnNewShift.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnNewShift.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnNewShift.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnNewShift.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnNewShift.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnNewShift.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnNewShift.TabIndex = 13;
+            this.btnNewShift.Values.Text = "YENİ";
             this.btnNewShift.Click += new System.EventHandler(this.btnNewShift_Click);
+            // 
+            // btnShiftSave
+            // 
+            this.btnShiftSave.Location = new System.Drawing.Point(438, 227);
+            this.btnShiftSave.Name = "btnShiftSave";
+            this.btnShiftSave.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnShiftSave.Size = new System.Drawing.Size(133, 65);
+            this.btnShiftSave.StateCommon.Back.Color1 = System.Drawing.Color.DeepSkyBlue;
+            this.btnShiftSave.StateCommon.Back.Color2 = System.Drawing.Color.SteelBlue;
+            this.btnShiftSave.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnShiftSave.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnShiftSave.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnShiftSave.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnShiftSave.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShiftSave.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnShiftSave.TabIndex = 14;
+            this.btnShiftSave.Values.Text = "KAYDET";
+            this.btnShiftSave.Click += new System.EventHandler(this.btnShiftSave_Click);
+            // 
+            // btnShiftDelete
+            // 
+            this.btnShiftDelete.Location = new System.Drawing.Point(577, 227);
+            this.btnShiftDelete.Name = "btnShiftDelete";
+            this.btnShiftDelete.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnShiftDelete.Size = new System.Drawing.Size(133, 65);
+            this.btnShiftDelete.StateCommon.Back.Color1 = System.Drawing.Color.Salmon;
+            this.btnShiftDelete.StateCommon.Back.Color2 = System.Drawing.Color.Red;
+            this.btnShiftDelete.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnShiftDelete.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnShiftDelete.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnShiftDelete.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnShiftDelete.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnShiftDelete.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnShiftDelete.TabIndex = 15;
+            this.btnShiftDelete.Values.Text = "SİL";
+            this.btnShiftDelete.Click += new System.EventHandler(this.btnShiftDelete_Click);
+            // 
+            // btnTestDelete
+            // 
+            this.btnTestDelete.Location = new System.Drawing.Point(580, 138);
+            this.btnTestDelete.Name = "btnTestDelete";
+            this.btnTestDelete.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnTestDelete.Size = new System.Drawing.Size(133, 65);
+            this.btnTestDelete.StateCommon.Back.Color1 = System.Drawing.Color.Salmon;
+            this.btnTestDelete.StateCommon.Back.Color2 = System.Drawing.Color.Red;
+            this.btnTestDelete.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnTestDelete.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnTestDelete.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnTestDelete.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnTestDelete.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnTestDelete.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnTestDelete.TabIndex = 20;
+            this.btnTestDelete.Values.Text = "SİL";
+            this.btnTestDelete.Click += new System.EventHandler(this.btnTestDelete_Click);
+            // 
+            // btnTestSave
+            // 
+            this.btnTestSave.Location = new System.Drawing.Point(441, 138);
+            this.btnTestSave.Name = "btnTestSave";
+            this.btnTestSave.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnTestSave.Size = new System.Drawing.Size(133, 65);
+            this.btnTestSave.StateCommon.Back.Color1 = System.Drawing.Color.DeepSkyBlue;
+            this.btnTestSave.StateCommon.Back.Color2 = System.Drawing.Color.SteelBlue;
+            this.btnTestSave.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnTestSave.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnTestSave.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnTestSave.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnTestSave.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnTestSave.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnTestSave.TabIndex = 19;
+            this.btnTestSave.Values.Text = "KAYDET";
+            this.btnTestSave.Click += new System.EventHandler(this.btnTestSave_Click);
             // 
             // btnNewExternalTest
             // 
-            this.btnNewExternalTest.BackColor = System.Drawing.Color.Transparent;
-            this.btnNewExternalTest.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNewExternalTest.BackgroundImage")));
-            this.btnNewExternalTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnNewExternalTest.FlatAppearance.BorderSize = 0;
-            this.btnNewExternalTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNewExternalTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnNewExternalTest.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnNewExternalTest.Location = new System.Drawing.Point(302, 155);
+            this.btnNewExternalTest.Location = new System.Drawing.Point(302, 138);
             this.btnNewExternalTest.Name = "btnNewExternalTest";
-            this.btnNewExternalTest.Size = new System.Drawing.Size(130, 65);
-            this.btnNewExternalTest.TabIndex = 17;
-            this.btnNewExternalTest.Text = "YENİ";
-            this.btnNewExternalTest.UseVisualStyleBackColor = false;
+            this.btnNewExternalTest.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnNewExternalTest.Size = new System.Drawing.Size(133, 65);
+            this.btnNewExternalTest.StateCommon.Back.Color1 = System.Drawing.Color.Lime;
+            this.btnNewExternalTest.StateCommon.Back.Color2 = System.Drawing.Color.DarkGreen;
+            this.btnNewExternalTest.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnNewExternalTest.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnNewExternalTest.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnNewExternalTest.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnNewExternalTest.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnNewExternalTest.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnNewExternalTest.TabIndex = 18;
+            this.btnNewExternalTest.Values.Text = "YENİ";
             this.btnNewExternalTest.Click += new System.EventHandler(this.btnNewExternalTest_Click);
             // 
             // frmDefinitions
@@ -432,7 +431,6 @@ namespace HekaEye
         private System.Windows.Forms.TabControl tabDef;
         private System.Windows.Forms.TabPage tpShift;
         private System.Windows.Forms.TabPage tpTest;
-        private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.TabPage tPageFaultProducts;
         private System.Windows.Forms.TabPage tPageReport;
         private System.Windows.Forms.ListBox lstShifts;
@@ -440,21 +438,22 @@ namespace HekaEye
         private System.Windows.Forms.CheckBox chkShiftActive;
         private System.Windows.Forms.TextBox txtShiftName;
         private System.Windows.Forms.TextBox txtShiftCode;
-        private System.Windows.Forms.Button btnShiftSave;
-        private System.Windows.Forms.Button btnTestSave;
         private System.Windows.Forms.CheckBox chkTestActive;
         private System.Windows.Forms.TextBox txtTestName;
         private System.Windows.Forms.TextBox txtTestCode;
         private System.Windows.Forms.ListBox lstTests;
-        private System.Windows.Forms.Button btnShiftDelete;
-        private System.Windows.Forms.Button btnTestDelete;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtShiftEnd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtShiftStart;
-        private System.Windows.Forms.Button btnNewShift;
-        private System.Windows.Forms.Button btnNewExternalTest;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnClose;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnNewShift;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnShiftSave;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnShiftDelete;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnTestDelete;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnTestSave;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnNewExternalTest;
     }
 }

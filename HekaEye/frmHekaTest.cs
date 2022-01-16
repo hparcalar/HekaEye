@@ -1,4 +1,5 @@
-﻿using Emgu.CV;
+﻿using ComponentFactory.Krypton.Toolkit;
+using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using HekaEye.Data;
@@ -8,6 +9,7 @@ using HekaEye.StudioModels;
 using HekaEye.UseCase;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -23,9 +25,6 @@ namespace HekaEye
         DeviceHelper _deviceHelper = new DeviceHelper();
         CameraModel[] _cameraList = new CameraModel[0];
 
-        VideoCapture _activeCapture = null;
-        Task _tCapture = null;
-
         int _printSerialNo = 1;
         int _okCount = 0;
         int _nokCount = 0;
@@ -37,12 +36,17 @@ namespace HekaEye
         bool _testRunning = false;
         bool _testIsOk = false;
 
+        // COMBINED SWITCH FLAGS
+        string mainModelNo = "";
+        bool returnToMainModel = false;
+
         List<Point> _selectionPath = new List<Point>();
 
         MCvScalar _regionSelectionColor = new MCvScalar(255, 0, 0);
         MCvScalar _lineSelectionColor = new MCvScalar(155, 155, 0);
 
-        List<HekaRegion> _regionList = new List<HekaRegion>();
+        List<HekaCaptureModel> _captureList = new List<HekaCaptureModel>();
+        List<ExternalTest> _externalTests = new List<ExternalTest>();
 
         public frmHekaTest()
         {
@@ -52,15 +56,13 @@ namespace HekaEye
         private void frmHekaStudio_Load(object sender, EventArgs e)
         {
             _cameraList = _deviceHelper.GetCameras();
-
-            cmbCamera.DataSource = _cameraList;
-            cmbCamera.SelectedIndex = -1;
             _cameraSelection = true;
 
             lblErrCount.Text = "0";
             lblOkCount.Text = "0";
 
             UpdateModelList();
+            UpdateExternalTests();
         }
 
         Recipe _selectedRecipe = null;
@@ -74,24 +76,25 @@ namespace HekaEye
             {
                 _selectedRecipe = value;
 
-                if (_selectedRecipe != null)
-                {
-                    if (!string.IsNullOrEmpty(_selectedRecipe.CameraName))
-                        cmbCamera.Text = _selectedRecipe.CameraName;
+                //if (_selectedRecipe != null)
+                //{
+                //    if (!string.IsNullOrEmpty(_selectedRecipe.CameraName))
+                //        cmbCamera.Text = _selectedRecipe.CameraName;
 
-                    if (_selectedRecipe.Exposure != null)
-                    {
-                        if (_activeCapture != null)
-                        {
-                            _activeCapture.Set(Emgu.CV.CvEnum.CapProp.Exposure, _selectedRecipe.Exposure.Value);
-                        }
-                    }
-                }
+                //    if (_selectedRecipe.Exposure != null)
+                //    {
+                //        if (_activeCapture != null)
+                //        {
+                //            _activeCapture.Set(Emgu.CV.CvEnum.CapProp.Exposure, _selectedRecipe.Exposure.Value);
+                //        }
+                //    }
+                //}
 
                 UpdateRegionList();
             }
         }
 
+        Product _combinedModel = null;
         Product _selectedModel = null;
         public Product SelectedModel 
         {
@@ -111,7 +114,120 @@ namespace HekaEye
                 }
                 else
                     SelectedRecipe = null;
+
+                UpdateCameraList();
             }
+        }
+
+        private void UpdateExternalTests()
+        {
+            using (EyeBO bObj = new EyeBO())
+            {
+                _externalTests = bObj.GetExternalTests().ToList();
+            }
+
+            flPanelExternalTests.Controls.Clear();
+            foreach (var item in _externalTests)
+            {
+                KryptonCheckBox chkTest = new KryptonCheckBox();
+                chkTest.Checked = false;
+                chkTest.Text = item.TestName;
+                chkTest.PaletteMode = PaletteMode.ProfessionalSystem;
+                chkTest.StateCommon.ShortText.Font = new Font("Tahoma", 14, FontStyle.Bold);
+                flPanelExternalTests.Controls.Add(chkTest);
+            }
+        }
+        bool _updatingCameras = false;
+        private void UpdateCameraList()
+        {
+            if (_updatingCameras)
+                return;
+
+            _updatingCameras = true;
+
+            //flPanelCams.Controls.Clear();
+            //_captureList.Clear();
+
+            if (SelectedRecipe != null)
+            {
+                using (EyeBO bObj = new EyeBO())
+                {
+                    var modelList = bObj.GetCameraList(SelectedRecipe.Id);
+
+                    if (modelList.Length == 0)
+                        _updatingCameras = false;
+
+                    foreach (var item in modelList)
+                    {
+                        // ADD IMAGEBOX TO FRAME CONTAINER
+                        if (!_captureList.Any(d => d.CameraName == item.CameraName))
+                        {
+                            Emgu.CV.UI.ImageBox cvBox = new Emgu.CV.UI.ImageBox();
+                            cvBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
+                            cvBox.SizeMode = PictureBoxSizeMode.Zoom;
+                            cvBox.Size = new Size(flPanelCams.Width / 2 - 50, flPanelCams.Height - 5);
+                            cvBox.BorderStyle = BorderStyle.FixedSingle;
+                            flPanelCams.Controls.Add(cvBox);
+
+                            var captureModel = new HekaCaptureModel
+                            {
+                                CameraName = item.CameraName,
+                                CaptureRunning = true,
+                                ImageBox = cvBox,
+                                Exposure = item.Exposure,
+                                SelectionRunning = false,
+                                SelectionStepRunning = false,
+                                RegionList = bObj.GetRegionList(SelectedRecipe.Id, item.Id)
+                                .Select(d => new HekaRegion
+                                {
+                                    Id = d.Id,
+                                }).ToList(),
+                                SelectionType = 0,
+                            };
+
+                            _captureList.Add(captureModel);
+
+                            List<HekaRegion> detailedRegions = new List<HekaRegion>();
+                            foreach (var region in captureModel.RegionList)
+                            {
+                                var dbRegion = bObj.GetRegion(region.Id);
+                                if (dbRegion != null)
+                                {
+                                    detailedRegions.Add(dbRegion);
+                                }
+                            }
+
+                            captureModel.RegionList = detailedRegions;
+                        }
+                        else
+                        {
+                            var captureModel = _captureList.FirstOrDefault(d => d.CameraName == item.CameraName);
+                            if (captureModel != null)
+                            {
+                                List<HekaRegion> detailedRegions = new List<HekaRegion>();
+                                foreach (var region in captureModel.RegionList)
+                                {
+                                    var dbRegion = bObj.GetRegion(region.Id);
+                                    if (dbRegion != null)
+                                    {
+                                        detailedRegions.Add(dbRegion);
+                                    }
+                                }
+
+                                captureModel.RegionList = detailedRegions;
+                            }
+                        }
+                    }
+
+                    if (_captureList.Any(d => d.Capture == null))
+                    {
+                        StopCapture();
+                        StartCapture();
+                    }
+                }
+            }
+            else
+                _updatingCameras = false;
         }
         private void UpdateRegionList()
         {
@@ -145,7 +261,7 @@ namespace HekaEye
         {
             using (EyeBO bObj = new EyeBO())
             {
-                var modelList = bObj.GetProductList().ToArray();
+                var modelList = bObj.GetMainProductList().ToArray();
                 cmbModels.Items.AddRange(modelList);
 
                 SelectedModel = null;
@@ -154,205 +270,151 @@ namespace HekaEye
 
         private void StopCapture()
         {
-            _captureRunning = false;
-
-            try
+            foreach (var capture in _captureList)
             {
-                if (_tCapture != null)
-                    _tCapture.Dispose();
-            }
-            catch (Exception)
-            {
+                try
+                {
+                    capture.CaptureRunning = false;
 
-            }
+                    if (capture.Capture != null)
+                        capture.Capture.Stop();
 
-            if (_activeCapture != null)
-            {
-                _activeCapture.Stop();
-                _activeCapture.Dispose();
+                    if (capture.CaptureTask != null)
+                        capture.CaptureTask.Dispose();
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
         private void StartCapture()
         {
-            if (cmbCamera.SelectedIndex < 0)
-                return;
+            //lblStatus.Visible = true;
 
-            lblStatus.Visible = true;
-
-            try
-            {
-                CameraModel selectedCamera = _cameraList[cmbCamera.SelectedIndex];
-
-                StopCapture();
-
-                _activeCapture = new VideoCapture(selectedCamera.DeviceIndex);
-
-                _captureRunning = true;
-                _tCapture = Task.Run(LoopCapture);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        private async Task LoopCapture()
-        {
-            while (_captureRunning)
+            foreach (var capture in _captureList)
             {
                 try
                 {
-                    var frame = _activeCapture.QueryFrame();
-                    var cloneFrame = frame.Clone();
-
-                    var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                    var hsv = new Mat(frame.Rows, frame.Cols, frame.Depth, 1);
-                    CvInvoke.CvtColor(cloneFrame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
-                    CvInvoke.CvtColor(cloneFrame, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
-
-                    this.BeginInvoke((Action)delegate
+                    CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath, capture.CameraName));
+                    if (capCam != null)
                     {
-                        lblStatus.Visible = false;
-                    });
+                        capture.Capture = new VideoCapture(capCam.DeviceIndex);
+                        //capture.Exposure = Convert.ToInt32(capture.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
+                        capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Exposure, capture.Exposure ?? 0);
+                        capture.CaptureRunning = true;
+                        capture.CaptureTask = Task.Run(() => LoopCapture(capture.CameraName));
+                    }
+                }
+                catch (Exception)
+                {
 
-                    if (_testRunning)
+                }
+            }
+
+            _updatingCameras = false;
+        }
+
+        private async Task LoopCapture(string cameraName)
+        {
+            while (true)
+            {
+                var data = _captureList.FirstOrDefault(d => d.CameraName == cameraName);
+                if (data != null && data.CaptureRunning && data.Capture != null)
+                {
+                    try
                     {
-                        #region DRAW & CHECK SAVED REGIONS
-                        bool isOk = true;
+                        var frame = data.Capture.QueryFrame();
+                        var cloneFrame = frame.Clone();
 
-                        foreach (var region in _regionList)
+                        var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+                        CvInvoke.CvtColor(cloneFrame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+
+                        //this.BeginInvoke((Action)delegate
+                        //{
+                        //    lblStatus.Visible = false;
+                        //});
+
+                        if (_testRunning)
                         {
-                            Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
+                            #region DRAW & CHECK SAVED REGIONS
+                            bool isOk = true;
 
-                            var pLeft = Convert.ToInt32((imgBox.Width - frame.Width) / 2.0) - imgBox.Location.X - 165;
-                            var pTop = Convert.ToInt32((imgBox.Height - frame.Height) / 2.0) - imgBox.Location.Y - 75;
-
-                            // CROP SELECTED ROI
-                            if (region.RegionType == 1)
+                            foreach (var region in data.RegionList)
                             {
-                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
+                                Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
-                                List<Point> translatedPoints = new List<Point>();
-                                for (int i = 0; i < region.Path.Length; i++)
+                                var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
+                                var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
+
+                                // CROP SELECTED ROI
+                                if (region.RegionType == 1)
                                 {
-                                    var rPoint = region.Path[i];
-                                    if (region.OffsetX != 0)
-                                        rPoint.X += region.OffsetX;
-                                    if (region.OffsetY != 0)
-                                        rPoint.Y += region.OffsetY;
+                                    Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
-                                }
-
-                                VectorOfVectorOfPoint contour
-                                                   = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
-                                CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
-                                CvInvoke.BitwiseAnd(region.ConvertToHsv ? hsv : gray, maskZeros, maskedRegion);
-
-                                CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
-                            }
-                            else if (region.RegionType == 2)
-                            {
-                                Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
-
-                                List<Point> translatedPoints = new List<Point>();
-
-                                // DRAW A SHAPE THAT CONTAINS ALL POINTS WITH HEIGHT 2 PX TOTAL
-                                for (int i = 0; i < region.Path.Length; i++)
-                                {
-                                    var rPoint = region.Path[i];
-                                    if (region.OffsetX != 0)
-                                        rPoint.X += region.OffsetX;
-                                    if (region.OffsetY != 0)
-                                        rPoint.Y += region.OffsetY;
-
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
-                                }
-
-                                for (int i = region.Path.Length - 1; i >= 0; i--)
-                                {
-                                    var rPoint = region.Path[i];
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
-                                }
-
-                                VectorOfVectorOfPoint contour
-                                                   = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
-                                CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
-                                CvInvoke.BitwiseAnd(region.ConvertToHsv ? hsv : gray, maskZeros, maskedRegion);
-
-                                CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
-                            }
-
-                            // FILTER & THRESHOLDING OPERATIONS
-                            if (region.EqualizeHist)
-                            {
-                                CvInvoke.EqualizeHist(maskedRegion, maskedRegion);
-                            }
-                            if (region.Laplacian)
-                            {
-                                CvInvoke.Laplacian(maskedRegion, maskedRegion, region.ConvertToHsv ?
-                                    hsv.Depth : Emgu.CV.CvEnum.DepthType.Cv8U, region.LaplaceSize);
-                            }
-                            if (region.ConvertToGray &&
-                                    region.ManualThr)
-                            {
-                                CvInvoke.InRange(maskedRegion, new ScalarArray(new MCvScalar(region.ManuelStart)),
-                                     new ScalarArray(new MCvScalar(region.ManuelEnd)), maskedRegion);
-                            }
-                            if (region.ConvertToHsv && region.ManualThr)
-                            {
-                                var tmpMaskForHsv = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-
-                                CvInvoke.InRange(maskedRegion, new ScalarArray(new MCvScalar(region.HStart, region.SStart, region.VStart)),
-                                    new ScalarArray(new MCvScalar(region.HEnd, region.SEnd, region.VEnd)), maskedRegion);
-
-                                maskedRegion = tmpMaskForHsv;
-                            }
-                            if (region.AdaptiveThr && region.ConvertToGray)
-                            {
-                                CvInvoke.AdaptiveThreshold(maskedRegion, maskedRegion, 255, Emgu.CV.CvEnum.AdaptiveThresholdType.MeanC,
-                                    Emgu.CV.CvEnum.ThresholdType.BinaryInv, region.AdaptiveSize, region.AdaptiveParam);
-
-                                try
-                                {
-                                    List<Point> translatedPoints = new List<Point>();
-
-                                    if (region.RegionType == 1)
+                                    List<Point> translatedPointsI = new List<Point>();
+                                    for (int i = 0; i < region.Path.Length; i++)
                                     {
-                                        foreach (var rPoint in region.Path)
-                                        {
-                                            translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
-                                        }
-                                    }
-                                    else if (region.RegionType == 2)
-                                    {
-                                        foreach (var rPoint in region.Path)
-                                        {
-                                            translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
-                                        }
-                                        foreach (var rPoint in region.Path)
-                                        {
-                                            translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
-                                        }
+                                        var rPoint = region.Path[i];
+                                        if (region.OffsetX != 0)
+                                            rPoint.X += region.OffsetX;
+                                        if (region.OffsetY != 0)
+                                            rPoint.Y += region.OffsetY;
+
+                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
                                     }
 
                                     VectorOfVectorOfPoint contour
-                                                   = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
+                                                       = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPointsI.ToArray()));
+                                    CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
+                                    CvInvoke.BitwiseAnd(gray, maskZeros, maskedRegion);
 
-                                    CvInvoke.DrawContours(maskedRegion, contour, -1, new MCvScalar(0), region.AdaptiveBorder);
+                                    CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
+
+                                    maskZeros.Dispose();
+                                    translatedPointsI.Clear();
                                 }
-                                catch (Exception)
+                                else if (region.RegionType == 2)
                                 {
+                                    Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
+                                    List<Point> translatedPointsI = new List<Point>();
+
+                                    // DRAW A SHAPE THAT CONTAINS ALL POINTS WITH HEIGHT 2 PX TOTAL
+                                    for (int i = 0; i < region.Path.Length; i++)
+                                    {
+                                        var rPoint = region.Path[i];
+                                        if (region.OffsetX != 0)
+                                            rPoint.X += region.OffsetX;
+                                        if (region.OffsetY != 0)
+                                            rPoint.Y += region.OffsetY;
+
+                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                    }
+
+                                    for (int i = region.Path.Length - 1; i >= 0; i--)
+                                    {
+                                        var rPoint = region.Path[i];
+                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                    }
+
+                                    VectorOfVectorOfPoint contour
+                                                       = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPointsI.ToArray()));
+                                    CvInvoke.DrawContours(maskZeros, contour, 0, new MCvScalar(255), -1);
+                                    CvInvoke.BitwiseAnd(gray, maskZeros, maskedRegion);
+
+                                    CvInvoke.DrawContours(frame, contour, -1, new MCvScalar(255, 0, 0), 1);
+
+                                    //this.BeginInvoke((Action)delegate
+                                    //{
+                                    //    imgRegion.Image = maskedRegion;
+                                    //});
+
+                                    maskZeros.Dispose();
+                                    contour.Dispose();
+                                    translatedPointsI.Clear();
                                 }
-                            }
 
-                            // DECISION MAKING OK / NOK
-                            if (region.NokThreshold > -1)
-                            {
                                 List<Point> translatedPoints = new List<Point>();
 
                                 if (region.RegionType == 1)
@@ -374,94 +436,287 @@ namespace HekaEye
                                     }
                                 }
 
-                                if (translatedPoints.Count() > 0)
+                                // FILTER & THRESHOLDING OPERATIONS
+                                if (region != null && region.ApplyCanny)
                                 {
-                                    VectorOfVectorOfPoint contour
-                                                   = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
+                                    var tmpMaskedRegion = maskedRegion.Clone();
+                                    var cannyRegion = maskedRegion.Clone();
+                                    //CvInvoke.AddWeighted(cannyRegion, 100, cannyRegion, 0, 0, cannyRegion);
+                                    //CvInvoke.ConvertScaleAbs(cannyRegion, cannyRegion, 1, 0);
+                                    //CvInvoke.EqualizeHist(maskedRegion, maskedRegion);
+                                    //CvInvoke.BilateralFilter(cannyRegion, tmpMaskedRegion, -1,
+                                    //        14, 14);
+                                    //CvInvoke.AdaptiveThreshold(tmpMaskedRegion, tmpMaskedRegion, 255,
+                                    //    Emgu.CV.CvEnum.AdaptiveThresholdType.MeanC,
+                                    //    Emgu.CV.CvEnum.ThresholdType.BinaryInv, 3, 5);
+                                    //CvInvoke.ConvertScaleAbs(maskedRegion, maskedRegion, 1, 0);
+                                    //CvInvoke.AddWeighted(maskedRegion, 1.5, maskedRegion, 0, 0, maskedRegion);
+                                    //CvInvoke.InRange(maskedRegion,
+                                    //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(1)),
+                                    //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(140)),
+                                    //    cannyRegion);
 
-                                    var regionArea = CvInvoke.ContourArea(contour[0]);
-                                    var faultArea = CvInvoke.CountNonZero(maskedRegion);
-                                    contour.Dispose();
+                                    //if (SelectedRegion != null && SelectedRegion.Id == region.Id)
+                                    //{
+                                    //    this.BeginInvoke((Action)delegate
+                                    //    {
+                                    //        imgMask.Image = tmpMaskedRegion.Clone();
+                                    //    });
+                                    //}
 
-                                    if (faultArea / regionArea * 100 > region.NokThreshold)
+                                    CvInvoke.Canny(tmpMaskedRegion, cannyRegion, region.CannyThreshold1, region.CannyThreshold2, 3);
+                                    Emgu.CV.Util.VectorOfVectorOfPoint contours = new Emgu.CV.Util.VectorOfVectorOfPoint();
+
+                                    var vectorOfSelection = new VectorOfPoint(translatedPoints.ToArray());
+                                    VectorOfVectorOfPoint selectedContours
+                                                       = new VectorOfVectorOfPoint(vectorOfSelection);
+                                    Mat hier = new Mat();
+
+                                    CvInvoke.FindContours(cannyRegion, contours, hier,
+                                        Emgu.CV.CvEnum.RetrType.Ccomp, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
+
+                                    //CvInvoke.DrawContours(frame, contours, -1, new MCvScalar(0, 255, 0), 1);
+
+                                    VectorOfPoint maxApprox = null;
+                                    var selectedArea = CvInvoke.ContourArea(vectorOfSelection);
+
+                                    for (int i = 0; i < contours.Length; i++)
                                     {
-                                        isOk = false;
-
-                                        // DRAW FAULT POINTS
-                                        VectorOfPoint faultPixels = new VectorOfPoint();
-                                        CvInvoke.FindNonZero(maskedRegion, faultPixels);
-
-                                        if (faultPixels.Length > 0)
+                                        try
                                         {
-                                            var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
-                                            CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
-                                                new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Constant,
-                                                new MCvScalar(255));
-                                            dilElm.Dispose();
+                                            var approxArea = CvInvoke.ContourArea(contours[i]);
+                                            if ((selectedArea * 0.92) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
+                                                if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                                    maxApprox = contours[i];
 
-                                            Mat[] channelsOfFrame = frame.Split();
-                                            var redChannel = channelsOfFrame[2];
-                                            CvInvoke.BitwiseOr(redChannel, maskedRegion, redChannel);
-                                            CvInvoke.BitwiseXor(channelsOfFrame[0], maskedRegion, channelsOfFrame[0]);
-                                            CvInvoke.BitwiseXor(channelsOfFrame[1], maskedRegion, channelsOfFrame[1]);
-                                            CvInvoke.Merge(new VectorOfMat(channelsOfFrame[0], channelsOfFrame[1], redChannel), frame);
+                                            //var cnt = contours[i];
+                                            //var perimeter = CvInvoke.ArcLength(cnt, true);
+                                            //var epsilon = region.CannyEpsilon * perimeter;
+                                            //VectorOfPoint approx = new VectorOfPoint();
+                                            //CvInvoke.ApproxPolyDP(cnt, approx, epsilon, true);
+                                            //if (approx != null && approx.Length > 0)
+                                            //{
+                                            //    var approxArea = CvInvoke.ContourArea(approx);
+                                            //    if ((selectedArea * 0.92) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
+                                            //        if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                            //            maxApprox = approx;
+                                            //}
+                                        }
+                                        catch (Exception)
+                                        {
 
-                                            //VectorOfVectorOfPoint faultContour
-                                            //       = new VectorOfVectorOfPoint(faultPixels);
-                                            //CvInvoke.DrawContours(frame, faultContour, -1, new MCvScalar(0, 0, 255), 1);
-                                            //faultContour.Dispose();
+                                        }
+                                    }
+
+                                    if (maxApprox != null)
+                                    {
+                                        Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+
+                                        VectorOfVectorOfPoint contourBiggest
+                                                       = new VectorOfVectorOfPoint(maxApprox);
+                                        CvInvoke.DrawContours(maskZeros, contourBiggest, 0, new MCvScalar(255), -1);
+                                        CvInvoke.BitwiseAnd(maskedRegion, maskZeros, maskedRegion);
+
+                                        CvInvoke.DrawContours(frame, contourBiggest, -1, new MCvScalar(0, 255, 0), 1);
+                                    }
+
+                                    tmpMaskedRegion.Dispose();
+                                    cannyRegion.Dispose();
+                                    vectorOfSelection.Dispose();
+                                    selectedContours.Dispose();
+                                }
+                                if (region.GaussianBlur == true)
+                                {
+                                    CvInvoke.GaussianBlur(maskedRegion, maskedRegion, new Size(region.GaussianSize ?? 3, region.GaussianSize ?? 3),
+                                        region.GaussianSigma ?? 0, region.GaussianSigma ?? 0, Emgu.CV.CvEnum.BorderType.Default);
+                                }
+                                if (region.BilateralFilter == true)
+                                {
+                                    try
+                                    {
+                                        var targetBilateral = maskedRegion.Clone();
+                                        CvInvoke.BilateralFilter(maskedRegion, targetBilateral, region.BilateralD ?? 0,
+                                            region.BilateralSigmaColor ?? 0, region.BilateralSigmaSpace ?? 0);
+
+                                        maskedRegion = targetBilateral;
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                }
+                                if (region.Sharpen == true)
+                                {
+                                    int[][] kernelVals = new int[][] {
+                                        new int[]{ -1,-1,-1 },
+                                        new int[]{ -1,9,-1 },
+                                        new int[]{ -1,-1,-1 },
+                                    };
+                                    Mat kernel = new Mat(new int[] { kernelVals.Length, kernelVals[0].Length },
+                                        Emgu.CV.CvEnum.DepthType.Cv8U, new VectorOfVectorOfInt(kernelVals));
+
+                                    CvInvoke.Filter2D(maskedRegion, maskedRegion, kernel, new System.Drawing.Point(-1, -1));
+                                }
+                                if (region.EqualizeHist)
+                                {
+                                    CvInvoke.EqualizeHist(maskedRegion, maskedRegion);
+                                }
+                                if (region.Laplacian)
+                                {
+                                    CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
+                                }
+                                if (region.ConvertToGray && region.ApplySobel == true)
+                                {
+                                    Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+
+                                    CvInvoke.Sobel(maskedRegion, sobelRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.SobelDx ?? 0, region.SobelDy ?? 0,
+                                        region.SobelKernel ?? 3);
+                                    CvInvoke.ConvertScaleAbs(sobelRegion, maskedRegion, 1, 0);
+
+                                    sobelRegion.Dispose();
+
+                                    //var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                    //CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                    //    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                    //    new MCvScalar(255));
+                                    //dilElm.Dispose();
+
+                                    //this.BeginInvoke((Action)delegate
+                                    //{
+                                    //    imgMask.Image = maskedRegion;
+                                    //});
+                                }
+
+                                if (region.ConvertToGray &&
+                                        region.ManualThr)
+                                {
+                                    CvInvoke.InRange(maskedRegion, new ScalarArray(new MCvScalar(region.ManuelStart)),
+                                         new ScalarArray(new MCvScalar(region.ManuelEnd)), maskedRegion);
+                                }
+                                if (region.ConvertToHsv && region.ManualThr)
+                                {
+                                    var tmpMaskForHsv = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
+
+                                    CvInvoke.InRange(maskedRegion, new ScalarArray(new MCvScalar(region.HStart, region.SStart, region.VStart)),
+                                        new ScalarArray(new MCvScalar(region.HEnd, region.SEnd, region.VEnd)), maskedRegion);
+
+                                    maskedRegion = tmpMaskForHsv;
+                                }
+
+                                if (region.AdaptiveThr && region.ConvertToGray)
+                                {
+                                    CvInvoke.AdaptiveThreshold(maskedRegion, maskedRegion, 255, Emgu.CV.CvEnum.AdaptiveThresholdType.MeanC,
+                                        Emgu.CV.CvEnum.ThresholdType.BinaryInv, region.AdaptiveSize, region.AdaptiveParam);
+
+
+                                    try
+                                    {
+                                        VectorOfVectorOfPoint contour
+                                                       = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
+
+                                        CvInvoke.DrawContours(maskedRegion, contour, -1, new MCvScalar(0), region.AdaptiveBorder);
+
+                                        contour.Dispose();
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+                                }
+
+                                // DECISION MAKING OK / NOK
+                                if (region.NokThreshold > -1)
+                                {
+                                    if (translatedPoints.Count() > 0)
+                                    {
+                                        VectorOfVectorOfPoint contour
+                                                       = new VectorOfVectorOfPoint(new VectorOfPoint(translatedPoints.ToArray()));
+
+                                        var regionArea = CvInvoke.ContourArea(contour[0]);
+                                        var faultArea = CvInvoke.CountNonZero(maskedRegion);
+                                        contour.Dispose();
+
+                                        if (faultArea / regionArea * 100 > region.NokThreshold)
+                                        {
+                                            isOk = false;
+
+                                            // DRAW FAULT POINTS
+                                            VectorOfPoint faultPixels = new VectorOfPoint();
+                                            CvInvoke.FindNonZero(maskedRegion, faultPixels);
+
+                                            if (faultPixels.Length > 0)
+                                            {
+                                                var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                                CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                                    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Constant,
+                                                    new MCvScalar(255));
+                                                dilElm.Dispose();
+
+                                                Mat[] channelsOfFrame = frame.Split();
+                                                var redChannel = channelsOfFrame[2];
+                                                CvInvoke.BitwiseOr(redChannel, maskedRegion, redChannel);
+                                                CvInvoke.BitwiseXor(channelsOfFrame[0], maskedRegion, channelsOfFrame[0]);
+                                                CvInvoke.BitwiseXor(channelsOfFrame[1], maskedRegion, channelsOfFrame[1]);
+                                                CvInvoke.Merge(new VectorOfMat(channelsOfFrame[0], channelsOfFrame[1], redChannel), frame);
+
+                                                //VectorOfVectorOfPoint faultContour
+                                                //       = new VectorOfVectorOfPoint(faultPixels);
+                                                //CvInvoke.DrawContours(frame, faultContour, -1, new MCvScalar(0, 0, 255), 1);
+                                                //faultContour.Dispose();
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        // SHOW RESULT COLOR
+                            // SHOW RESULT COLOR
+                            this.BeginInvoke((Action)delegate
+                            {
+                                _testTotalFrame++;
+                                if (!isOk)
+                                    _testNokFrame++;
+
+                                if (_testNokFrame / (_testTotalFrame * 1.0) * 100 > 70)
+                                    isOk = false;
+
+                                data.TestIsOk = isOk;
+                                data.ImageBox.BackColor = isOk ? Color.LimeGreen : Color.Red;
+                                _testIsOk = !_captureList.Any(d => d.TestIsOk == false);
+
+                                if (_testIsOk)
+                                {
+                                    lblResult.BackColor = Color.LimeGreen;
+                                    lblResult.Text = "OK";
+                                }
+                                else
+                                {
+                                    lblResult.BackColor = Color.Red;
+                                    lblResult.Text = "NOK";
+                                }
+                            });
+                            #endregion
+                        }
+                        //else
+                        //{
+                        //    this.BeginInvoke((Action)delegate
+                        //    {
+                        //        lblResult.BackColor = Color.WhiteSmoke;
+                        //        lblResult.Text = "Test Bekleniyor";
+                        //    });
+                        //}
+
                         this.BeginInvoke((Action)delegate
                         {
-                            _testTotalFrame++;
-                            if (!isOk)
-                                _testNokFrame++;
-
-                            if (_testNokFrame / (_testTotalFrame * 1.0) * 100 > 70)
-                                isOk = false;
-
-                            _testIsOk = isOk;
-
-                            if (isOk)
-                            {
-                                lblResult.BackColor = Color.LimeGreen;
-                                lblResult.Text = "OK";
-                            }
-                            else
-                            {
-                                lblResult.BackColor = Color.Red;
-                                lblResult.Text = "NOK";
-                            }
+                            data.ImageBox.Image = frame; 
+                            frame.Dispose();
+                            cloneFrame.Dispose();
+                            gray.Dispose();
                         });
-                        #endregion
                     }
-                    //else
-                    //{
-                    //    this.BeginInvoke((Action)delegate
-                    //    {
-                    //        lblResult.BackColor = Color.WhiteSmoke;
-                    //        lblResult.Text = "Test Bekleniyor";
-                    //    });
-                    //}
-
-                    this.BeginInvoke((Action)delegate
+                    catch (Exception)
                     {
-                        imgBox.Image = frame;
-                        frame.Dispose();
-                        cloneFrame.Dispose();
-                        gray.Dispose();
-                        hsv.Dispose();
-                    });
-                } 
-                catch(Exception)
-                {
 
+                    }
                 }
 
                 await Task.Delay(50);
@@ -469,14 +724,6 @@ namespace HekaEye
         }
 
         #region WINFORM EVENTS
-        private void cmbCamera_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!_cameraSelection)
-                return;
-
-            StartCapture();
-        }
-
         private void frmHekaStudio_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopCapture();
@@ -491,6 +738,15 @@ namespace HekaEye
                 if (model != null)
                 {
                     SelectedModel = model;
+                    using (EyeBO bObj = new EyeBO())
+                    {
+                        _combinedModel = bObj.GetCombinedProduct(model.Id);
+                    }
+
+                    if (_combinedModel != null)
+                        lblCombined.Text = "KOMBİN: " + _combinedModel.ProductCode;
+
+                    lblCombined.Visible = _combinedModel != null;
                 }
             }
             else
@@ -509,6 +765,16 @@ namespace HekaEye
                     return;
                 }
 
+                var externalChecks = flPanelExternalTests.Controls;
+                foreach (KryptonCheckBox item in externalChecks)
+                {
+                    if (item.Checked == false)
+                    {
+                        MessageBox.Show(item.Text + " işaretlenmeden görsel teste başlanamaz.", "Uyarı");
+                        return;
+                    }
+                }
+
                 _testTotalFrame = 0;
                 _testNokFrame = 0;
             }
@@ -522,41 +788,69 @@ namespace HekaEye
                 _tmrTest.Tick += _tmrTest_Tick;
                 _tmrTest.Start();
 
-                btnTestStart.Text = "Testi Bitir";
-                btnTestStart.BackColor = Color.WhiteSmoke;
-                btnTestStart.ForeColor = Color.Black;
+                btnTestStart.Text = _maxTestDuration.ToString();
             }
             else
             {
-                btnTestStart.Text = "Testi Başlat";
-                btnTestStart.BackColor = Color.DodgerBlue;
-                btnTestStart.ForeColor = Color.White;
+                btnTestStart.Text = "TESTİ BAŞLAT";
             }
         }
 
+        int _maxTestDuration = 3;
         private void _tmrTest_Tick(object sender, EventArgs e)
         {
             _testSeconds++;
-            if (_testSeconds >= 3)
+            if (_testSeconds >= _maxTestDuration)
             {
                 _tmrTest.Stop();
                 _tmrTest.Dispose();
 
                 _testRunning = false;
-                btnTestStart.Text = "Testi Başlat";
-                btnTestStart.BackColor = Color.DodgerBlue;
-                btnTestStart.ForeColor = Color.White;
+                btnTestStart.Text = "TESTİ BAŞLAT";
 
                 if (_testIsOk)
                 {
-                    PrinterBO bObj = new PrinterBO();
-                    bObj.PrintLabel(new ProductLabel
+                    if (_combinedModel != null)
                     {
-                        ProductCode = SelectedModel.ProductCode,
-                    }, _printSerialNo);
-                    _printSerialNo++;
+                        mainModelNo = SelectedModel.ProductCode;
 
-                    _okCount++;
+                        cmbModels.Items.Clear();
+                        cmbModels.Items.Add(_combinedModel);
+                        cmbModels.SelectedIndex = 0;
+                        
+                        returnToMainModel = true;
+                    }
+                    else
+                    {
+                        PrinterBO bObj = new PrinterBO();
+                        bObj.PrintLabel(new ProductLabel
+                        {
+                            ProductCode = SelectedModel.ProductCode,
+                        }, _printSerialNo);
+                        _printSerialNo++;
+
+                        _okCount++;
+
+                        if (returnToMainModel)
+                        {
+                            var externalChecks = flPanelExternalTests.Controls;
+                            foreach (KryptonCheckBox item in externalChecks)
+                            {
+                                item.Checked = false;
+                            }
+
+                            using (EyeBO eObj = new EyeBO())
+                            {
+                                var mainModelList = eObj.GetMainProductList().ToArray();
+                                var mainModelObj = mainModelList.FirstOrDefault(d => d.ProductCode == mainModelNo);
+                                cmbModels.Items.Clear();
+                                cmbModels.Items.AddRange(mainModelList);
+                                cmbModels.SelectedIndex = Array.IndexOf(mainModelList, mainModelObj);
+                            }
+
+                            returnToMainModel = false;
+                        }
+                    }
                 }
                 else
                     _nokCount++;
@@ -570,7 +864,7 @@ namespace HekaEye
             else
             {
                 btnTestStart.Enabled = false;
-                btnTestStart.Text = (3 - _testSeconds).ToString();
+                btnTestStart.Text = (_maxTestDuration - _testSeconds).ToString();
             }
         }
     }

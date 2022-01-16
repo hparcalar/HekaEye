@@ -29,68 +29,25 @@ namespace HekaEye
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHekaTest));
-            this.cmbCamera = new System.Windows.Forms.ComboBox();
-            this.imgBox = new Emgu.CV.UI.ImageBox();
-            this.lblStatus = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.cmbModels = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnTestStart = new System.Windows.Forms.Button();
             this.lblErrCount = new System.Windows.Forms.Label();
             this.lblOkCount = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.imgBox)).BeginInit();
+            this.flPanelCams = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnTestStart = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.lblCombined = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.flPanelExternalTests = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
-            // 
-            // cmbCamera
-            // 
-            this.cmbCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbCamera.DisplayMember = "Name";
-            this.cmbCamera.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.cmbCamera.FormattingEnabled = true;
-            this.cmbCamera.Location = new System.Drawing.Point(1184, 12);
-            this.cmbCamera.Name = "cmbCamera";
-            this.cmbCamera.Size = new System.Drawing.Size(56, 33);
-            this.cmbCamera.TabIndex = 16;
-            this.cmbCamera.ValueMember = "DeviceIndex";
-            this.cmbCamera.Visible = false;
-            this.cmbCamera.SelectedIndexChanged += new System.EventHandler(this.cmbCamera_SelectedIndexChanged);
-            // 
-            // imgBox
-            // 
-            this.imgBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imgBox.BackColor = System.Drawing.Color.Black;
-            this.imgBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
-            this.imgBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.imgBox.Location = new System.Drawing.Point(13, 12);
-            this.imgBox.Name = "imgBox";
-            this.imgBox.Size = new System.Drawing.Size(954, 561);
-            this.imgBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.imgBox.TabIndex = 2;
-            this.imgBox.TabStop = false;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lblStatus.BackgroundImage")));
-            this.lblStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.lblStatus.Location = new System.Drawing.Point(1056, 232);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(107, 79);
-            this.lblStatus.TabIndex = 23;
-            this.lblStatus.Visible = false;
             // 
             // lblResult
             // 
             this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblResult.ForeColor = System.Drawing.Color.White;
             this.lblResult.Location = new System.Drawing.Point(973, 471);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(270, 102);
@@ -104,7 +61,7 @@ namespace HekaEye
             this.cmbModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbModels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.cmbModels.FormattingEnabled = true;
-            this.cmbModels.Location = new System.Drawing.Point(978, 78);
+            this.cmbModels.Location = new System.Drawing.Point(978, 35);
             this.cmbModels.Name = "cmbModels";
             this.cmbModels.Size = new System.Drawing.Size(262, 37);
             this.cmbModels.TabIndex = 30;
@@ -116,25 +73,11 @@ namespace HekaEye
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(974, 55);
+            this.label1.Location = new System.Drawing.Point(974, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 20);
             this.label1.TabIndex = 31;
             this.label1.Text = "Model Seçiniz";
-            // 
-            // btnTestStart
-            // 
-            this.btnTestStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestStart.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnTestStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnTestStart.ForeColor = System.Drawing.Color.White;
-            this.btnTestStart.Location = new System.Drawing.Point(978, 149);
-            this.btnTestStart.Name = "btnTestStart";
-            this.btnTestStart.Size = new System.Drawing.Size(262, 77);
-            this.btnTestStart.TabIndex = 32;
-            this.btnTestStart.Text = "Testi Başlat";
-            this.btnTestStart.UseVisualStyleBackColor = false;
-            this.btnTestStart.Click += new System.EventHandler(this.btnTestStart_Click);
             // 
             // lblErrCount
             // 
@@ -180,23 +123,74 @@ namespace HekaEye
             this.label3.TabIndex = 36;
             this.label3.Text = "NOK";
             // 
+            // flPanelCams
+            // 
+            this.flPanelCams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flPanelCams.AutoScroll = true;
+            this.flPanelCams.BackColor = System.Drawing.Color.Black;
+            this.flPanelCams.Location = new System.Drawing.Point(12, 12);
+            this.flPanelCams.Name = "flPanelCams";
+            this.flPanelCams.Size = new System.Drawing.Size(946, 561);
+            this.flPanelCams.TabIndex = 38;
+            // 
+            // btnTestStart
+            // 
+            this.btnTestStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestStart.Location = new System.Drawing.Point(978, 226);
+            this.btnTestStart.Name = "btnTestStart";
+            this.btnTestStart.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
+            this.btnTestStart.Size = new System.Drawing.Size(262, 92);
+            this.btnTestStart.StateCommon.Back.Color1 = System.Drawing.Color.Lime;
+            this.btnTestStart.StateCommon.Back.Color2 = System.Drawing.Color.Black;
+            this.btnTestStart.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
+            this.btnTestStart.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
+            this.btnTestStart.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnTestStart.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnTestStart.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnTestStart.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnTestStart.TabIndex = 39;
+            this.btnTestStart.Values.Text = "TESTİ BAŞLAT";
+            this.btnTestStart.Click += new System.EventHandler(this.btnTestStart_Click);
+            // 
+            // lblCombined
+            // 
+            this.lblCombined.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCombined.AutoSize = false;
+            this.lblCombined.Location = new System.Drawing.Point(981, 88);
+            this.lblCombined.Name = "lblCombined";
+            this.lblCombined.Size = new System.Drawing.Size(259, 25);
+            this.lblCombined.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblCombined.TabIndex = 40;
+            this.lblCombined.Values.Text = "KOMBİN:";
+            this.lblCombined.Visible = false;
+            // 
+            // flPanelExternalTests
+            // 
+            this.flPanelExternalTests.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flPanelExternalTests.Location = new System.Drawing.Point(978, 133);
+            this.flPanelExternalTests.Name = "flPanelExternalTests";
+            this.flPanelExternalTests.Size = new System.Drawing.Size(262, 78);
+            this.flPanelExternalTests.TabIndex = 41;
+            // 
             // frmHekaTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.Gainsboro;
             this.ClientSize = new System.Drawing.Size(1255, 585);
+            this.Controls.Add(this.flPanelExternalTests);
+            this.Controls.Add(this.lblCombined);
+            this.Controls.Add(this.btnTestStart);
+            this.Controls.Add(this.flPanelCams);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblOkCount);
             this.Controls.Add(this.lblErrCount);
-            this.Controls.Add(this.btnTestStart);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbModels);
             this.Controls.Add(this.lblResult);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.imgBox);
-            this.Controls.Add(this.cmbCamera);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmHekaTest";
@@ -205,23 +199,22 @@ namespace HekaEye
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHekaStudio_FormClosing);
             this.Load += new System.EventHandler(this.frmHekaStudio_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.imgBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.ComboBox cmbCamera;
-        private Emgu.CV.UI.ImageBox imgBox;
-        private System.Windows.Forms.Panel lblStatus;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.ComboBox cmbModels;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnTestStart;
         private System.Windows.Forms.Label lblErrCount;
         private System.Windows.Forms.Label lblOkCount;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.FlowLayoutPanel flPanelCams;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton btnTestStart;
+        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblCombined;
+        private System.Windows.Forms.FlowLayoutPanel flPanelExternalTests;
     }
 }

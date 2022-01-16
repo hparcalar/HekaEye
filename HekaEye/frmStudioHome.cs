@@ -24,10 +24,10 @@ namespace HekaEye
             frm.ShowDialog(this);
             if (frm.LoggedIn)
             {
-                frmSkyEditor frmStd = new frmSkyEditor();
-                frmStd.ShowDialog(this);
-                //frmHekaStudio frmStd = new frmHekaStudio();
+                //frmSkyEditor frmStd = new frmSkyEditor();
                 //frmStd.ShowDialog(this);
+                frmHekaStudio frmStd = new frmHekaStudio();
+                frmStd.ShowDialog(this);
             }
         }
 

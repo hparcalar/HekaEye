@@ -105,6 +105,7 @@ namespace HekaEye.UseCase
                     dbModel.ProductName = model.ProductName;
                     dbModel.IsActive = model.IsActive;
                     dbModel.RecipeId = model.RecipeId;
+                    dbModel.CombinedProductId = model.CombinedProductId;
                     db.SaveChanges();
 
                     result.RecordId = dbModel.Id;
@@ -217,6 +218,9 @@ namespace HekaEye.UseCase
                         dbInspec.RegionProperties.BilateralFilter = regionProps.BilateralFilter;
                         dbInspec.RegionProperties.BilateralSigmaColor = regionProps.BilateralSigmaColor;
                         dbInspec.RegionProperties.BilateralSigmaSpace = regionProps.BilateralSigmaSpace;
+                        dbInspec.RegionProperties.Sharpen = regionProps.Sharpen;
+                        dbInspec.RegionProperties.CannyThreshold1 = regionProps.CannyThreshold1;
+                        dbInspec.RegionProperties.CannyThreshold2 = regionProps.CannyThreshold2;
                     }
 
                     db.SaveChanges();
@@ -508,6 +512,30 @@ namespace HekaEye.UseCase
             return data;
         }
 
+        public Product GetCombinedProduct(int productId)
+        {
+            Product data = null;
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.Product.FirstOrDefault(d => d.CombinedProductId == productId);
+            }
+
+            return data;
+        }
+
+        public Product[] GetMainProductList()
+        {
+            Product[] data = new Product[0];
+
+            using (EyeContext db = new EyeContext())
+            {
+                data = db.Product.Where(d => d.CombinedProductId == null).ToArray();
+            }
+
+            return data;
+        }
+
         public Product GetProduct(int id)
         {
             Product data = new Product();
@@ -579,6 +607,9 @@ namespace HekaEye.UseCase
                         model.BilateralFilter = dbInspec.RegionProperties.BilateralFilter;
                         model.BilateralSigmaColor = dbInspec.RegionProperties.BilateralSigmaColor;
                         model.BilateralSigmaSpace = dbInspec.RegionProperties.BilateralSigmaSpace;
+                        model.Sharpen = dbInspec.RegionProperties.Sharpen;
+                        model.CannyThreshold1 = dbInspec.RegionProperties.CannyThreshold1 ?? 0;
+                        model.CannyThreshold2 = dbInspec.RegionProperties.CannyThreshold2 ?? 0;
 
                         var pathList = db.RegionPath.Where(d => d.RegionId == regionId)
                             .OrderBy(d => d.PointOrder).ToList();

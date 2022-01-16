@@ -32,6 +32,8 @@ namespace HekaEye.Data
         public Nullable<double> GaussianSigma { get; set; }
         public Nullable<bool> ApplyCanny { get; set; }
         public Nullable<double> CannyEpsilon { get; set; }
+        public Nullable<double> CannyThreshold1 { get; set; }
+        public Nullable<double> CannyThreshold2 { get; set; }
         public Nullable<double> MinShapeArea { get; set; }
         public Nullable<bool> ApplySobel { get; set; }
         public Nullable<int> SobelDx { get; set; }
@@ -39,6 +41,7 @@ namespace HekaEye.Data
         public Nullable<int> SobelKernel { get; set; }
         public Nullable<bool> BilateralFilter { get; set; }
         public Nullable<int> BilateralD { get; set; }
+        public Nullable<bool> Sharpen { get; set; }
         public Nullable<double> BilateralSigmaColor { get; set; }
         public Nullable<double> BilateralSigmaSpace { get; set; }
 
