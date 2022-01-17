@@ -691,6 +691,7 @@ namespace HekaEye
                             }
 
                             // FILTER & THRESHOLDING OPERATIONS
+                            
                             if (region != null && region.ApplyCanny)
                             {
                                 var tmpMaskedRegion = maskedRegion.Clone();
@@ -698,17 +699,19 @@ namespace HekaEye
                                 //CvInvoke.AddWeighted(cannyRegion, 100, cannyRegion, 0, 0, cannyRegion);
                                 //CvInvoke.ConvertScaleAbs(cannyRegion, cannyRegion, 1, 0);
                                 //CvInvoke.EqualizeHist(maskedRegion, maskedRegion);
-                                //CvInvoke.BilateralFilter(cannyRegion, tmpMaskedRegion, -1,
-                                //        14, 14);
+                                CvInvoke.BilateralFilter(cannyRegion, tmpMaskedRegion, -1,
+                                        8, 8);
                                 //CvInvoke.AdaptiveThreshold(tmpMaskedRegion, tmpMaskedRegion, 255,
-                                //    Emgu.CV.CvEnum.AdaptiveThresholdType.MeanC,
-                                //    Emgu.CV.CvEnum.ThresholdType.BinaryInv, 3, 5);
+                                //    Emgu.CV.CvEnum.AdaptiveThresholdType.GaussianC,
+                                //    Emgu.CV.CvEnum.ThresholdType.BinaryInv, 3, 25);
+                                //CvInvoke.GaussianBlur(tmpMaskedRegion, tmpMaskedRegion, new Size(3, 3), 5);
+                                CvInvoke.MedianBlur(tmpMaskedRegion, tmpMaskedRegion, 5);
                                 //CvInvoke.ConvertScaleAbs(maskedRegion, maskedRegion, 1, 0);
-                                //CvInvoke.AddWeighted(maskedRegion, 1.5, maskedRegion, 0, 0, maskedRegion);
-                                //CvInvoke.InRange(maskedRegion,
-                                //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(1)),
-                                //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(140)),
-                                //    cannyRegion);
+                                //CvInvoke.AddWeighted(tmpMaskedRegion, 1.5, tmpMaskedRegion, 0, 0, tmpMaskedRegion);
+                                //CvInvoke.InRange(tmpMaskedRegion,
+                                //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(195)),
+                                //    new ScalarArray(new Emgu.CV.Structure.MCvScalar(250)),
+                                //    tmpMaskedRegion);
 
                                 //if (SelectedRegion != null && SelectedRegion.Id == region.Id)
                                 //{
@@ -729,45 +732,60 @@ namespace HekaEye
                                 CvInvoke.FindContours(cannyRegion, contours, hier,
                                     Emgu.CV.CvEnum.RetrType.Ccomp, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxNone);
 
-                                //CvInvoke.DrawContours(frame, contours, -1, new MCvScalar(0, 255, 0), 1);
+                                CvInvoke.DrawContours(frame, contours, -1, new MCvScalar(0, 255, 0), 1);
+                                CvInvoke.DrawContours(maskedRegion, contours, -1, new MCvScalar(10), 1);
 
                                 VectorOfPoint maxApprox = null;
+                                VectorOfPoint maxContour = null;
                                 var selectedArea = CvInvoke.ContourArea(vectorOfSelection);
 
-                                for (int i = 0; i < contours.Length; i++)
-                                {
-                                    try
-                                    {
-                                        var approxArea = CvInvoke.ContourArea(contours[i]);
-                                        if ((selectedArea * 0.92) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
-                                            if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
-                                                maxApprox = contours[i];
+                                List<VectorOfPoint> biggestList = new List<VectorOfPoint>();
 
-                                        //var cnt = contours[i];
-                                        //var perimeter = CvInvoke.ArcLength(cnt, true);
-                                        //var epsilon = region.CannyEpsilon * perimeter;
-                                        //VectorOfPoint approx = new VectorOfPoint();
-                                        //CvInvoke.ApproxPolyDP(cnt, approx, epsilon, true);
-                                        //if (approx != null && approx.Length > 0)
-                                        //{
-                                        //    var approxArea = CvInvoke.ContourArea(approx);
-                                        //    if ((selectedArea * 0.92) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
-                                        //        if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
-                                        //            maxApprox = approx;
-                                        //}
-                                    }
-                                    catch (Exception)
-                                    {
+                                //for (int i = 0; i < contours.Length; i++)
+                                //{
+                                //    try
+                                //    {
+                                //        //var approxArea = CvInvoke.ContourArea(contours[i]);
+                                        
+                                //        //if ((selectedArea * 0.95) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
+                                //        //    if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                //        //        maxApprox = contours[i];
 
-                                    }
-                                }
+                                //        var cnt = contours[i];
+                                //        var perimeter = CvInvoke.ArcLength(cnt, true);
+                                //        var epsilon = region.CannyEpsilon * perimeter;
+                                //        VectorOfPoint approx = new VectorOfPoint();
+                                //        CvInvoke.ApproxPolyDP(cnt, approx, epsilon, true);
+                                //        if (approx != null && approx.Length > 0)
+                                //        {
+                                //            //CvInvoke.DrawContours(frame, new VectorOfVectorOfPoint(approx), -1, new MCvScalar(255, 255, 0), 1);
+                                //            biggestList.Add(approx);
+                                //            var approxArea = CvInvoke.ContourArea(approx);
+                                //            //if (approxArea >= (selectedArea * region.MinShapeArea))
+                                //                if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                //                {
+                                //                    maxApprox = approx;
+                                //                    maxContour = cnt;
+                                //                }
+                                //        }
+                                //    }
+                                //    catch (Exception)
+                                //    {
+
+                                //    }
+                                //}
+
+                                //maxApprox = biggestList.OrderByDescending(d => CvInvoke.ContourArea(d))
+                                //    .FirstOrDefault();
+                                maxApprox = null;
 
                                 if (maxApprox != null)
                                 {
                                     Mat maskZeros = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
 
                                     VectorOfVectorOfPoint contourBiggest
-                                                   = new VectorOfVectorOfPoint(maxApprox);
+                                                   = new VectorOfVectorOfPoint(maxContour);
+                                    
                                     CvInvoke.DrawContours(maskZeros, contourBiggest, 0, new MCvScalar(255), -1);
                                     CvInvoke.BitwiseAnd(maskedRegion, maskZeros, maskedRegion);
 
@@ -815,6 +833,17 @@ namespace HekaEye
 
                                 }
                             }
+                            if (region != null)
+                            {
+                                var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                CvInvoke.Erode(maskedRegion, maskedRegion, dilElm,
+                                    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                    new MCvScalar(255));
+                                CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                    new MCvScalar(255));
+                                dilElm.Dispose();
+                            }
                             if (region.Sharpen == true)
                             {
                                 int[][] kernelVals = new int[][] {
@@ -845,7 +874,7 @@ namespace HekaEye
                             }
                             if (region.ConvertToGray && region.ApplySobel == true)
                             {
-                                Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, region.ConvertToHsv ? 3 : 1);
+                                Mat sobelRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
                                 CvInvoke.Sobel(maskedRegion, sobelRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.SobelDx ?? 0, region.SobelDy ?? 0,
                                     region.SobelKernel ?? 3);

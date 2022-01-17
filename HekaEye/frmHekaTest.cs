@@ -205,7 +205,8 @@ namespace HekaEye
                             if (captureModel != null)
                             {
                                 List<HekaRegion> detailedRegions = new List<HekaRegion>();
-                                foreach (var region in captureModel.RegionList)
+                                var newRegions = bObj.GetRegionList(SelectedRecipe.Id, item.Id);
+                                foreach (var region in newRegions)
                                 {
                                     var dbRegion = bObj.GetRegion(region.Id);
                                     if (dbRegion != null)
@@ -344,8 +345,8 @@ namespace HekaEye
                             {
                                 Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
-                                var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
-                                var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
+                                var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0) -16;
+                                var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0) -16;
 
                                 // CROP SELECTED ROI
                                 if (region.RegionType == 1)
@@ -544,6 +545,17 @@ namespace HekaEye
                                     {
 
                                     }
+                                }
+                                if (region != null)
+                                {
+                                    var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                    CvInvoke.Erode(maskedRegion, maskedRegion, dilElm,
+                                        new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                        new MCvScalar(255));
+                                    CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                        new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                        new MCvScalar(255));
+                                    dilElm.Dispose();
                                 }
                                 if (region.Sharpen == true)
                                 {

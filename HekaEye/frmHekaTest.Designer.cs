@@ -132,7 +132,7 @@ namespace HekaEye
             this.flPanelCams.BackColor = System.Drawing.Color.Black;
             this.flPanelCams.Location = new System.Drawing.Point(12, 12);
             this.flPanelCams.Name = "flPanelCams";
-            this.flPanelCams.Size = new System.Drawing.Size(946, 561);
+            this.flPanelCams.Size = new System.Drawing.Size(856, 561);
             this.flPanelCams.TabIndex = 38;
             // 
             // btnTestStart
