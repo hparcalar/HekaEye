@@ -165,7 +165,7 @@ namespace HekaEye
                             Emgu.CV.UI.ImageBox cvBox = new Emgu.CV.UI.ImageBox();
                             cvBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
                             cvBox.SizeMode = PictureBoxSizeMode.Zoom;
-                            cvBox.Size = new Size(flPanelCams.Width / 2 - 50, flPanelCams.Height - 5);
+                            cvBox.Size = new Size(536, flPanelCams.Height - 5);
                             cvBox.BorderStyle = BorderStyle.FixedSingle;
                             flPanelCams.Controls.Add(cvBox);
 
@@ -326,10 +326,10 @@ namespace HekaEye
                     try
                     {
                         var frame = data.Capture.QueryFrame();
-                        var cloneFrame = frame.Clone();
+                        //var cloneFrame = frame.Clone();
 
                         var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
-                        CvInvoke.CvtColor(cloneFrame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                        CvInvoke.CvtColor(frame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
 
                         //this.BeginInvoke((Action)delegate
                         //{
@@ -345,8 +345,10 @@ namespace HekaEye
                             {
                                 Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
-                                var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0) -16;
-                                var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0) -16;
+                                var pLeft = frame.Width / (data.ImageBox.Width * 1.0);
+                                var newH = frame.Height * data.ImageBox.Width / (frame.Width * 1.0);
+                                var hRate = frame.Height / (newH * 1.0);
+                                var pTop = Convert.ToInt32((data.ImageBox.Height - newH) / 2.0);
 
                                 // CROP SELECTED ROI
                                 if (region.RegionType == 1)
@@ -362,7 +364,7 @@ namespace HekaEye
                                         if (region.OffsetY != 0)
                                             rPoint.Y += region.OffsetY;
 
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop) * hRate)));
                                     }
 
                                     VectorOfVectorOfPoint contour
@@ -390,13 +392,13 @@ namespace HekaEye
                                         if (region.OffsetY != 0)
                                             rPoint.Y += region.OffsetY;
 
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop - 1) * hRate)));
                                     }
 
                                     for (int i = region.Path.Length - 1; i >= 0; i--)
                                     {
                                         var rPoint = region.Path[i];
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop + 1) * hRate)));
                                     }
 
                                     VectorOfVectorOfPoint contour
@@ -422,18 +424,18 @@ namespace HekaEye
                                 {
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
+                                        translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop) * hRate)));
                                     }
                                 }
                                 else if (region.RegionType == 2)
                                 {
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                        translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop - 1) * hRate)));
                                     }
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                        translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop + 1) * hRate)));
                                     }
                                 }
 
@@ -575,7 +577,7 @@ namespace HekaEye
                                 }
                                 if (region.Laplacian)
                                 {
-                                    CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
+                                    CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv8U, region.LaplaceSize);
                                 }
                                 if (region.ConvertToGray && region.ApplySobel == true)
                                 {
@@ -721,7 +723,7 @@ namespace HekaEye
                         {
                             data.ImageBox.Image = frame; 
                             frame.Dispose();
-                            cloneFrame.Dispose();
+                            //cloneFrame.Dispose();
                             gray.Dispose();
                         });
                     }

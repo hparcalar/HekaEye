@@ -48,7 +48,7 @@ namespace HekaEye
             this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblResult.ForeColor = System.Drawing.Color.White;
-            this.lblResult.Location = new System.Drawing.Point(973, 471);
+            this.lblResult.Location = new System.Drawing.Point(920, 522);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(270, 102);
             this.lblResult.TabIndex = 28;
@@ -61,7 +61,7 @@ namespace HekaEye
             this.cmbModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbModels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.cmbModels.FormattingEnabled = true;
-            this.cmbModels.Location = new System.Drawing.Point(978, 35);
+            this.cmbModels.Location = new System.Drawing.Point(925, 35);
             this.cmbModels.Name = "cmbModels";
             this.cmbModels.Size = new System.Drawing.Size(262, 37);
             this.cmbModels.TabIndex = 30;
@@ -73,7 +73,7 @@ namespace HekaEye
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(974, 12);
+            this.label1.Location = new System.Drawing.Point(921, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 20);
             this.label1.TabIndex = 31;
@@ -84,7 +84,7 @@ namespace HekaEye
             this.lblErrCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblErrCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblErrCount.ForeColor = System.Drawing.Color.Red;
-            this.lblErrCount.Location = new System.Drawing.Point(973, 350);
+            this.lblErrCount.Location = new System.Drawing.Point(920, 401);
             this.lblErrCount.Name = "lblErrCount";
             this.lblErrCount.Size = new System.Drawing.Size(136, 90);
             this.lblErrCount.TabIndex = 33;
@@ -95,7 +95,7 @@ namespace HekaEye
             this.lblOkCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblOkCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblOkCount.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblOkCount.Location = new System.Drawing.Point(1115, 350);
+            this.lblOkCount.Location = new System.Drawing.Point(1062, 401);
             this.lblOkCount.Name = "lblOkCount";
             this.lblOkCount.Size = new System.Drawing.Size(136, 90);
             this.lblOkCount.TabIndex = 34;
@@ -106,7 +106,7 @@ namespace HekaEye
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(1158, 325);
+            this.label2.Location = new System.Drawing.Point(1105, 376);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 25);
             this.label2.TabIndex = 35;
@@ -117,7 +117,7 @@ namespace HekaEye
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label3.Location = new System.Drawing.Point(1011, 325);
+            this.label3.Location = new System.Drawing.Point(958, 376);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 25);
             this.label3.TabIndex = 36;
@@ -130,15 +130,15 @@ namespace HekaEye
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flPanelCams.AutoScroll = true;
             this.flPanelCams.BackColor = System.Drawing.Color.Black;
-            this.flPanelCams.Location = new System.Drawing.Point(12, 12);
+            this.flPanelCams.Location = new System.Drawing.Point(12, 51);
             this.flPanelCams.Name = "flPanelCams";
-            this.flPanelCams.Size = new System.Drawing.Size(856, 561);
+            this.flPanelCams.Size = new System.Drawing.Size(800, 573);
             this.flPanelCams.TabIndex = 38;
             // 
             // btnTestStart
             // 
             this.btnTestStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestStart.Location = new System.Drawing.Point(978, 226);
+            this.btnTestStart.Location = new System.Drawing.Point(925, 226);
             this.btnTestStart.Name = "btnTestStart";
             this.btnTestStart.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
             this.btnTestStart.Size = new System.Drawing.Size(262, 92);
@@ -158,7 +158,7 @@ namespace HekaEye
             // 
             this.lblCombined.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCombined.AutoSize = false;
-            this.lblCombined.Location = new System.Drawing.Point(981, 88);
+            this.lblCombined.Location = new System.Drawing.Point(928, 88);
             this.lblCombined.Name = "lblCombined";
             this.lblCombined.Size = new System.Drawing.Size(259, 25);
             this.lblCombined.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
@@ -169,7 +169,7 @@ namespace HekaEye
             // flPanelExternalTests
             // 
             this.flPanelExternalTests.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.flPanelExternalTests.Location = new System.Drawing.Point(978, 133);
+            this.flPanelExternalTests.Location = new System.Drawing.Point(925, 133);
             this.flPanelExternalTests.Name = "flPanelExternalTests";
             this.flPanelExternalTests.Size = new System.Drawing.Size(262, 78);
             this.flPanelExternalTests.TabIndex = 41;
@@ -179,7 +179,7 @@ namespace HekaEye
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gainsboro;
-            this.ClientSize = new System.Drawing.Size(1255, 585);
+            this.ClientSize = new System.Drawing.Size(1255, 636);
             this.Controls.Add(this.flPanelExternalTests);
             this.Controls.Add(this.lblCombined);
             this.Controls.Add(this.btnTestStart);

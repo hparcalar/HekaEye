@@ -302,6 +302,24 @@ namespace HekaEye
 
             flPanelCameras.Controls.Clear();
             flPanelCams.Controls.Clear();
+
+            foreach (var capture in _captureList)
+            {
+                if (capture.Capture != null && capture.Capture.IsOpened)
+                {
+                    capture.Capture.Stop();
+                    capture.Capture.Dispose();
+
+                    try
+                    {
+                        capture.CaptureTask.Dispose();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
             _captureList.Clear();
 
             if (SelectedRecipe != null)
@@ -467,7 +485,10 @@ namespace HekaEye
                     capture.CaptureRunning = false;
 
                     if (capture.Capture != null)
+                    {
                         capture.Capture.Stop();
+                        capture.Capture.Dispose();
+                    }
 
                     if (capture.CaptureTask != null)
                         capture.CaptureTask.Dispose();
@@ -527,28 +548,33 @@ namespace HekaEye
             while (true)
             {
                 var data = _captureList.FirstOrDefault(d => d.CameraName == cameraName);
-                if (data.CaptureRunning)
+                if (data != null && data.CaptureRunning)
                 {
                     try
                     {
                         var frame = data.Capture.QueryFrame();
-                        var cloneFrame = frame.Clone();
+                        //var cloneFrame = frame.Clone();
 
-                        this.BeginInvoke((Action)delegate
-                        {
-                            lblStatus.Visible = false;
-                        });
+                        //this.BeginInvoke((Action)delegate
+                        //{
+                        //    lblStatus.Visible = false;
+                        //});
+
+                        if (frame == null)
+                            break;
 
                         var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, 1);
                         //var hsv = new Mat(frame.Rows, frame.Cols, frame.Depth, 1);
-                        CvInvoke.CvtColor(cloneFrame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
+                        CvInvoke.CvtColor(frame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
                         //CvInvoke.CvtColor(cloneFrame, hsv, Emgu.CV.CvEnum.ColorConversion.Bgr2Hsv);
 
                         #region DRAW ACTIVE SELECTION
                         if (data.SelectionRunning && data.SelectionPath.Count() > 0)
                         {
-                            var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
-                            var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
+                            var pLeft = frame.Width / (data.ImageBox.Width * 1.0);
+                            var newH = frame.Height * data.ImageBox.Width / (frame.Width * 1.0);
+                            var hRate = frame.Height / (newH * 1.0);
+                            var pTop = Convert.ToInt32((data.ImageBox.Height - newH) / 2.0);
 
                             int _selectionPathPointIndex = 0;
                             foreach (var pathPoint in data.SelectionPath)
@@ -558,9 +584,9 @@ namespace HekaEye
                                     var nextPoint = data.SelectionPath[_selectionPathPointIndex + 1];
 
                                     var pntCurrent = new Point(
-                                       Convert.ToInt32(pathPoint.X) - pLeft,
-                                       Convert.ToInt32(pathPoint.Y) - pTop);
-                                    var pntNext = new Point(Convert.ToInt32(nextPoint.X) - pLeft, Convert.ToInt32(nextPoint.Y) - pTop);
+                                       Convert.ToInt32(pathPoint.X * pLeft),
+                                       Convert.ToInt32(Convert.ToInt32(pathPoint.Y - pTop) * hRate));
+                                    var pntNext = new Point(Convert.ToInt32(nextPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(nextPoint.Y - pTop) * hRate));
 
                                     CvInvoke.Line(frame, pntCurrent,
                                            pntNext,
@@ -574,9 +600,9 @@ namespace HekaEye
                                 else if (_hoverPoint != Point.Empty)
                                 {
                                     var pntCurrent = new Point(
-                                       Convert.ToInt32(pathPoint.X) - pLeft,
-                                       Convert.ToInt32(pathPoint.Y) - pTop);
-                                    var pntNext = new Point(Convert.ToInt32(_hoverPoint.X) - pLeft, Convert.ToInt32(_hoverPoint.Y) - pTop);
+                                       Convert.ToInt32(pathPoint.X * pLeft),
+                                      Convert.ToInt32(Convert.ToInt32(pathPoint.Y - pTop) * hRate));
+                                    var pntNext = new Point(Convert.ToInt32(_hoverPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(_hoverPoint.Y - pTop) * hRate));
 
                                     CvInvoke.Line(frame, pntCurrent,
                                            pntNext,
@@ -598,8 +624,10 @@ namespace HekaEye
                         {
                             Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, region.ConvertToHsv ? 3 : 1);
 
-                            var pLeft = Convert.ToInt32((data.ImageBox.Width - frame.Width) / 2.0);
-                            var pTop = Convert.ToInt32((data.ImageBox.Height - frame.Height) / 2.0);
+                            var pLeft = frame.Width / (data.ImageBox.Width * 1.0);
+                            var newH = frame.Height * data.ImageBox.Width / (frame.Width * 1.0);
+                            var hRate = frame.Height / (newH * 1.0);
+                            var pTop = Convert.ToInt32((data.ImageBox.Height - newH) / 2.0);
 
                             // CROP SELECTED ROI
                             if (region.RegionType == 1)
@@ -615,7 +643,7 @@ namespace HekaEye
                                     if (region.OffsetY != 0)
                                         rPoint.Y += region.OffsetY;
 
-                                    translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
+                                    translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop) * hRate)));
                                 }
 
                                 VectorOfVectorOfPoint contour
@@ -643,13 +671,13 @@ namespace HekaEye
                                     if (region.OffsetY != 0)
                                         rPoint.Y += region.OffsetY;
 
-                                    translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                    translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop -1) * hRate)));
                                 }
 
                                 for (int i = region.Path.Length - 1; i >= 0; i--)
                                 {
                                     var rPoint = region.Path[i];
-                                    translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                    translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop + 1) * hRate)));
                                 }
 
                                 VectorOfVectorOfPoint contour
@@ -675,18 +703,18 @@ namespace HekaEye
                             {
                                 foreach (var rPoint in region.Path)
                                 {
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
+                                    translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop) * hRate)));
                                 }
                             }
                             else if (region.RegionType == 2)
                             {
                                 foreach (var rPoint in region.Path)
                                 {
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                    translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop - 1) * hRate)));
                                 }
                                 foreach (var rPoint in region.Path)
                                 {
-                                    translatedPoints.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                    translatedPoints.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop + 1) * hRate)));
                                 }
                             }
 
@@ -741,43 +769,43 @@ namespace HekaEye
 
                                 List<VectorOfPoint> biggestList = new List<VectorOfPoint>();
 
-                                //for (int i = 0; i < contours.Length; i++)
-                                //{
-                                //    try
-                                //    {
-                                //        //var approxArea = CvInvoke.ContourArea(contours[i]);
-                                        
-                                //        //if ((selectedArea * 0.95) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
-                                //        //    if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
-                                //        //        maxApprox = contours[i];
+                                for (int i = 0; i < contours.Length; i++)
+                                {
+                                    try
+                                    {
+                                        //var approxArea = CvInvoke.ContourArea(contours[i]);
 
-                                //        var cnt = contours[i];
-                                //        var perimeter = CvInvoke.ArcLength(cnt, true);
-                                //        var epsilon = region.CannyEpsilon * perimeter;
-                                //        VectorOfPoint approx = new VectorOfPoint();
-                                //        CvInvoke.ApproxPolyDP(cnt, approx, epsilon, true);
-                                //        if (approx != null && approx.Length > 0)
-                                //        {
-                                //            //CvInvoke.DrawContours(frame, new VectorOfVectorOfPoint(approx), -1, new MCvScalar(255, 255, 0), 1);
-                                //            biggestList.Add(approx);
-                                //            var approxArea = CvInvoke.ContourArea(approx);
-                                //            //if (approxArea >= (selectedArea * region.MinShapeArea))
-                                //                if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
-                                //                {
-                                //                    maxApprox = approx;
-                                //                    maxContour = cnt;
-                                //                }
-                                //        }
-                                //    }
-                                //    catch (Exception)
-                                //    {
+                                        //if ((selectedArea * 0.95) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
+                                        //    if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                        //        maxApprox = contours[i];
 
-                                //    }
-                                //}
+                                        var cnt = contours[i];
+                                        var perimeter = CvInvoke.ArcLength(cnt, true);
+                                        var epsilon = region.CannyEpsilon * perimeter;
+                                        VectorOfPoint approx = new VectorOfPoint();
+                                        CvInvoke.ApproxPolyDP(cnt, approx, epsilon, true);
+                                        if (approx != null && approx.Length > 0)
+                                        {
+                                            //CvInvoke.DrawContours(frame, new VectorOfVectorOfPoint(approx), -1, new MCvScalar(255, 255, 0), 1);
+                                            biggestList.Add(approx);
+                                            var approxArea = CvInvoke.ContourArea(approx);
+                                            if ((selectedArea * 0.95) > approxArea && approxArea >= (selectedArea * region.MinShapeArea))
+                                                if (maxApprox == null || CvInvoke.ContourArea(maxApprox) < approxArea)
+                                                {
+                                                    maxApprox = approx;
+                                                    maxContour = cnt;
+                                                }
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+                                }
 
                                 //maxApprox = biggestList.OrderByDescending(d => CvInvoke.ContourArea(d))
                                 //    .FirstOrDefault();
-                                maxApprox = null;
+
 
                                 if (maxApprox != null)
                                 {
@@ -800,6 +828,7 @@ namespace HekaEye
                                     //}
                                 }
 
+                                hier.Dispose();
                                 tmpMaskedRegion.Dispose();
                                 cannyRegion.Dispose();
                                 vectorOfSelection.Dispose();
@@ -870,7 +899,7 @@ namespace HekaEye
                             }
                             if (region.Laplacian)
                             {
-                                CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv32F, region.LaplaceSize);
+                                CvInvoke.Laplacian(maskedRegion, maskedRegion, Emgu.CV.CvEnum.DepthType.Cv8U, region.LaplaceSize);
                             }
                             if (region.ConvertToGray && region.ApplySobel == true)
                             {
@@ -948,18 +977,18 @@ namespace HekaEye
                                 {
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop) * hRate)));
                                     }
                                 }
                                 else if (region.RegionType == 2)
                                 {
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop - 1));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop - 1) * hRate)));
                                     }
                                     foreach (var rPoint in region.Path)
                                     {
-                                        translatedPointsI.Add(new Point(rPoint.X - pLeft, rPoint.Y - pTop + 1));
+                                        translatedPointsI.Add(new Point(Convert.ToInt32(rPoint.X * pLeft), Convert.ToInt32(Convert.ToInt32(rPoint.Y - pTop + 1) * hRate)));
                                     }
                                 }
 
@@ -1046,7 +1075,7 @@ namespace HekaEye
                         {
                             data.ImageBox.Image = frame;
                             frame.Dispose();
-                            cloneFrame.Dispose();
+                            //cloneFrame.Dispose();
                             gray.Dispose();
                         });
                     }
@@ -1060,7 +1089,7 @@ namespace HekaEye
                 else
                     break;
 
-                await Task.Delay(50);
+                await Task.Delay(150);
             }
         }
 
