@@ -33,7 +33,8 @@ namespace HekaEye
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            frmHekaTest frm = new frmHekaTest();
+            //frmHekaTest frm = new frmHekaTest();
+            frmHekaHsvTest frm = new frmHekaHsvTest();
             frm.ShowDialog(this);
         }
 

@@ -63,6 +63,16 @@ namespace HekaEye
             this.lblX = new System.Windows.Forms.Label();
             this.lblY = new System.Windows.Forms.Label();
             this.lblNokRate = new System.Windows.Forms.Label();
+            this.txtOffsetX = new System.Windows.Forms.TextBox();
+            this.txtOffsetY = new System.Windows.Forms.TextBox();
+            this.btnSetOffsetOfRegions = new System.Windows.Forms.Button();
+            this.btnSetPosition = new System.Windows.Forms.Button();
+            this.btnSetRotation = new System.Windows.Forms.Button();
+            this.btnUp = new System.Windows.Forms.Button();
+            this.btnLeft = new System.Windows.Forms.Button();
+            this.btnRight = new System.Windows.Forms.Button();
+            this.btnDown = new System.Windows.Forms.Button();
+            this.lblHsv = new System.Windows.Forms.Label();
             this.tabTools.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageRecipes.SuspendLayout();
@@ -209,7 +219,7 @@ namespace HekaEye
             this.btnShape.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnShape.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnShape.ForeColor = System.Drawing.Color.White;
-            this.btnShape.Location = new System.Drawing.Point(12, 287);
+            this.btnShape.Location = new System.Drawing.Point(12, 477);
             this.btnShape.Name = "btnShape";
             this.btnShape.Size = new System.Drawing.Size(119, 44);
             this.btnShape.TabIndex = 21;
@@ -249,7 +259,7 @@ namespace HekaEye
             this.btnLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnLine.ForeColor = System.Drawing.Color.White;
-            this.btnLine.Location = new System.Drawing.Point(12, 337);
+            this.btnLine.Location = new System.Drawing.Point(12, 524);
             this.btnLine.Name = "btnLine";
             this.btnLine.Size = new System.Drawing.Size(119, 44);
             this.btnLine.TabIndex = 24;
@@ -390,7 +400,7 @@ namespace HekaEye
             this.btnStartTemplate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStartTemplate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnStartTemplate.ForeColor = System.Drawing.Color.White;
-            this.btnStartTemplate.Location = new System.Drawing.Point(12, 386);
+            this.btnStartTemplate.Location = new System.Drawing.Point(12, 569);
             this.btnStartTemplate.Name = "btnStartTemplate";
             this.btnStartTemplate.Size = new System.Drawing.Size(119, 54);
             this.btnStartTemplate.TabIndex = 36;
@@ -430,7 +440,7 @@ namespace HekaEye
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(56, 510);
+            this.lblX.Location = new System.Drawing.Point(56, 627);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(18, 17);
             this.lblX.TabIndex = 39;
@@ -439,7 +449,7 @@ namespace HekaEye
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(56, 556);
+            this.lblY.Location = new System.Drawing.Point(56, 646);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(18, 17);
             this.lblY.TabIndex = 40;
@@ -448,11 +458,109 @@ namespace HekaEye
             // lblNokRate
             // 
             this.lblNokRate.AutoSize = true;
-            this.lblNokRate.Location = new System.Drawing.Point(56, 598);
+            this.lblNokRate.Location = new System.Drawing.Point(56, 659);
             this.lblNokRate.Name = "lblNokRate";
             this.lblNokRate.Size = new System.Drawing.Size(18, 17);
             this.lblNokRate.TabIndex = 41;
             this.lblNokRate.Text = "--";
+            // 
+            // txtOffsetX
+            // 
+            this.txtOffsetX.Location = new System.Drawing.Point(12, 209);
+            this.txtOffsetX.Name = "txtOffsetX";
+            this.txtOffsetX.Size = new System.Drawing.Size(51, 22);
+            this.txtOffsetX.TabIndex = 42;
+            // 
+            // txtOffsetY
+            // 
+            this.txtOffsetY.Location = new System.Drawing.Point(69, 209);
+            this.txtOffsetY.Name = "txtOffsetY";
+            this.txtOffsetY.Size = new System.Drawing.Size(56, 22);
+            this.txtOffsetY.TabIndex = 43;
+            // 
+            // btnSetOffsetOfRegions
+            // 
+            this.btnSetOffsetOfRegions.Location = new System.Drawing.Point(12, 237);
+            this.btnSetOffsetOfRegions.Name = "btnSetOffsetOfRegions";
+            this.btnSetOffsetOfRegions.Size = new System.Drawing.Size(113, 32);
+            this.btnSetOffsetOfRegions.TabIndex = 44;
+            this.btnSetOffsetOfRegions.Text = "Offset Ayarla";
+            this.btnSetOffsetOfRegions.UseVisualStyleBackColor = true;
+            this.btnSetOffsetOfRegions.Click += new System.EventHandler(this.btnSetOffsetOfRegions_Click);
+            // 
+            // btnSetPosition
+            // 
+            this.btnSetPosition.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnSetPosition.Location = new System.Drawing.Point(12, 293);
+            this.btnSetPosition.Name = "btnSetPosition";
+            this.btnSetPosition.Size = new System.Drawing.Size(51, 39);
+            this.btnSetPosition.TabIndex = 45;
+            this.btnSetPosition.Text = "POS";
+            this.btnSetPosition.UseVisualStyleBackColor = false;
+            this.btnSetPosition.Click += new System.EventHandler(this.btnSetPosition_Click);
+            // 
+            // btnSetRotation
+            // 
+            this.btnSetRotation.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnSetRotation.Location = new System.Drawing.Point(74, 293);
+            this.btnSetRotation.Name = "btnSetRotation";
+            this.btnSetRotation.Size = new System.Drawing.Size(51, 39);
+            this.btnSetRotation.TabIndex = 46;
+            this.btnSetRotation.Text = "ROT";
+            this.btnSetRotation.UseVisualStyleBackColor = false;
+            this.btnSetRotation.Click += new System.EventHandler(this.btnSetRotation_Click);
+            // 
+            // btnUp
+            // 
+            this.btnUp.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnUp.Location = new System.Drawing.Point(42, 338);
+            this.btnUp.Name = "btnUp";
+            this.btnUp.Size = new System.Drawing.Size(51, 39);
+            this.btnUp.TabIndex = 47;
+            this.btnUp.Text = "U";
+            this.btnUp.UseVisualStyleBackColor = false;
+            this.btnUp.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnUp_MouseDown);
+            // 
+            // btnLeft
+            // 
+            this.btnLeft.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnLeft.Location = new System.Drawing.Point(12, 383);
+            this.btnLeft.Name = "btnLeft";
+            this.btnLeft.Size = new System.Drawing.Size(51, 39);
+            this.btnLeft.TabIndex = 48;
+            this.btnLeft.Text = "L";
+            this.btnLeft.UseVisualStyleBackColor = false;
+            this.btnLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnLeft_MouseDown);
+            // 
+            // btnRight
+            // 
+            this.btnRight.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnRight.Location = new System.Drawing.Point(74, 383);
+            this.btnRight.Name = "btnRight";
+            this.btnRight.Size = new System.Drawing.Size(51, 39);
+            this.btnRight.TabIndex = 49;
+            this.btnRight.Text = "R";
+            this.btnRight.UseVisualStyleBackColor = false;
+            this.btnRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnRight_MouseDown);
+            // 
+            // btnDown
+            // 
+            this.btnDown.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnDown.Location = new System.Drawing.Point(42, 428);
+            this.btnDown.Name = "btnDown";
+            this.btnDown.Size = new System.Drawing.Size(51, 39);
+            this.btnDown.TabIndex = 50;
+            this.btnDown.Text = "D";
+            this.btnDown.UseVisualStyleBackColor = false;
+            this.btnDown.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnDown_MouseDown);
+            // 
+            // lblHsv
+            // 
+            this.lblHsv.Location = new System.Drawing.Point(12, 675);
+            this.lblHsv.Name = "lblHsv";
+            this.lblHsv.Size = new System.Drawing.Size(119, 52);
+            this.lblHsv.TabIndex = 51;
+            this.lblHsv.Text = "--";
             // 
             // frmHekaStudio
             // 
@@ -460,6 +568,16 @@ namespace HekaEye
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1341, 738);
+            this.Controls.Add(this.lblHsv);
+            this.Controls.Add(this.btnDown);
+            this.Controls.Add(this.btnRight);
+            this.Controls.Add(this.btnLeft);
+            this.Controls.Add(this.btnUp);
+            this.Controls.Add(this.btnSetRotation);
+            this.Controls.Add(this.btnSetPosition);
+            this.Controls.Add(this.btnSetOffsetOfRegions);
+            this.Controls.Add(this.txtOffsetY);
+            this.Controls.Add(this.txtOffsetX);
             this.Controls.Add(this.lblNokRate);
             this.Controls.Add(this.lblY);
             this.Controls.Add(this.lblX);
@@ -536,5 +654,15 @@ namespace HekaEye
         private System.Windows.Forms.Label lblX;
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Label lblNokRate;
+        private System.Windows.Forms.TextBox txtOffsetX;
+        private System.Windows.Forms.TextBox txtOffsetY;
+        private System.Windows.Forms.Button btnSetOffsetOfRegions;
+        private System.Windows.Forms.Button btnSetPosition;
+        private System.Windows.Forms.Button btnSetRotation;
+        private System.Windows.Forms.Button btnUp;
+        private System.Windows.Forms.Button btnLeft;
+        private System.Windows.Forms.Button btnRight;
+        private System.Windows.Forms.Button btnDown;
+        private System.Windows.Forms.Label lblHsv;
     }
 }

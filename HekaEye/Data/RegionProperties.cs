@@ -44,6 +44,12 @@ namespace HekaEye.Data
         public Nullable<bool> Sharpen { get; set; }
         public Nullable<double> BilateralSigmaColor { get; set; }
         public Nullable<double> BilateralSigmaSpace { get; set; }
-
+        public Nullable<bool> DetectMovement { get; set; }
+        public Nullable<int> DetectHistoryFrame { get; set; }
+        public string DetectDefaultRect { get; set; }
+        public Nullable<bool> CompareColor { get; set; }
+        public string CmpHueRange { get; set; }
+        public string CmpSatRange { get; set; }
+        public string CmpValRange { get; set; }
     }
 }

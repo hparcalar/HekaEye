@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -35,6 +36,27 @@ namespace HekaEye.StudioModels
         public bool ConvertToGray { get; set; } = false;
         [Category("Renk Çevrimi")]
         public bool ConvertToHsv { get; set; } = false;
+
+        [Category("Hareket Algıla")]
+        public bool? DetectMovement { get; set; } = false;
+
+        [Category("Hareket Algıla")]
+        public int? DetectHistoryFrame { get; set; }
+
+        [Category("Hareket Algıla")]
+        public string DetectDefaultRect { get; set; }
+
+        [Category("Renk Karşılaştır")]
+        public bool CompareColor { get; set; } = false;
+
+        [Category("Renk Karşılaştır")]
+        public string CmpHueRange { get; set; }
+
+        [Category("Renk Karşılaştır")]
+        public string CmpSatRange { get; set; }
+
+        [Category("Renk Karşılaştır")]
+        public string CmpValRange { get; set; }
 
         [Category("Filtre")]
         public bool ApplyCanny { get; set; } = false;
@@ -119,5 +141,12 @@ namespace HekaEye.StudioModels
 
         [Browsable(false)]
         public int ErrorFrameCount { get; set; }
+
+        // DETECT MOVEMENT VARIABLES & COUNTERS
+        [Browsable(false)]
+        public Mat FirstFrame { get; set; } = null;
+
+        [Browsable(false)]
+        public int FrameCounter { get; set; } = 0;
     }
 }

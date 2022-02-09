@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HekaEye.Models;
 using HekaEye.StudioModels;
+using System.Data.Entity;
 
 namespace HekaEye.UseCase
 {
@@ -122,6 +123,43 @@ namespace HekaEye.UseCase
             return result;
         }
 
+        public BusinessResult SetOffsetOfRegions(int cameraRecipeId, int offsetX, int offsetY)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    var dbCamera = db.RecipeCamera.FirstOrDefault(d => d.Id == cameraRecipeId);
+                    if (dbCamera != null)
+                    {
+                        var regionsOfCamera = db.Region.Where(d => d.CameraId == cameraRecipeId).ToArray();
+                        foreach (var region in regionsOfCamera)
+                        {
+                            var dbInspec = db.Inspection.FirstOrDefault(d => d.RegionId == region.Id);
+                            if (dbInspec != null)
+                            {
+                                dbInspec.RegionProperties.OffsetX = (dbInspec.RegionProperties.OffsetX ?? 0) + offsetX;
+                                dbInspec.RegionProperties.OffsetY = (dbInspec.RegionProperties.OffsetY ?? 0) + offsetY;
+                            }
+                        }
+
+                        db.SaveChanges();
+                    }
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
         public BusinessResult SaveRegion(Region model, HekaRegion regionProps)
         {
             BusinessResult result = new BusinessResult();
@@ -221,6 +259,13 @@ namespace HekaEye.UseCase
                         dbInspec.RegionProperties.Sharpen = regionProps.Sharpen;
                         dbInspec.RegionProperties.CannyThreshold1 = regionProps.CannyThreshold1;
                         dbInspec.RegionProperties.CannyThreshold2 = regionProps.CannyThreshold2;
+                        dbInspec.RegionProperties.DetectMovement = regionProps.DetectMovement;
+                        dbInspec.RegionProperties.DetectHistoryFrame = regionProps.DetectHistoryFrame;
+                        dbInspec.RegionProperties.CompareColor = regionProps.CompareColor;
+                        dbInspec.RegionProperties.CmpHueRange = regionProps.CmpHueRange;
+                        dbInspec.RegionProperties.CmpSatRange = regionProps.CmpSatRange;
+                        dbInspec.RegionProperties.CmpValRange = regionProps.CmpValRange;
+                        dbInspec.RegionProperties.DetectDefaultRect = regionProps.DetectDefaultRect;
                     }
 
                     db.SaveChanges();
@@ -488,6 +533,25 @@ namespace HekaEye.UseCase
             return data;
         }
 
+        public Recipe GetHsvRecipe()
+        {
+            Recipe data = new Recipe();
+
+            using (EyeContext db = new EyeContext())
+            {
+                try
+                {
+                    data = db.RecipeCamera.FirstOrDefault(d => d.AutoExposure == true).Recipe;
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
+            return data;
+        }
+
         public Recipe GetRecipe(int id)
         {
             Recipe data = null;
@@ -610,6 +674,13 @@ namespace HekaEye.UseCase
                         model.Sharpen = dbInspec.RegionProperties.Sharpen;
                         model.CannyThreshold1 = dbInspec.RegionProperties.CannyThreshold1 ?? 0;
                         model.CannyThreshold2 = dbInspec.RegionProperties.CannyThreshold2 ?? 0;
+                        model.DetectMovement = dbInspec.RegionProperties.DetectMovement;
+                        model.DetectHistoryFrame = dbInspec.RegionProperties.DetectHistoryFrame;
+                        model.CompareColor = dbInspec.RegionProperties.CompareColor ?? false;
+                        model.CmpHueRange = dbInspec.RegionProperties.CmpHueRange;
+                        model.CmpSatRange = dbInspec.RegionProperties.CmpSatRange;
+                        model.CmpValRange = dbInspec.RegionProperties.CmpValRange;
+                        model.DetectDefaultRect = dbInspec.RegionProperties.DetectDefaultRect;
 
                         var pathList = db.RegionPath.Where(d => d.RegionId == regionId)
                             .OrderBy(d => d.PointOrder).ToList();
@@ -767,6 +838,7 @@ namespace HekaEye.UseCase
                     dbModel.CameraName = model.CameraName;
                     dbModel.IsActive = model.IsActive;
                     dbModel.CameraAlias = model.CameraAlias;
+                    dbModel.AutoExposure = model.AutoExposure;
                     dbModel.RecipeId = model.RecipeId;
 
                     db.SaveChanges();
@@ -931,6 +1003,87 @@ namespace HekaEye.UseCase
             }
 
             return cam;
+        }
+        #endregion
+
+        #region MATCH RESULTS MANAGEMENT
+        public BusinessResult SaveMatchOnly(bool matchResult)
+        {
+            BusinessResult result = new BusinessResult();
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    db.MatchHistory.Add(new MatchHistory
+                    {
+                        MatchDate = DateTime.Now,
+                        Result = matchResult,
+                    });
+                    db.SaveChanges();
+                }
+
+                result.Result = true;
+            }
+            catch (Exception ex)
+            {
+                result.Result = false;
+                result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public MatchReportModel[] MatchOnlyStats(DateTime date)
+        {
+            MatchReportModel[] data = new MatchReportModel[0];
+
+            try
+            {
+                using (EyeContext db = new EyeContext())
+                {
+                    data = db.MatchHistory.Where(d => DbFunctions.TruncateTime(d.MatchDate) == date)
+                        .GroupBy(d => new { MatchDate = DbFunctions.TruncateTime(d.MatchDate) })
+                        .Select(d => new MatchReportModel
+                        {
+                            MatchDate = d.Key.MatchDate,
+                            NokCount = d.Where(m => m.Result == false).Count(),
+                        }).ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return data;
+        }
+
+        public MatchReportModel[] MatchOnlyStats()
+        {
+            MatchReportModel[] data = new MatchReportModel[0];
+
+            try
+            {
+                DateTime currentDate = DateTime.Now.Date;
+
+                using (EyeContext db = new EyeContext())
+                {
+                    data = db.MatchHistory.Where(d => DbFunctions.TruncateTime(d.MatchDate) < currentDate)
+                        .GroupBy(d => new { MatchDate = DbFunctions.TruncateTime(d.MatchDate) })
+                        .Select(d => new MatchReportModel
+                        {
+                            MatchDate = d.Key.MatchDate,
+                            NokCount = d.Where(m => m.Result == false).Count(),
+                        }).ToArray();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return data;
         }
         #endregion
 

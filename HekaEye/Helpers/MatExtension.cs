@@ -11,10 +11,10 @@ namespace HekaEye.Helpers
 {
     public static class MatExtension
     {
-        public static dynamic GetValue(this Mat mat, int row, int col)
+        public static dynamic GetValue(this Mat mat, int row, int col, int channel)
         {
             var value = CreateElement(mat.Depth);
-            Marshal.Copy(mat.DataPointer + (row * mat.Cols + col) * mat.ElementSize, value, 0, 1);
+            Marshal.Copy(mat.DataPointer + (((row * mat.Cols * channel) + (col * channel)) + channel) * mat.ElementSize, value, 0, 1);
             return value[0];
         }
 

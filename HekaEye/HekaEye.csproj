@@ -91,6 +91,12 @@
     <Compile Include="frmDefinitions.Designer.cs">
       <DependentUpon>frmDefinitions.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmHekaHsvTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHekaHsvTest.Designer.cs">
+      <DependentUpon>frmHekaHsvTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmHekaTest.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +237,14 @@
     <Compile Include="Migrations\202201161750552_CannyThresholds.designer.cs">
       <DependentUpon>202201161750552_CannyThresholds.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202202081733495_HsvColorCompare_And_MovementDetection.cs" />
+    <Compile Include="Migrations\202202081733495_HsvColorCompare_And_MovementDetection.designer.cs">
+      <DependentUpon>202202081733495_HsvColorCompare_And_MovementDetection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202202081945185_DetectDefaultRect.cs" />
+    <Compile Include="Migrations\202202081945185_DetectDefaultRect.designer.cs">
+      <DependentUpon>202202081945185_DetectDefaultRect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BusinessResult.cs" />
     <Compile Include="Models\CameraModel.cs" />
@@ -277,6 +291,7 @@
     </Compile>
     <Compile Include="StudioModels\HekaCaptureModel.cs" />
     <Compile Include="StudioModels\HekaRegion.cs" />
+    <Compile Include="StudioModels\MatchReportModel.cs" />
     <Compile Include="StudioModels\ProcessTypes\Params\ProcPrmAdaptiveThreshold.cs" />
     <Compile Include="StudioModels\ProcessTypes\Params\ProcPrmApproxShape.cs" />
     <Compile Include="StudioModels\ProcessTypes\Params\ProcPrmBlur.cs" />
@@ -319,6 +334,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmDefinitions.resx">
       <DependentUpon>frmDefinitions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHekaHsvTest.resx">
+      <DependentUpon>frmHekaHsvTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmHekaTest.resx">
       <DependentUpon>frmHekaTest.cs</DependentUpon>
@@ -409,6 +427,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201161750552_CannyThresholds.resx">
       <DependentUpon>202201161750552_CannyThresholds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202081733495_HsvColorCompare_And_MovementDetection.resx">
+      <DependentUpon>202202081733495_HsvColorCompare_And_MovementDetection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202202081945185_DetectDefaultRect.resx">
+      <DependentUpon>202202081945185_DetectDefaultRect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -20,6 +20,7 @@ namespace HekaEye.StudioModels
         public ImageBox ImageBox { get; set; }
         public List<Point> SelectionPath { get; set; } = new List<Point>();
         public int? Exposure { get; set; }
+        public bool AutoExposure { get; set; } = false;
         public bool CaptureRunning { get; set; } = false;
         public bool SelectionRunning { get; set; } = false;
         public bool SelectionStepRunning { get; set; } = false;
