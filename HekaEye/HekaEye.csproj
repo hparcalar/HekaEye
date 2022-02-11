@@ -145,6 +145,7 @@
     <Compile Include="frmTakeSamples.Designer.cs">
       <DependentUpon>frmTakeSamples.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\DbHelper.cs" />
     <Compile Include="Helpers\DeviceHelper.cs" />
     <Compile Include="Helpers\MatExtension.cs" />
@@ -289,6 +290,10 @@
     <Compile Include="SkyStudio\PartialControls\StreamToolItem.Designer.cs">
       <DependentUpon>StreamToolItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="StudioModels\DeviceModels\DigitalIOArray.cs" />
+    <Compile Include="StudioModels\DeviceModels\DigitalIODataINPUT.cs" />
+    <Compile Include="StudioModels\DeviceModels\DigitalIODataOUTPUT.cs" />
+    <Compile Include="StudioModels\DeviceModels\DigitalIOResult.cs" />
     <Compile Include="StudioModels\HekaCaptureModel.cs" />
     <Compile Include="StudioModels\HekaRegion.cs" />
     <Compile Include="StudioModels\MatchReportModel.cs" />

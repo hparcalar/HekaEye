@@ -17,6 +17,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
+using HekaEye.StudioModels.DeviceModels;
 
 namespace HekaEye
 {
@@ -24,6 +26,7 @@ namespace HekaEye
     {
         DeviceHelper _deviceHelper = new DeviceHelper();
         CameraModel[] _cameraList = new CameraModel[0];
+        ApiHelper _api = null;
 
         int _printSerialNo = 1;
         int _okCount = 0;
@@ -56,6 +59,9 @@ namespace HekaEye
 
         private void frmHekaStudio_Load(object sender, EventArgs e)
         {
+            _api = new ApiHelper(ConfigurationManager.AppSettings["DeviceUrl"]);
+            _api.AddHeader("Accept", "vdn.dac.v1");
+
             _cameraList = _deviceHelper.GetCameras();
             _cameraSelection = true;
 
@@ -289,7 +295,10 @@ namespace HekaEye
                     capture.CaptureRunning = false;
 
                     if (capture.Capture != null)
+                    {
                         capture.Capture.Stop();
+                        capture.Capture.Dispose();
+                    }
 
                     if (capture.CaptureTask != null)
                         capture.CaptureTask.Dispose();
@@ -392,6 +401,7 @@ namespace HekaEye
                         {
                             #region DRAW & CHECK SAVED REGIONS
                             bool isOk = true;
+                            data.TmpOk = true;
 
                             foreach (var region in data.RegionList)
                             {
@@ -631,6 +641,7 @@ namespace HekaEye
                                                         (valRange[0] <= val && val <= valRange[1])
                                                         )
                                                     {
+                                                        data.TmpOk = false;
                                                         isOk = false;
                                                     }
 
@@ -917,14 +928,18 @@ namespace HekaEye
                             // SHOW RESULT COLOR
                             this.BeginInvoke((Action)delegate
                             {
-                                _testTotalFrame++;
-                                if (!isOk)
+                                data.TotalFrameCount++;
+                                //_testTotalFrame++;
+                                if (!data.TmpOk)
+                                {
+                                    data.TotalNokCount++;
                                     _testNokFrame++;
+                                }
 
-                                if (_testNokFrame / (_testTotalFrame * 1.0) * 100 > 60)
-                                    isOk = false;
+                                if (data.TotalNokCount / (data.TotalFrameCount * 1.0) * 100 > 60)
+                                    data.TmpOk = false;
 
-                                data.TestIsOk = isOk;
+                                data.TestIsOk = data.TmpOk;
                                 data.ImageBox.BackColor = isOk ? Color.LimeGreen : Color.Red;
                                 _testIsOk = !_captureList.Any(d => d.TestIsOk == false);
 
@@ -964,7 +979,7 @@ namespace HekaEye
                     }
                 }
 
-                await Task.Delay(50);
+                await Task.Delay(10);
             }
         }
 
@@ -1020,6 +1035,31 @@ namespace HekaEye
             }
         }
 
+        private async Task SendToDevice(string ioPort, int ioValue)
+        {
+            try
+            {
+                var ioResults = await _api.GetData<DigitalIOResult>("slot/0/io/" + ioPort.Substring(0, 2));
+
+                if (ioPort.Substring(0, 2) == "di")
+                {
+                    var portResult = ioResults.io.di.FirstOrDefault(d => d.diIndex == Convert.ToInt32(ioPort.Replace("di", "")));
+                    portResult.diStatus = ioValue;
+                }
+                else if (ioPort.Substring(0, 2) == "do")
+                {
+                    var portResult = ioResults.io.Do.FirstOrDefault(d => d.doIndex == Convert.ToInt32(ioPort.Replace("do", "")));
+                    portResult.doStatus = ioValue;
+                }
+
+                await _api.PutData<DigitalIOResult>("slot/0/io/" + ioPort.Substring(0, 2), ioResults);
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("MOXA device is not accessible!");
+            }
+        }
+
         int _maxTestDuration = 3;
         bool _lastTestResult = false;
         private void _tmrTest_Tick(object sender, EventArgs e)
@@ -1027,45 +1067,88 @@ namespace HekaEye
             _testSeconds++;
             if (_testSeconds >= _maxTestDuration)
             {
-                //_tmrTest.Stop();
-                //_tmrTest.Dispose();
+                int captureIndex = 0;
+                foreach (var data in _captureList)
+                {
+                    data.TotalFrameCount = 0;
+                    data.TotalNokCount = 0;
+
+                    if (data.TestIsOk)
+                    {
+                        _okCount++;
+                        data.LastTestResult = true;
+                    }
+                    else
+                    {
+                        _nokCount++;
+                        if (data.LastTestResult)
+                        {
+                            try
+                            {
+                                // WRITE TO DATABASE
+                                using (EyeBO bObj = new EyeBO())
+                                {
+                                    bObj.SaveMatchOnly(false);
+                                }
+
+                                // WRITE TO DEVICE
+                                string deviceOutputAddr = captureIndex == 0 ? "do1" : "do2";
+                                try
+                                {
+                                    SendToDevice(deviceOutputAddr, 1);
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+                        }
+                        data.LastTestResult = false;
+                    }
+
+                    captureIndex++;
+                }
 
                 //_testRunning = false;
                 _testTotalFrame = 0;
                 _testNokFrame = 0;
                 //btnTestStart.Text = "TESTİ BAŞLAT";
 
-                if (_testIsOk)
-                {
-                    //PrinterBO bObj = new PrinterBO();
-                    //bObj.PrintLabel(new ProductLabel
-                    //{
-                    //    ProductCode = SelectedModel.ProductCode,
-                    //}, _printSerialNo);
-                    //_printSerialNo++;
+                //if (_testIsOk)
+                //{
+                //    //PrinterBO bObj = new PrinterBO();
+                //    //bObj.PrintLabel(new ProductLabel
+                //    //{
+                //    //    ProductCode = SelectedModel.ProductCode,
+                //    //}, _printSerialNo);
+                //    //_printSerialNo++;
 
-                    _okCount++;
-                    _lastTestResult = true;
-                }
-                else
-                {
-                    _nokCount++;
-                    if (_lastTestResult)
-                    {
-                        try
-                        {
-                            using (EyeBO bObj = new EyeBO())
-                            {
-                                bObj.SaveMatchOnly(false);
-                            }
-                        }
-                        catch (Exception)
-                        {
+                //    _okCount++;
+                //    _lastTestResult = true;
+                //}
+                //else
+                //{
+                //    _nokCount++;
+                //    if (_lastTestResult)
+                //    {
+                //        try
+                //        {
+                //            using (EyeBO bObj = new EyeBO())
+                //            {
+                //                bObj.SaveMatchOnly(false);
+                //            }
+                //        }
+                //        catch (Exception)
+                //        {
 
-                        }
-                    }
-                    _lastTestResult = false;
-                }
+                //        }
+                //    }
+                //    _lastTestResult = false;
+                //}
 
                 //btnTestStart.Enabled = true;
                 _testSeconds = 0;

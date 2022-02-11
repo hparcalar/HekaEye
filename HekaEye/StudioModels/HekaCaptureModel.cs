@@ -24,7 +24,11 @@ namespace HekaEye.StudioModels
         public bool CaptureRunning { get; set; } = false;
         public bool SelectionRunning { get; set; } = false;
         public bool SelectionStepRunning { get; set; } = false;
+        public int TotalFrameCount { get; set; }
+        public int TotalNokCount { get; set; }
         public bool TestIsOk { get; set; } = false;
+        public bool TmpOk { get; set; } = true;
+        public bool LastTestResult { get; set; } = true;
         public List<HekaRegion> RegionList { get; set; } = new List<HekaRegion>();
     }
 }

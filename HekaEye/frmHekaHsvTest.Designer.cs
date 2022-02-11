@@ -69,7 +69,6 @@ namespace HekaEye
             this.flPanelCams.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.flPanelCams.AutoScroll = true;
             this.flPanelCams.BackColor = System.Drawing.Color.Black;
             this.flPanelCams.Location = new System.Drawing.Point(12, 51);
             this.flPanelCams.Name = "flPanelCams";
@@ -139,7 +138,7 @@ namespace HekaEye
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmHekaHsvTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Heka Görsel Test";
+            this.Text = "Heka Görsel Kontrol";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHekaStudio_FormClosing);
             this.Load += new System.EventHandler(this.frmHekaStudio_Load);
