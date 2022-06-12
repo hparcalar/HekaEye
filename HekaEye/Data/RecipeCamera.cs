@@ -21,6 +21,8 @@ namespace HekaEye.Data
         public bool IsActive { get; set; }
         public Nullable<int> Exposure { get; set; }
         public Nullable<bool> AutoExposure { get; set; }
+        public Nullable<bool> AutoFocus { get; set; }
+        public Nullable<int> Focus { get; set; }
         public virtual Recipe Recipe { get; set; }
     }
 }

@@ -840,6 +840,8 @@ namespace HekaEye.UseCase
                     dbModel.CameraAlias = model.CameraAlias;
                     dbModel.AutoExposure = model.AutoExposure;
                     dbModel.RecipeId = model.RecipeId;
+                    dbModel.AutoFocus = model.AutoFocus;
+                    dbModel.Focus = model.Focus;
 
                     db.SaveChanges();
 

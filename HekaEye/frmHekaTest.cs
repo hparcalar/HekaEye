@@ -30,7 +30,9 @@ namespace HekaEye
         int _nokCount = 0;
         int _testTotalFrame = 0;
         int _testNokFrame = 0;
+        int _sourceIndex = 0;
 
+        bool _allCamerasAreReady = false;
         bool _cameraSelection = false;
         bool _captureRunning = false;
         bool _testRunning = false;
@@ -129,11 +131,17 @@ namespace HekaEye
             flPanelExternalTests.Controls.Clear();
             foreach (var item in _externalTests)
             {
-                KryptonCheckBox chkTest = new KryptonCheckBox();
+                KryptonCheckButton chkTest = new KryptonCheckButton();
                 chkTest.Checked = false;
                 chkTest.Text = item.TestName;
+                chkTest.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+                chkTest.Width = flPanelExternalTests.Width - 5;
+                chkTest.Height = flPanelExternalTests.Height;
+                //chkTest.AutoSize = false;
+                //chkTest.Width = 200;
+                //chkTest.Height = 100;
                 chkTest.PaletteMode = PaletteMode.ProfessionalSystem;
-                chkTest.StateCommon.ShortText.Font = new Font("Tahoma", 14, FontStyle.Bold);
+                chkTest.StateCommon.Content.ShortText.Font = new Font("Tahoma", 14, FontStyle.Bold);
                 flPanelExternalTests.Controls.Add(chkTest);
             }
         }
@@ -165,7 +173,8 @@ namespace HekaEye
                             Emgu.CV.UI.ImageBox cvBox = new Emgu.CV.UI.ImageBox();
                             cvBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
                             cvBox.SizeMode = PictureBoxSizeMode.Zoom;
-                            cvBox.Size = new Size(536, flPanelCams.Height - 5);
+                            //cvBox.Size = new Size(536, flPanelCams.Height - 5);
+                            cvBox.Size = new Size(flPanelCams.Width / 2 - 50, (flPanelCams.Height / 2) - 5);
                             cvBox.BorderStyle = BorderStyle.FixedSingle;
                             flPanelCams.Controls.Add(cvBox);
 
@@ -174,6 +183,7 @@ namespace HekaEye
                                 CameraName = item.CameraName,
                                 CaptureRunning = true,
                                 ImageBox = cvBox,
+                                AutoExposure = item.AutoExposure ?? false,
                                 Exposure = item.Exposure,
                                 SelectionRunning = false,
                                 SelectionStepRunning = false,
@@ -223,7 +233,9 @@ namespace HekaEye
                     if (_captureList.Any(d => d.Capture == null))
                     {
                         StopCapture();
-                        StartCapture();
+
+                        Task.Run(StartCapture);
+                        //StartCapture();
                     }
                 }
             }
@@ -291,7 +303,13 @@ namespace HekaEye
         }
         private void StartCapture()
         {
-            //lblStatus.Visible = true;
+            this.BeginInvoke((Action)delegate {
+                lblCamStatus.Visible = true;
+                _allCamerasAreReady = false;
+                btnTestStart.Enabled = false;
+                lblStatusText.Visible = true;
+            });
+           
 
             foreach (var capture in _captureList)
             {
@@ -300,9 +318,34 @@ namespace HekaEye
                     CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath, capture.CameraName));
                     if (capCam != null)
                     {
-                        capture.Capture = new VideoCapture(capCam.DeviceIndex);
-                        //capture.Exposure = Convert.ToInt32(capture.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
-                        capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Exposure, capture.Exposure ?? 0);
+                        capture.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.Msmf);
+
+                        if (capture.Capture != null)
+                        {
+                            capture.Exposure = Convert.ToInt32(capture.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
+                            if (capture.AutoExposure)
+                            {
+                                capture.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 3);
+                            }
+                            else
+                            {
+                                capture.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
+                                capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Exposure, capture.Exposure ?? 0);
+                            }
+
+                            //if (capture.AutoFocus)
+                            //{
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 1);
+                            //}
+                            //else
+                            //{
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 0);
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Focus, capture.Focus ?? 5);
+                            //}
+
+                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 3840);
+                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 2160);
+                        }
                         capture.CaptureRunning = true;
                         capture.CaptureTask = Task.Run(() => LoopCapture(capture.CameraName));
                     }
@@ -313,7 +356,14 @@ namespace HekaEye
                 }
             }
 
-            _updatingCameras = false;
+            this.BeginInvoke((Action)delegate
+            {
+                _updatingCameras = false;
+                _allCamerasAreReady = true;
+                lblCamStatus.Visible = false;
+                btnTestStart.Enabled = true;
+                lblStatusText.Visible = false;
+            });
         }
 
         private async Task LoopCapture(string cameraName)
@@ -325,8 +375,34 @@ namespace HekaEye
                 {
                     try
                     {
-                        var frame = data.Capture.QueryFrame();
-                        //var cloneFrame = frame.Clone();
+                        // wait until all cameras are ready to be queried
+                        if (_allCamerasAreReady == false)
+                            continue;
+
+                        if (data.DoQueryFrame == false)
+                            continue;
+
+                        Mat frame = null;
+
+                        if (data.DoQueryFrame == true)
+                        {
+                            data.DoQueryFrame = false;
+
+                            // capture 20 frames to validate auto-exposure of the judged image
+                            for (int i = 0; i < 20; i++)
+                            {
+                                var tmpFrame = data.Capture.QueryFrame();
+                                tmpFrame.Dispose();
+                            }
+
+                            frame = data.Capture.QueryFrame();
+                            data.CurrentFrame = frame.Clone();
+                        }
+                        else if (data.CurrentFrame != null)
+                            frame = data.CurrentFrame.Clone();
+
+                        if (frame == null)
+                            continue;
 
                         var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
                         CvInvoke.CvtColor(frame, gray, Emgu.CV.CvEnum.ColorConversion.Bgr2Gray);
@@ -707,6 +783,9 @@ namespace HekaEye
                                     lblResult.BackColor = Color.Red;
                                     lblResult.Text = "NOK";
                                 }
+
+                                _sourceIndex++;
+                                PrepareCurrentCaptureStep();
                             });
                             #endregion
                         }
@@ -767,6 +846,100 @@ namespace HekaEye
                 SelectedModel = null;
         }
 
+        private void PrepareCurrentCaptureStep()
+        {
+            try
+            {
+                if (_captureList.Count() > _sourceIndex)
+                {
+                    var cap = _captureList[_sourceIndex];
+                    if (cap != null)
+                    {
+                        cap.DoQueryFrame = true;
+                    }
+                }
+                else // finish test
+                {
+                    _sourceIndex = 0;
+
+                    _testRunning = false;
+                    btnTestStart.Text = "TESTİ BAŞLAT";
+
+                    if (_testIsOk)
+                    {
+                        if (_combinedModel != null)
+                        {
+                            mainModelNo = SelectedModel.ProductCode;
+
+                            cmbModels.Items.Clear();
+                            cmbModels.Items.Add(_combinedModel);
+                            cmbModels.SelectedIndex = 0;
+
+                            returnToMainModel = true;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                //PrinterBO bObj = new PrinterBO();
+                                //bObj.PrintLabel(new ProductLabel
+                                //{
+                                //    ProductCode = SelectedModel.ProductCode,
+                                //}, _printSerialNo);
+                                //_printSerialNo++;
+                            }
+                            catch (Exception)
+                            {
+
+                            }
+
+                            _okCount++;
+
+                            if (returnToMainModel)
+                            {
+                                var externalChecks = flPanelExternalTests.Controls;
+                                foreach (KryptonCheckButton item in externalChecks)
+                                {
+                                    item.Checked = false;
+                                }
+
+                                using (EyeBO eObj = new EyeBO())
+                                {
+                                    var mainModelList = eObj.GetMainProductList().ToArray();
+                                    var mainModelObj = mainModelList.FirstOrDefault(d => d.ProductCode == mainModelNo);
+                                    cmbModels.Items.Clear();
+                                    cmbModels.Items.AddRange(mainModelList);
+                                    cmbModels.SelectedIndex = Array.IndexOf(mainModelList, mainModelObj);
+                                }
+
+                                returnToMainModel = false;
+                            }
+                            else
+                            {
+                                var externalChecks = flPanelExternalTests.Controls;
+                                foreach (KryptonCheckButton item in externalChecks)
+                                {
+                                    item.Checked = false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                        _nokCount++;
+
+                    btnTestStart.Enabled = true;
+                    _testSeconds = 0;
+
+                    lblOkCount.Text = _okCount.ToString();
+                    lblErrCount.Text = _nokCount.ToString();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         int _testSeconds = 0;
         Timer _tmrTest;
         private void btnTestStart_Click(object sender, EventArgs e)
@@ -780,7 +953,7 @@ namespace HekaEye
                 }
 
                 var externalChecks = flPanelExternalTests.Controls;
-                foreach (KryptonCheckBox item in externalChecks)
+                foreach (KryptonCheckButton item in externalChecks)
                 {
                     if (item.Checked == false)
                     {
@@ -791,18 +964,27 @@ namespace HekaEye
 
                 _testTotalFrame = 0;
                 _testNokFrame = 0;
+
+                foreach (Emgu.CV.UI.ImageBox item in flPanelCams.Controls)
+                {
+                    item.Image = null;
+                    item.BackColor = Color.Transparent;
+                }
             }
 
             _testRunning = !_testRunning;
+            _sourceIndex = 0;
+            PrepareCurrentCaptureStep();
 
             if (_testRunning)
             {
-                _tmrTest = new Timer();
-                _tmrTest.Interval = 1000;
-                _tmrTest.Tick += _tmrTest_Tick;
-                _tmrTest.Start();
+                //_tmrTest = new Timer();
+                //_tmrTest.Interval = 1000;
+                //_tmrTest.Tick += _tmrTest_Tick;
+                //_tmrTest.Start();
 
-                btnTestStart.Text = _maxTestDuration.ToString();
+                btnTestStart.Enabled = false;
+                btnTestStart.Text = "TEST YAPILIYOR"; //_maxTestDuration.ToString();
             }
             else
             {
@@ -848,7 +1030,7 @@ namespace HekaEye
                         if (returnToMainModel)
                         {
                             var externalChecks = flPanelExternalTests.Controls;
-                            foreach (KryptonCheckBox item in externalChecks)
+                            foreach (KryptonCheckButton item in externalChecks)
                             {
                                 item.Checked = false;
                             }

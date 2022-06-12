@@ -326,16 +326,18 @@ namespace HekaEye
             {
                 if (capture.Capture != null && capture.Capture.IsOpened)
                 {
-                    capture.Capture.Stop();
-                    capture.Capture.Dispose();
-
                     try
                     {
-                        capture.CaptureTask.Dispose();
-                    }
-                    catch (Exception)
-                    {
+                        capture.CaptureRunning = false;
+                        System.Threading.Thread.Sleep(100);
+                        capture.Capture.Stop();
+                        capture.Capture.Dispose();
 
+                        //capture.CaptureTask.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
                     }
                 }
             }
@@ -364,7 +366,7 @@ namespace HekaEye
                         Emgu.CV.UI.ImageBox cvBox = new Emgu.CV.UI.ImageBox();
                         cvBox.FunctionalMode = Emgu.CV.UI.ImageBox.FunctionalModeOption.Minimum;
                         cvBox.SizeMode = PictureBoxSizeMode.Zoom;
-                        cvBox.Size = new Size(flPanelCams.Width / 2 - 50, flPanelCams.Height - 5);
+                        cvBox.Size = new Size(flPanelCams.Width / 2 - 50, (flPanelCams.Height / 2) - 5);
                         //cvBox.Width = flPanelCams.Width;
                         //cvBox.Height = flPanelCams.Height / 2;
                         cvBox.BorderStyle = BorderStyle.FixedSingle;
@@ -379,6 +381,8 @@ namespace HekaEye
                             CaptureRunning = true,
                             ImageBox = cvBox,
                             AutoExposure = item.AutoExposure ?? false,
+                            AutoFocus = item.AutoFocus ?? true,
+                            Focus = item.Focus,
                             Exposure = item.Exposure,
                             SelectionRunning = false,
                             SelectionStepRunning = false,
@@ -531,7 +535,7 @@ namespace HekaEye
                     CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath,capture.CameraName));
                     if (capCam != null)
                     {
-                        capture.Capture = new VideoCapture(capCam.DeviceIndex);
+                        capture.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.Msmf);
                         
                         if (capture.Capture != null)
                         {
@@ -546,16 +550,31 @@ namespace HekaEye
                                 capture.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
                                 tBarExposure.Enabled = true;
                             }
+
+                            //if (capture.AutoFocus)
+                            //{
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 1);
+                            //}
+                            //else
+                            //{
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 0);
+                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Focus, capture.Focus ?? 5);
+                            //}
+
+                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 3840);
+                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 2160);
                         }
                         capture.CaptureRunning = true;
                         capture.CaptureTask = Task.Run(() => LoopCapture(capture.CameraName));
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                 }
             }
+
+            lblStatus.Visible = false;
 
             _updatingCameras = false;
 
@@ -577,18 +596,39 @@ namespace HekaEye
             //    MessageBox.Show(ex.Message, "Uyarı");
             //}
         }
+        
         private async Task LoopCapture(string cameraName)
         {
-            while (true)
+            var data = _captureList.FirstOrDefault(d => d.CameraName == cameraName);
+            while (data != null && data.CaptureRunning)
             {
-                var data = _captureList.FirstOrDefault(d => d.CameraName == cameraName);
+                //if (SelectedCamera == null || SelectedCamera.Id != data.CameraId)
+                //{
+                //    await Task.Delay(500);
+                //    continue;
+                //}
+
                 if (data != null && data.CaptureRunning)
                 {
                     try
                     {
-                        var frame = data.Capture.QueryFrame();
+                        Mat frame = null;
+
+                        if (data.DoQueryFrame == true)
+                        {
+                            frame = data.Capture.QueryFrame();
+                            data.CurrentFrame = frame.Clone();
+                            data.DoQueryFrame = false;
+                        }
+                        else if (data.CurrentFrame != null)
+                            frame = data.CurrentFrame.Clone();
+
                         if (frame == null)
                             continue;
+
+                        //frame.ConvertTo(frame, Emgu.CV.CvEnum.DepthType.Cv32F);
+                        //CvInvoke.GaussianBlur(frame, frame, new Size(0, 0), 3);
+                        //CvInvoke.AddWeighted(frame, 1.5, frame, -0.5, 0, frame);
 
                         var gray = new Mat(frame.Rows, frame.Cols, Emgu.CV.CvEnum.DepthType.Cv32F, 1);
                         var hsv = new Image<Hsv, Byte>(frame.Rows, frame.Cols);
@@ -649,6 +689,9 @@ namespace HekaEye
 
                         foreach (var region in data.RegionList)
                         {
+                            if (region.Path.Length == 0)
+                                continue;
+
                             Mat maskedRegion = Mat.Zeros(gray.Rows, gray.Cols, Emgu.CV.CvEnum.DepthType.Cv8U, 1);
                             Rectangle regionRect = Rectangle.Empty;
 
@@ -1143,14 +1186,14 @@ namespace HekaEye
                             }
                             if (region != null)
                             {
-                                var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
-                                CvInvoke.Erode(maskedRegion, maskedRegion, dilElm,
-                                    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
-                                    new MCvScalar(255));
-                                CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
-                                    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
-                                    new MCvScalar(255));
-                                dilElm.Dispose();
+                                //var dilElm = CvInvoke.GetStructuringElement(Emgu.CV.CvEnum.ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+                                //CvInvoke.Erode(maskedRegion, maskedRegion, dilElm,
+                                //    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                //    new MCvScalar(255));
+                                //CvInvoke.Dilate(maskedRegion, maskedRegion, dilElm,
+                                //    new Point(-1, -1), 1, Emgu.CV.CvEnum.BorderType.Default,
+                                //    new MCvScalar(255));
+                                //dilElm.Dispose();
                             }
                             if (region.Sharpen == true)
                             {
@@ -1370,7 +1413,7 @@ namespace HekaEye
                 else
                     break;
 
-                await Task.Delay(10);
+                await Task.Delay(200);
             }
         }
 
@@ -1957,6 +2000,14 @@ namespace HekaEye
         {
             if (_positionIsRunning || _rotationIsRunning)
                 _leftCount++;
+        }
+
+        private void btnDoCapture_Click(object sender, EventArgs e)
+        {
+            foreach (var item in _captureList)
+            {
+                item.DoQueryFrame = true;
+            }
         }
     }
 }

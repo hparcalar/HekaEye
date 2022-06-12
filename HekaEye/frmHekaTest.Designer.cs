@@ -41,6 +41,8 @@ namespace HekaEye
             this.btnTestStart = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.lblCombined = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.flPanelExternalTests = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblCamStatus = new System.Windows.Forms.Panel();
+            this.lblStatusText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblResult
@@ -73,6 +75,7 @@ namespace HekaEye
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(921, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 20);
@@ -106,6 +109,7 @@ namespace HekaEye
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label2.ForeColor = System.Drawing.Color.Gainsboro;
             this.label2.Location = new System.Drawing.Point(1105, 376);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 25);
@@ -117,6 +121,7 @@ namespace HekaEye
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label3.ForeColor = System.Drawing.Color.Gainsboro;
             this.label3.Location = new System.Drawing.Point(958, 376);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 25);
@@ -161,6 +166,7 @@ namespace HekaEye
             this.lblCombined.Location = new System.Drawing.Point(928, 88);
             this.lblCombined.Name = "lblCombined";
             this.lblCombined.Size = new System.Drawing.Size(259, 25);
+            this.lblCombined.StateCommon.ShortText.Color1 = System.Drawing.Color.Gainsboro;
             this.lblCombined.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCombined.TabIndex = 40;
             this.lblCombined.Values.Text = "KOMBİN:";
@@ -169,17 +175,42 @@ namespace HekaEye
             // flPanelExternalTests
             // 
             this.flPanelExternalTests.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flPanelExternalTests.ForeColor = System.Drawing.Color.White;
             this.flPanelExternalTests.Location = new System.Drawing.Point(925, 133);
             this.flPanelExternalTests.Name = "flPanelExternalTests";
             this.flPanelExternalTests.Size = new System.Drawing.Size(262, 78);
             this.flPanelExternalTests.TabIndex = 41;
             // 
+            // lblCamStatus
+            // 
+            this.lblCamStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblCamStatus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lblCamStatus.BackgroundImage")));
+            this.lblCamStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.lblCamStatus.Location = new System.Drawing.Point(12, 10);
+            this.lblCamStatus.Name = "lblCamStatus";
+            this.lblCamStatus.Size = new System.Drawing.Size(44, 33);
+            this.lblCamStatus.TabIndex = 42;
+            this.lblCamStatus.Visible = false;
+            // 
+            // lblStatusText
+            // 
+            this.lblStatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblStatusText.ForeColor = System.Drawing.Color.Gainsboro;
+            this.lblStatusText.Location = new System.Drawing.Point(62, 9);
+            this.lblStatusText.Name = "lblStatusText";
+            this.lblStatusText.Size = new System.Drawing.Size(345, 34);
+            this.lblStatusText.TabIndex = 43;
+            this.lblStatusText.Text = "KAMERA HAZIRLANIYOR";
+            this.lblStatusText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmHekaTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Gainsboro;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(1255, 636);
+            this.Controls.Add(this.lblStatusText);
+            this.Controls.Add(this.lblCamStatus);
             this.Controls.Add(this.flPanelExternalTests);
             this.Controls.Add(this.lblCombined);
             this.Controls.Add(this.btnTestStart);
@@ -192,6 +223,7 @@ namespace HekaEye
             this.Controls.Add(this.cmbModels);
             this.Controls.Add(this.lblResult);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmHekaTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -216,5 +248,7 @@ namespace HekaEye
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnTestStart;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel lblCombined;
         private System.Windows.Forms.FlowLayoutPanel flPanelExternalTests;
+        private System.Windows.Forms.Panel lblCamStatus;
+        private System.Windows.Forms.Label lblStatusText;
     }
 }

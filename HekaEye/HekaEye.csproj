@@ -246,6 +246,10 @@
     <Compile Include="Migrations\202202081945185_DetectDefaultRect.designer.cs">
       <DependentUpon>202202081945185_DetectDefaultRect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202204191115226_CameraManuelFocus.cs" />
+    <Compile Include="Migrations\202204191115226_CameraManuelFocus.designer.cs">
+      <DependentUpon>202204191115226_CameraManuelFocus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BusinessResult.cs" />
     <Compile Include="Models\CameraModel.cs" />
@@ -438,6 +442,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202202081945185_DetectDefaultRect.resx">
       <DependentUpon>202202081945185_DetectDefaultRect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204191115226_CameraManuelFocus.resx">
+      <DependentUpon>202204191115226_CameraManuelFocus.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

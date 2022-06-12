@@ -73,6 +73,7 @@ namespace HekaEye
             this.btnRight = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.lblHsv = new System.Windows.Forms.Label();
+            this.btnDoCapture = new System.Windows.Forms.Button();
             this.tabTools.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageRecipes.SuspendLayout();
@@ -283,7 +284,7 @@ namespace HekaEye
             this.btnUndo.BackColor = System.Drawing.Color.Transparent;
             this.btnUndo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUndo.BackgroundImage")));
             this.btnUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnUndo.Location = new System.Drawing.Point(385, 12);
+            this.btnUndo.Location = new System.Drawing.Point(427, 11);
             this.btnUndo.Name = "btnUndo";
             this.btnUndo.Size = new System.Drawing.Size(37, 33);
             this.btnUndo.TabIndex = 26;
@@ -316,7 +317,7 @@ namespace HekaEye
             this.btnDelete.BackColor = System.Drawing.Color.Transparent;
             this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
             this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnDelete.Location = new System.Drawing.Point(428, 12);
+            this.btnDelete.Location = new System.Drawing.Point(470, 11);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(37, 34);
             this.btnDelete.TabIndex = 30;
@@ -362,7 +363,7 @@ namespace HekaEye
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnSave.Location = new System.Drawing.Point(471, 12);
+            this.btnSave.Location = new System.Drawing.Point(513, 11);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(37, 34);
             this.btnSave.TabIndex = 33;
@@ -562,12 +563,25 @@ namespace HekaEye
             this.lblHsv.TabIndex = 51;
             this.lblHsv.Text = "--";
             // 
+            // btnDoCapture
+            // 
+            this.btnDoCapture.BackColor = System.Drawing.Color.Transparent;
+            this.btnDoCapture.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDoCapture.BackgroundImage")));
+            this.btnDoCapture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnDoCapture.Location = new System.Drawing.Point(385, 11);
+            this.btnDoCapture.Name = "btnDoCapture";
+            this.btnDoCapture.Size = new System.Drawing.Size(37, 34);
+            this.btnDoCapture.TabIndex = 52;
+            this.btnDoCapture.UseVisualStyleBackColor = false;
+            this.btnDoCapture.Click += new System.EventHandler(this.btnDoCapture_Click);
+            // 
             // frmHekaStudio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1341, 738);
+            this.Controls.Add(this.btnDoCapture);
             this.Controls.Add(this.lblHsv);
             this.Controls.Add(this.btnDown);
             this.Controls.Add(this.btnRight);
@@ -664,5 +678,6 @@ namespace HekaEye
         private System.Windows.Forms.Button btnRight;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Label lblHsv;
+        private System.Windows.Forms.Button btnDoCapture;
     }
 }

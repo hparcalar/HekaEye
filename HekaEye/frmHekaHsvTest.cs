@@ -1029,7 +1029,7 @@ namespace HekaEye
             if (_testRunning)
             {
                 _tmrTest = new Timer();
-                _tmrTest.Interval = 1000;
+                _tmrTest.Interval = 500;
                 _tmrTest.Tick += _tmrTest_Tick;
                 _tmrTest.Start();
             }
@@ -1060,11 +1060,11 @@ namespace HekaEye
             }
         }
 
-        int _maxTestDuration = 3;
+        int _maxTestDuration = 2000;
         bool _lastTestResult = false;
         private void _tmrTest_Tick(object sender, EventArgs e)
         {
-            _testSeconds++;
+            _testSeconds += 500;
             if (_testSeconds >= _maxTestDuration)
             {
                 int captureIndex = 0;
@@ -1077,6 +1077,16 @@ namespace HekaEye
                     {
                         _okCount++;
                         data.LastTestResult = true;
+
+                        string deviceOutputAddr = captureIndex == 0 ? "do0" : "do1";
+                        try
+                        {
+                            SendToDevice(deviceOutputAddr, 0);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
                     }
                     else
                     {
@@ -1092,7 +1102,7 @@ namespace HekaEye
                                 }
 
                                 // WRITE TO DEVICE
-                                string deviceOutputAddr = captureIndex == 0 ? "do1" : "do2";
+                                string deviceOutputAddr = captureIndex == 0 ? "do0" : "do1";
                                 try
                                 {
                                     SendToDevice(deviceOutputAddr, 1);
