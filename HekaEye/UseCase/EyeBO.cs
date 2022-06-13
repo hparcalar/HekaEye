@@ -868,6 +868,7 @@ namespace HekaEye.UseCase
                 using (EyeContext db = new EyeContext())
                 {
                     data = db.RecipeCamera.Where(d => d.RecipeId == recipeId)
+                        .OrderBy(d => d.Id)
                         .ToArray();
                 }
             }

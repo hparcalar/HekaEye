@@ -202,6 +202,7 @@ namespace HekaEye
             this.lblStatusText.TabIndex = 43;
             this.lblStatusText.Text = "KAMERA HAZIRLANIYOR";
             this.lblStatusText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblStatusText.Visible = false;
             // 
             // frmHekaTest
             // 

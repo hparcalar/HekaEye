@@ -379,6 +379,7 @@ namespace HekaEye
                         {
                             CameraName = item.CameraName,
                             CaptureRunning = true,
+                            CameraId = item.Id,
                             ImageBox = cvBox,
                             AutoExposure = item.AutoExposure ?? false,
                             AutoFocus = item.AutoFocus ?? true,
@@ -410,7 +411,7 @@ namespace HekaEye
                     }
 
                     StopCapture();
-                    StartCapture();
+                    Task.Run(StartCapture);
 
                     SelectedCamera = null;
                 }
@@ -526,7 +527,10 @@ namespace HekaEye
         }
         private void StartCapture()
         {
-            lblStatus.Visible = true;
+            this.BeginInvoke((Action)delegate
+            {
+                lblStatus.Visible = true;
+            });
 
             foreach (var capture in _captureList)
             {
@@ -535,35 +539,6 @@ namespace HekaEye
                     CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath,capture.CameraName));
                     if (capCam != null)
                     {
-                        capture.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.Msmf);
-                        
-                        if (capture.Capture != null)
-                        {
-                            capture.Exposure = Convert.ToInt32(capture.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
-                            if (capture.AutoExposure)
-                            {
-                                capture.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 3);
-                                tBarExposure.Enabled = false;
-                            }
-                            else
-                            {
-                                capture.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
-                                tBarExposure.Enabled = true;
-                            }
-
-                            //if (capture.AutoFocus)
-                            //{
-                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 1);
-                            //}
-                            //else
-                            //{
-                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 0);
-                            //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Focus, capture.Focus ?? 5);
-                            //}
-
-                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 3840);
-                            //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 2160);
-                        }
                         capture.CaptureRunning = true;
                         capture.CaptureTask = Task.Run(() => LoopCapture(capture.CameraName));
                     }
@@ -574,27 +549,12 @@ namespace HekaEye
                 }
             }
 
-            lblStatus.Visible = false;
+            this.BeginInvoke((Action)delegate
+            {
+                lblStatus.Visible = false;
+            });
 
             _updatingCameras = false;
-
-            //try
-            //{
-            //    CameraModel selectedCamera = _cameraList[cmbCamera.SelectedIndex];
-
-            //    StopCapture();
-                
-            //    _activeCapture = new Emgu.CV.VideoCapture(selectedCamera.DeviceIndex);
-            //    var currentExposure = _activeCapture.Get(Emgu.CV.CvEnum.CapProp.Exposure);
-            //    tBarExposure.Value = Convert.ToInt32(currentExposure);
-
-            //    _captureRunning = true;
-            //    _tCapture = Task.Run(LoopCapture);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Uyarı");
-            //}
         }
         
         private async Task LoopCapture(string cameraName)
@@ -608,6 +568,67 @@ namespace HekaEye
                 //    continue;
                 //}
 
+                if (data.DoQueryFrame == false)
+                {
+                    try
+                    {
+                        if (data.Capture != null)
+                        {
+                            data.Capture.Dispose();
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    data.Capture = null;
+                    //continue;
+                }
+
+                CameraModel capCam = _cameraList.FirstOrDefault(m => string.Equals(m.DevicePath, data.CameraName));
+
+                if (data.Capture == null && data.DoQueryFrame == true)
+                {
+                    this.BeginInvoke((Action)delegate
+                    {
+                        lblStatus.Visible = true;
+                    });
+                    data.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.Msmf); // , VideoCapture.API.Msmf
+                }
+
+                if (data.Capture != null && data.DoQueryFrame == true)
+                {
+                    data.Exposure = Convert.ToInt32(data.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
+                    if (data.AutoExposure)
+                    {
+                        data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 3);
+                        //tBarExposure.Enabled = false;
+                    }
+                    else
+                    {
+                        data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
+                        //tBarExposure.Enabled = true;
+                    }
+
+                    //if (capture.AutoFocus)
+                    //{
+                    //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 1);
+                    //}
+                    //else
+                    //{
+                    //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 0);
+                    //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Focus, capture.Focus ?? 5);
+                    //}
+
+                    //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 3840);
+                    //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 2160);
+
+                    this.BeginInvoke((Action)delegate
+                    {
+                        lblStatus.Visible = false;
+                    });
+                }
+
                 if (data != null && data.CaptureRunning)
                 {
                     try
@@ -616,9 +637,41 @@ namespace HekaEye
 
                         if (data.DoQueryFrame == true)
                         {
-                            frame = data.Capture.QueryFrame();
-                            data.CurrentFrame = frame.Clone();
                             data.DoQueryFrame = false;
+
+                            if (data.Capture != null)
+                            {
+                                if (data.Capture.IsOpened == false)
+                                {
+                                    this.BeginInvoke((Action)delegate
+                                    {
+                                        MessageBox.Show("Kamera açılamadı: " + data.CameraName);
+                                    });
+                                }
+
+                                // capture 20 frames to validate auto-exposure of the judged image
+                                for (int i = 0; i < 30; i++)
+                                {
+                                    var tmpFrame = data.Capture.QueryFrame();
+                                    tmpFrame.Dispose();
+                                }
+
+                                frame = data.Capture.QueryFrame();
+                                int tryCount = 0;
+                                while (frame == null)
+                                {
+                                    frame = data.Capture.QueryFrame();
+                                    tryCount++;
+
+                                    if (tryCount > 20)
+                                        break;
+
+                                    await Task.Delay(50);
+                                }
+
+                                if (frame != null)
+                                    data.CurrentFrame = frame.Clone();
+                            }
                         }
                         else if (data.CurrentFrame != null)
                             frame = data.CurrentFrame.Clone();
@@ -2004,10 +2057,18 @@ namespace HekaEye
 
         private void btnDoCapture_Click(object sender, EventArgs e)
         {
-            foreach (var item in _captureList)
+            if (SelectedCamera != null && SelectedCamera.Id > 0)
             {
-                item.DoQueryFrame = true;
+                var relatedCap = _captureList.FirstOrDefault(d => d.CameraId == SelectedCamera.Id);
+                if (relatedCap != null)
+                {
+                    relatedCap.DoQueryFrame = true;
+                }
             }
+            //foreach (var item in _captureList)
+            //{
+            //    item.DoQueryFrame = true;
+            //}
         }
     }
 }
