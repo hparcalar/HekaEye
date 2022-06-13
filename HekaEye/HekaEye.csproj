@@ -298,6 +298,10 @@
     <Compile Include="StudioModels\DeviceModels\DigitalIODataINPUT.cs" />
     <Compile Include="StudioModels\DeviceModels\DigitalIODataOUTPUT.cs" />
     <Compile Include="StudioModels\DeviceModels\DigitalIOResult.cs" />
+    <Compile Include="StudioModels\DeviceModels\ICreateDevEnum.cs" />
+    <Compile Include="StudioModels\DeviceModels\IPropertyBag.cs" />
+    <Compile Include="StudioModels\DeviceModels\SystemDeviceEnumerator.cs" />
+    <Compile Include="StudioModels\DeviceModels\VideoInputDevice.cs" />
     <Compile Include="StudioModels\HekaCaptureModel.cs" />
     <Compile Include="StudioModels\HekaRegion.cs" />
     <Compile Include="StudioModels\MatchReportModel.cs" />
