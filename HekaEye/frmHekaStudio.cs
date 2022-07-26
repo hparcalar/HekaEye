@@ -593,22 +593,23 @@ namespace HekaEye
                     {
                         lblStatus.Visible = true;
                     });
-                    data.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.Msmf); // , VideoCapture.API.Msmf
+                    data.Capture = new VideoCapture(capCam.DeviceIndex, VideoCapture.API.DShow); // , VideoCapture.API.Msmf
                 }
 
                 if (data.Capture != null && data.DoQueryFrame == true)
                 {
+                    //data.Capture.Set(Emgu.CV.CvEnum.CapProp.Buffersize, 3);
                     data.Exposure = Convert.ToInt32(data.Capture.Get(Emgu.CV.CvEnum.CapProp.Exposure));
-                    if (data.AutoExposure)
-                    {
-                        data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 3);
-                        //tBarExposure.Enabled = false;
-                    }
-                    else
-                    {
-                        data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
-                        //tBarExposure.Enabled = true;
-                    }
+                    //if (data.AutoExposure)
+                    //{
+                    //    data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 3);
+                    //    //tBarExposure.Enabled = false;
+                    //}
+                    //else
+                    //{
+                    //    data.Capture.Set(Emgu.CV.CvEnum.CapProp.AutoExposure, 1);
+                    //    //tBarExposure.Enabled = true;
+                    //}
 
                     //if (capture.AutoFocus)
                     //{
@@ -619,9 +620,6 @@ namespace HekaEye
                     //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Autofocus, 0);
                     //    capture.Capture.Set(Emgu.CV.CvEnum.CapProp.Focus, capture.Focus ?? 5);
                     //}
-
-                    //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 3840);
-                    //capture.Capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 2160);
 
                     this.BeginInvoke((Action)delegate
                     {

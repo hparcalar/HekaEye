@@ -50,9 +50,9 @@ namespace HekaEye
             this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblResult.ForeColor = System.Drawing.Color.White;
-            this.lblResult.Location = new System.Drawing.Point(920, 522);
+            this.lblResult.Location = new System.Drawing.Point(1097, 624);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(270, 102);
+            this.lblResult.Size = new System.Drawing.Size(232, 102);
             this.lblResult.TabIndex = 28;
             this.lblResult.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -63,9 +63,9 @@ namespace HekaEye
             this.cmbModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbModels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.cmbModels.FormattingEnabled = true;
-            this.cmbModels.Location = new System.Drawing.Point(925, 35);
+            this.cmbModels.Location = new System.Drawing.Point(1105, 35);
             this.cmbModels.Name = "cmbModels";
-            this.cmbModels.Size = new System.Drawing.Size(262, 37);
+            this.cmbModels.Size = new System.Drawing.Size(224, 37);
             this.cmbModels.TabIndex = 30;
             this.cmbModels.ValueMember = "Id";
             this.cmbModels.SelectedIndexChanged += new System.EventHandler(this.cmbModels_SelectedIndexChanged);
@@ -76,7 +76,7 @@ namespace HekaEye
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(921, 12);
+            this.label1.Location = new System.Drawing.Point(1101, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 20);
             this.label1.TabIndex = 31;
@@ -87,9 +87,9 @@ namespace HekaEye
             this.lblErrCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblErrCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblErrCount.ForeColor = System.Drawing.Color.Red;
-            this.lblErrCount.Location = new System.Drawing.Point(920, 401);
+            this.lblErrCount.Location = new System.Drawing.Point(1136, 503);
             this.lblErrCount.Name = "lblErrCount";
-            this.lblErrCount.Size = new System.Drawing.Size(136, 90);
+            this.lblErrCount.Size = new System.Drawing.Size(68, 90);
             this.lblErrCount.TabIndex = 33;
             this.lblErrCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -98,9 +98,9 @@ namespace HekaEye
             this.lblOkCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblOkCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblOkCount.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblOkCount.Location = new System.Drawing.Point(1062, 401);
+            this.lblOkCount.Location = new System.Drawing.Point(1242, 503);
             this.lblOkCount.Name = "lblOkCount";
-            this.lblOkCount.Size = new System.Drawing.Size(136, 90);
+            this.lblOkCount.Size = new System.Drawing.Size(87, 90);
             this.lblOkCount.TabIndex = 34;
             this.lblOkCount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -110,7 +110,7 @@ namespace HekaEye
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label2.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label2.Location = new System.Drawing.Point(1105, 376);
+            this.label2.Location = new System.Drawing.Point(1247, 478);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 25);
             this.label2.TabIndex = 35;
@@ -122,7 +122,7 @@ namespace HekaEye
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.label3.ForeColor = System.Drawing.Color.Gainsboro;
-            this.label3.Location = new System.Drawing.Point(958, 376);
+            this.label3.Location = new System.Drawing.Point(1139, 478);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 25);
             this.label3.TabIndex = 36;
@@ -135,23 +135,23 @@ namespace HekaEye
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flPanelCams.AutoScroll = true;
             this.flPanelCams.BackColor = System.Drawing.Color.Black;
-            this.flPanelCams.Location = new System.Drawing.Point(12, 51);
+            this.flPanelCams.Location = new System.Drawing.Point(137, 51);
             this.flPanelCams.Name = "flPanelCams";
-            this.flPanelCams.Size = new System.Drawing.Size(800, 573);
+            this.flPanelCams.Size = new System.Drawing.Size(856, 675);
             this.flPanelCams.TabIndex = 38;
             // 
             // btnTestStart
             // 
             this.btnTestStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestStart.Location = new System.Drawing.Point(925, 226);
+            this.btnTestStart.Location = new System.Drawing.Point(1105, 226);
             this.btnTestStart.Name = "btnTestStart";
             this.btnTestStart.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue;
-            this.btnTestStart.Size = new System.Drawing.Size(262, 92);
+            this.btnTestStart.Size = new System.Drawing.Size(224, 92);
             this.btnTestStart.StateCommon.Back.Color1 = System.Drawing.Color.Lime;
             this.btnTestStart.StateCommon.Back.Color2 = System.Drawing.Color.Black;
             this.btnTestStart.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.Black;
             this.btnTestStart.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.Black;
-            this.btnTestStart.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnTestStart.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnTestStart.StateCommon.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
             this.btnTestStart.StateCommon.Content.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnTestStart.StateCommon.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
@@ -163,9 +163,9 @@ namespace HekaEye
             // 
             this.lblCombined.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCombined.AutoSize = false;
-            this.lblCombined.Location = new System.Drawing.Point(928, 88);
+            this.lblCombined.Location = new System.Drawing.Point(1108, 88);
             this.lblCombined.Name = "lblCombined";
-            this.lblCombined.Size = new System.Drawing.Size(259, 25);
+            this.lblCombined.Size = new System.Drawing.Size(221, 25);
             this.lblCombined.StateCommon.ShortText.Color1 = System.Drawing.Color.Gainsboro;
             this.lblCombined.StateCommon.ShortText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblCombined.TabIndex = 40;
@@ -176,9 +176,9 @@ namespace HekaEye
             // 
             this.flPanelExternalTests.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.flPanelExternalTests.ForeColor = System.Drawing.Color.White;
-            this.flPanelExternalTests.Location = new System.Drawing.Point(925, 133);
+            this.flPanelExternalTests.Location = new System.Drawing.Point(1105, 133);
             this.flPanelExternalTests.Name = "flPanelExternalTests";
-            this.flPanelExternalTests.Size = new System.Drawing.Size(262, 78);
+            this.flPanelExternalTests.Size = new System.Drawing.Size(224, 78);
             this.flPanelExternalTests.TabIndex = 41;
             // 
             // lblCamStatus
@@ -209,7 +209,7 @@ namespace HekaEye
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.ClientSize = new System.Drawing.Size(1255, 636);
+            this.ClientSize = new System.Drawing.Size(1341, 738);
             this.Controls.Add(this.lblStatusText);
             this.Controls.Add(this.lblCamStatus);
             this.Controls.Add(this.flPanelExternalTests);
@@ -224,7 +224,7 @@ namespace HekaEye
             this.Controls.Add(this.cmbModels);
             this.Controls.Add(this.lblResult);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmHekaTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
