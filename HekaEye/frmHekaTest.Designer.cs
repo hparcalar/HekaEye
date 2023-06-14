@@ -43,6 +43,7 @@ namespace HekaEye
             this.flPanelExternalTests = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCamStatus = new System.Windows.Forms.Panel();
             this.lblStatusText = new System.Windows.Forms.Label();
+            this.chkPrint = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblResult
@@ -204,12 +205,28 @@ namespace HekaEye
             this.lblStatusText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblStatusText.Visible = false;
             // 
+            // chkPrint
+            // 
+            this.chkPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkPrint.AutoSize = true;
+            this.chkPrint.Checked = true;
+            this.chkPrint.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.chkPrint.ForeColor = System.Drawing.Color.White;
+            this.chkPrint.Location = new System.Drawing.Point(1108, 334);
+            this.chkPrint.Name = "chkPrint";
+            this.chkPrint.Size = new System.Drawing.Size(178, 21);
+            this.chkPrint.TabIndex = 44;
+            this.chkPrint.Text = "Test sonunda yazdır";
+            this.chkPrint.UseVisualStyleBackColor = true;
+            // 
             // frmHekaTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.ClientSize = new System.Drawing.Size(1341, 738);
+            this.Controls.Add(this.chkPrint);
             this.Controls.Add(this.lblStatusText);
             this.Controls.Add(this.lblCamStatus);
             this.Controls.Add(this.flPanelExternalTests);
@@ -251,5 +268,6 @@ namespace HekaEye
         private System.Windows.Forms.FlowLayoutPanel flPanelExternalTests;
         private System.Windows.Forms.Panel lblCamStatus;
         private System.Windows.Forms.Label lblStatusText;
+        private System.Windows.Forms.CheckBox chkPrint;
     }
 }

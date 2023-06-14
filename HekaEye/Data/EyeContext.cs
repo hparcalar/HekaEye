@@ -33,5 +33,7 @@ namespace HekaEye.Data
         public virtual DbSet<CamResult> CamResult { get; set; }
         public virtual DbSet<ExternalTest> ExternalTest { get; set; }
         public virtual DbSet<ProcessStep> ProcessStep { get; set; }
+        public virtual DbSet<HkProgram> HkProgram { get; set; }
+        public virtual DbSet<HkTool> HkTool { get; set; }
     }
 }

@@ -153,6 +153,12 @@ namespace HekaEye
 
             _updatingCameras = true;
 
+            if (_captureList.Count() > 0)
+            {
+                StopCapture();
+            }
+            _captureList.Clear();
+
             //flPanelCams.Controls.Clear();
             //_captureList.Clear();
 
@@ -1043,18 +1049,21 @@ namespace HekaEye
                         }
                         else
                         {
-                            try
+                            if (chkPrint.Checked)
                             {
-                                //PrinterBO bObj = new PrinterBO();
-                                //bObj.PrintLabel(new ProductLabel
-                                //{
-                                //    ProductCode = SelectedModel.ProductCode,
-                                //}, _printSerialNo);
-                                //_printSerialNo++;
-                            }
-                            catch (Exception)
-                            {
+                                try
+                                {
+                                    PrinterBO bObj = new PrinterBO();
+                                    bObj.PrintLabel(new ProductLabel
+                                    {
+                                        ProductCode = SelectedModel.ProductCode,
+                                    }, _printSerialNo);
+                                    _printSerialNo++;
+                                }
+                                catch (Exception)
+                                {
 
+                                }
                             }
 
                             _okCount++;

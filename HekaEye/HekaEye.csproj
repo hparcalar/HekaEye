@@ -38,6 +38,16 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.Desktop.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Printing.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Utils.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraBars.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraEditors.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraGrid.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraLayout.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraPrinting.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Downloads\DirectShowLibV2-1\lib\DirectShowLib-2005.dll</HintPath>
@@ -46,6 +56,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Krypton Toolkt Suite Contributors\Krypton Toolkit Suite for .NET 4.7\Binaries\DLLs\Krypton Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
@@ -63,6 +74,8 @@
     <Compile Include="Data\CamResult.cs" />
     <Compile Include="Data\ExternalTest.cs" />
     <Compile Include="Data\EyeContext.cs" />
+    <Compile Include="Data\HkProgram.cs" />
+    <Compile Include="Data\HkTool.cs" />
     <Compile Include="Data\Inspection.cs" />
     <Compile Include="Data\MatchHistory.cs" />
     <Compile Include="Data\ProcessStep.cs" />
@@ -250,12 +263,48 @@
     <Compile Include="Migrations\202204191115226_CameraManuelFocus.designer.cs">
       <DependentUpon>202204191115226_CameraManuelFocus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306130802190_HkPrograms.cs" />
+    <Compile Include="Migrations\202306130802190_HkPrograms.designer.cs">
+      <DependentUpon>202306130802190_HkPrograms.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BusinessResult.cs" />
     <Compile Include="Models\CameraModel.cs" />
     <Compile Include="Models\CaptureClassModel.cs" />
     <Compile Include="Models\ClassSampleModel.cs" />
+    <Compile Include="Models\HkProgramModel.cs" />
+    <Compile Include="Models\HkToolModel.cs" />
     <Compile Include="Models\RoiModel.cs" />
+    <Compile Include="NewGen\Camera\HkCapture.cs" />
+    <Compile Include="NewGen\frmCameraList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewGen\frmCameraList.Designer.cs">
+      <DependentUpon>frmCameraList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewGen\frmEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewGen\frmEditor.Designer.cs">
+      <DependentUpon>frmEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewGen\Map\HkToolTypes.cs" />
+    <Compile Include="NewGen\Tools\Base_Tool.cs" />
+    <Compile Include="NewGen\Tools\Cmp_Bool.cs" />
+    <Compile Include="NewGen\Tools\Cmp_Numeric.cs" />
+    <Compile Include="NewGen\Tools\Filter_Dilate.cs" />
+    <Compile Include="NewGen\Tools\Filter_Erode.cs" />
+    <Compile Include="NewGen\Tools\Filter_Gauss.cs" />
+    <Compile Include="NewGen\Tools\Filter_MorphClose.cs" />
+    <Compile Include="NewGen\Tools\Filter_MorphOpen.cs" />
+    <Compile Include="NewGen\Tools\Imp_PatternMatch.cs" />
+    <Compile Include="NewGen\Tools\Imp_Polygon.cs" />
+    <Compile Include="NewGen\Tools\Imp_Rectangle.cs" />
+    <Compile Include="NewGen\Tools\Imp_Threshold.cs" />
+    <Compile Include="NewGen\Tools\Out_DigitalOutput.cs" />
+    <Compile Include="NewGen\Tools\Out_Http.cs" />
+    <Compile Include="NewGen\Tools\Out_ModbusTcp.cs" />
+    <Compile Include="NewGen\Tools\Out_TcpIp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkyStudio\Definitions\frmSkyCamera.cs">
@@ -323,6 +372,7 @@
     <Compile Include="StudioModels\ProcessTypes\Results\ValidationProcessResult.cs" />
     <Compile Include="StudioModels\ProductLabel.cs" />
     <Compile Include="UseCase\EyeBO.cs" />
+    <Compile Include="UseCase\NewGenBO.cs" />
     <Compile Include="UseCase\PrinterBO.cs" />
     <Compile Include="UseCase\VisionBO.cs" />
     <Compile Include="UseCase\VisionProcess\AdaptiveThresholdProcess.cs" />
@@ -450,6 +500,16 @@
     <EmbeddedResource Include="Migrations\202204191115226_CameraManuelFocus.resx">
       <DependentUpon>202204191115226_CameraManuelFocus.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306130802190_HkPrograms.resx">
+      <DependentUpon>202306130802190_HkPrograms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewGen\frmCameraList.resx">
+      <DependentUpon>frmCameraList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewGen\frmEditor.resx">
+      <DependentUpon>frmEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

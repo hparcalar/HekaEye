@@ -74,6 +74,24 @@ namespace HekaEye
             this.btnDown = new System.Windows.Forms.Button();
             this.lblHsv = new System.Windows.Forms.Label();
             this.btnDoCapture = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.değiştirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kopyalaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.silToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.seçeneklerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.veriTransferiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tCPIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.profinetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ethernetIPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ekranDüzenlemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kameraAyarlarıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.veritabanıAyarlarıToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.araçlarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defectToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.edgeToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shapeMatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.patternMatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabTools.SuspendLayout();
             this.tabPageProperties.SuspendLayout();
             this.tabPageRecipes.SuspendLayout();
@@ -82,6 +100,7 @@ namespace HekaEye
             this.tabPageModels.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarExposure)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgMask)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cmbCamera
@@ -90,7 +109,7 @@ namespace HekaEye
             this.cmbCamera.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCamera.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.cmbCamera.FormattingEnabled = true;
-            this.cmbCamera.Location = new System.Drawing.Point(137, 12);
+            this.cmbCamera.Location = new System.Drawing.Point(137, 32);
             this.cmbCamera.Name = "cmbCamera";
             this.cmbCamera.Size = new System.Drawing.Size(192, 33);
             this.cmbCamera.TabIndex = 16;
@@ -100,9 +119,10 @@ namespace HekaEye
             // prpGrid
             // 
             this.prpGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.prpGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.prpGrid.Location = new System.Drawing.Point(3, 3);
             this.prpGrid.Name = "prpGrid";
-            this.prpGrid.Size = new System.Drawing.Size(316, 418);
+            this.prpGrid.Size = new System.Drawing.Size(316, 416);
             this.prpGrid.TabIndex = 19;
             // 
             // tabTools
@@ -115,7 +135,8 @@ namespace HekaEye
             this.tabTools.Controls.Add(this.tabPageCamera);
             this.tabTools.Controls.Add(this.tabPageRegions);
             this.tabTools.Controls.Add(this.tabPageModels);
-            this.tabTools.Location = new System.Drawing.Point(999, 51);
+            this.tabTools.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.tabTools.Location = new System.Drawing.Point(999, 73);
             this.tabTools.Name = "tabTools";
             this.tabTools.SelectedIndex = 0;
             this.tabTools.Size = new System.Drawing.Size(330, 453);
@@ -127,7 +148,7 @@ namespace HekaEye
             this.tabPageProperties.Location = new System.Drawing.Point(4, 4);
             this.tabPageProperties.Name = "tabPageProperties";
             this.tabPageProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProperties.Size = new System.Drawing.Size(322, 424);
+            this.tabPageProperties.Size = new System.Drawing.Size(322, 422);
             this.tabPageProperties.TabIndex = 0;
             this.tabPageProperties.Text = "Özellikler";
             this.tabPageProperties.UseVisualStyleBackColor = true;
@@ -232,11 +253,11 @@ namespace HekaEye
             // 
             this.tBarExposure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tBarExposure.AutoSize = false;
-            this.tBarExposure.Location = new System.Drawing.Point(1054, 6);
+            this.tBarExposure.Location = new System.Drawing.Point(1054, 35);
             this.tBarExposure.Maximum = 0;
             this.tBarExposure.Minimum = -13;
             this.tBarExposure.Name = "tBarExposure";
-            this.tBarExposure.Size = new System.Drawing.Size(275, 39);
+            this.tBarExposure.Size = new System.Drawing.Size(275, 32);
             this.tBarExposure.TabIndex = 22;
             this.tBarExposure.ValueChanged += new System.EventHandler(this.tBarExposure_ValueChanged);
             // 
@@ -245,7 +266,7 @@ namespace HekaEye
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lblStatus.BackgroundImage")));
             this.lblStatus.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.lblStatus.Location = new System.Drawing.Point(335, 12);
+            this.lblStatus.Location = new System.Drawing.Point(335, 32);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(44, 33);
             this.lblStatus.TabIndex = 23;
@@ -272,7 +293,7 @@ namespace HekaEye
             // 
             this.lblExposure.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblExposure.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblExposure.Location = new System.Drawing.Point(930, 15);
+            this.lblExposure.Location = new System.Drawing.Point(930, 37);
             this.lblExposure.Name = "lblExposure";
             this.lblExposure.Size = new System.Drawing.Size(118, 23);
             this.lblExposure.TabIndex = 25;
@@ -284,7 +305,7 @@ namespace HekaEye
             this.btnUndo.BackColor = System.Drawing.Color.Transparent;
             this.btnUndo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUndo.BackgroundImage")));
             this.btnUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnUndo.Location = new System.Drawing.Point(427, 11);
+            this.btnUndo.Location = new System.Drawing.Point(427, 31);
             this.btnUndo.Name = "btnUndo";
             this.btnUndo.Size = new System.Drawing.Size(37, 33);
             this.btnUndo.TabIndex = 26;
@@ -295,7 +316,7 @@ namespace HekaEye
             // 
             this.lblResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblResult.Location = new System.Drawing.Point(886, 16);
+            this.lblResult.Location = new System.Drawing.Point(886, 37);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(38, 23);
             this.lblResult.TabIndex = 28;
@@ -305,7 +326,7 @@ namespace HekaEye
             // 
             this.lblRecipe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecipe.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lblRecipe.Location = new System.Drawing.Point(725, 16);
+            this.lblRecipe.Location = new System.Drawing.Point(725, 36);
             this.lblRecipe.Name = "lblRecipe";
             this.lblRecipe.Size = new System.Drawing.Size(155, 23);
             this.lblRecipe.TabIndex = 29;
@@ -317,7 +338,7 @@ namespace HekaEye
             this.btnDelete.BackColor = System.Drawing.Color.Transparent;
             this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
             this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnDelete.Location = new System.Drawing.Point(470, 11);
+            this.btnDelete.Location = new System.Drawing.Point(470, 31);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(37, 34);
             this.btnDelete.TabIndex = 30;
@@ -363,7 +384,7 @@ namespace HekaEye
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
             this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnSave.Location = new System.Drawing.Point(513, 11);
+            this.btnSave.Location = new System.Drawing.Point(513, 31);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(37, 34);
             this.btnSave.TabIndex = 33;
@@ -385,9 +406,9 @@ namespace HekaEye
             // 
             this.imgMask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.imgMask.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.imgMask.Location = new System.Drawing.Point(999, 510);
+            this.imgMask.Location = new System.Drawing.Point(999, 551);
             this.imgMask.Name = "imgMask";
-            this.imgMask.Size = new System.Drawing.Size(330, 216);
+            this.imgMask.Size = new System.Drawing.Size(330, 175);
             this.imgMask.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imgMask.TabIndex = 35;
             this.imgMask.TabStop = false;
@@ -415,9 +436,9 @@ namespace HekaEye
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flPanelCams.AutoScroll = true;
-            this.flPanelCams.Location = new System.Drawing.Point(137, 51);
+            this.flPanelCams.Location = new System.Drawing.Point(137, 73);
             this.flPanelCams.Name = "flPanelCams";
-            this.flPanelCams.Size = new System.Drawing.Size(856, 675);
+            this.flPanelCams.Size = new System.Drawing.Size(856, 653);
             this.flPanelCams.TabIndex = 37;
             this.flPanelCams.SizeChanged += new System.EventHandler(this.flPanelCams_SizeChanged);
             // 
@@ -568,12 +589,146 @@ namespace HekaEye
             this.btnDoCapture.BackColor = System.Drawing.Color.Transparent;
             this.btnDoCapture.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDoCapture.BackgroundImage")));
             this.btnDoCapture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnDoCapture.Location = new System.Drawing.Point(385, 11);
+            this.btnDoCapture.Location = new System.Drawing.Point(385, 31);
             this.btnDoCapture.Name = "btnDoCapture";
             this.btnDoCapture.Size = new System.Drawing.Size(37, 34);
             this.btnDoCapture.TabIndex = 52;
             this.btnDoCapture.UseVisualStyleBackColor = false;
             this.btnDoCapture.Click += new System.EventHandler(this.btnDoCapture_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.seçeneklerToolStripMenuItem,
+            this.araçlarToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1341, 28);
+            this.menuStrip1.TabIndex = 53;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.değiştirToolStripMenuItem,
+            this.kopyalaToolStripMenuItem,
+            this.silToolStripMenuItem});
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(80, 24);
+            this.toolStripMenuItem1.Text = "Program";
+            // 
+            // değiştirToolStripMenuItem
+            // 
+            this.değiştirToolStripMenuItem.Name = "değiştirToolStripMenuItem";
+            this.değiştirToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.değiştirToolStripMenuItem.Text = "Değiştir";
+            // 
+            // kopyalaToolStripMenuItem
+            // 
+            this.kopyalaToolStripMenuItem.Name = "kopyalaToolStripMenuItem";
+            this.kopyalaToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.kopyalaToolStripMenuItem.Text = "Kopyala";
+            // 
+            // silToolStripMenuItem
+            // 
+            this.silToolStripMenuItem.Name = "silToolStripMenuItem";
+            this.silToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.silToolStripMenuItem.Text = "Sil";
+            // 
+            // seçeneklerToolStripMenuItem
+            // 
+            this.seçeneklerToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.veriTransferiToolStripMenuItem,
+            this.ekranDüzenlemeToolStripMenuItem,
+            this.kameraAyarlarıToolStripMenuItem,
+            this.veritabanıAyarlarıToolStripMenuItem});
+            this.seçeneklerToolStripMenuItem.Name = "seçeneklerToolStripMenuItem";
+            this.seçeneklerToolStripMenuItem.Size = new System.Drawing.Size(94, 24);
+            this.seçeneklerToolStripMenuItem.Text = "Seçenekler";
+            // 
+            // veriTransferiToolStripMenuItem
+            // 
+            this.veriTransferiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tCPIPToolStripMenuItem,
+            this.profinetToolStripMenuItem,
+            this.ethernetIPToolStripMenuItem});
+            this.veriTransferiToolStripMenuItem.Name = "veriTransferiToolStripMenuItem";
+            this.veriTransferiToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.veriTransferiToolStripMenuItem.Text = "Veri Transferi";
+            // 
+            // tCPIPToolStripMenuItem
+            // 
+            this.tCPIPToolStripMenuItem.Name = "tCPIPToolStripMenuItem";
+            this.tCPIPToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.tCPIPToolStripMenuItem.Text = "TCP/IP";
+            // 
+            // profinetToolStripMenuItem
+            // 
+            this.profinetToolStripMenuItem.Name = "profinetToolStripMenuItem";
+            this.profinetToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.profinetToolStripMenuItem.Text = "Profinet";
+            // 
+            // ethernetIPToolStripMenuItem
+            // 
+            this.ethernetIPToolStripMenuItem.Name = "ethernetIPToolStripMenuItem";
+            this.ethernetIPToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ethernetIPToolStripMenuItem.Text = "Ethernet/IP";
+            // 
+            // ekranDüzenlemeToolStripMenuItem
+            // 
+            this.ekranDüzenlemeToolStripMenuItem.Name = "ekranDüzenlemeToolStripMenuItem";
+            this.ekranDüzenlemeToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.ekranDüzenlemeToolStripMenuItem.Text = "Ekran Düzenleme";
+            // 
+            // kameraAyarlarıToolStripMenuItem
+            // 
+            this.kameraAyarlarıToolStripMenuItem.Name = "kameraAyarlarıToolStripMenuItem";
+            this.kameraAyarlarıToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.kameraAyarlarıToolStripMenuItem.Text = "Kamera Ayarları";
+            // 
+            // veritabanıAyarlarıToolStripMenuItem
+            // 
+            this.veritabanıAyarlarıToolStripMenuItem.Name = "veritabanıAyarlarıToolStripMenuItem";
+            this.veritabanıAyarlarıToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.veritabanıAyarlarıToolStripMenuItem.Text = "Veritabanı Ayarları";
+            // 
+            // araçlarToolStripMenuItem
+            // 
+            this.araçlarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.defectToolToolStripMenuItem,
+            this.edgeToolToolStripMenuItem,
+            this.shapeMatchToolStripMenuItem,
+            this.patternMatchToolStripMenuItem});
+            this.araçlarToolStripMenuItem.Name = "araçlarToolStripMenuItem";
+            this.araçlarToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
+            this.araçlarToolStripMenuItem.Text = "Araçlar";
+            // 
+            // defectToolToolStripMenuItem
+            // 
+            this.defectToolToolStripMenuItem.Name = "defectToolToolStripMenuItem";
+            this.defectToolToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.defectToolToolStripMenuItem.Text = "Defect Tool";
+            // 
+            // edgeToolToolStripMenuItem
+            // 
+            this.edgeToolToolStripMenuItem.Name = "edgeToolToolStripMenuItem";
+            this.edgeToolToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.edgeToolToolStripMenuItem.Text = "Edge Tool";
+            // 
+            // shapeMatchToolStripMenuItem
+            // 
+            this.shapeMatchToolStripMenuItem.Name = "shapeMatchToolStripMenuItem";
+            this.shapeMatchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.shapeMatchToolStripMenuItem.Text = "Shape Match";
+            // 
+            // patternMatchToolStripMenuItem
+            // 
+            this.patternMatchToolStripMenuItem.Name = "patternMatchToolStripMenuItem";
+            this.patternMatchToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.patternMatchToolStripMenuItem.Text = "Pattern Match";
             // 
             // frmHekaStudio
             // 
@@ -614,8 +769,10 @@ namespace HekaEye
             this.Controls.Add(this.btnShape);
             this.Controls.Add(this.tabTools);
             this.Controls.Add(this.cmbCamera);
+            this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmHekaStudio";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Heka Studio";
@@ -630,6 +787,8 @@ namespace HekaEye
             this.tabPageModels.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tBarExposure)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imgMask)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -679,5 +838,23 @@ namespace HekaEye
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Label lblHsv;
         private System.Windows.Forms.Button btnDoCapture;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem değiştirToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kopyalaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem silToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem seçeneklerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem veriTransferiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tCPIPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem profinetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ethernetIPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ekranDüzenlemeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kameraAyarlarıToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem veritabanıAyarlarıToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem araçlarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defectToolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem edgeToolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shapeMatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem patternMatchToolStripMenuItem;
     }
 }

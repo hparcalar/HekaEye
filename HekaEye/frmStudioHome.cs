@@ -20,15 +20,18 @@ namespace HekaEye
 
         private void btnStudio_Click(object sender, EventArgs e)
         {
-            frmStudioLogin frm = new frmStudioLogin();
+            //frmStudioLogin frm = new frmStudioLogin();
+            //frm.ShowDialog(this);
+            //if (frm.LoggedIn)
+            //{
+            //    //frmSkyEditor frmStd = new frmSkyEditor();
+            //    //frmStd.ShowDialog(this);
+            //    frmHekaStudio frmStd = new frmHekaStudio();
+            //    frmStd.ShowDialog(this);
+            //}
+
+            NewGen.frmEditor frm = new NewGen.frmEditor();
             frm.ShowDialog(this);
-            if (frm.LoggedIn)
-            {
-                //frmSkyEditor frmStd = new frmSkyEditor();
-                //frmStd.ShowDialog(this);
-                frmHekaStudio frmStd = new frmHekaStudio();
-                frmStd.ShowDialog(this);
-            }
         }
 
         private void btnTest_Click(object sender, EventArgs e)
